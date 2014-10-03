@@ -1,0 +1,71 @@
+.cform-table tr:hover {
+    background-color: #d9d9d9;
+}
+
+.zform-table td {
+    float: left;
+}
+
+.adminsupport-wrapper label {
+    clear: both;
+    vertical-align: top;
+}
+
+.adminsupport-wrapper div:has(label):hover {
+    background-color: #b1d9a7;
+}
+
+.adminsupport-wrapper .rwmb-input.cpboxx {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.adminsupport-wrapper .cpboxx > div:has(input:checked) {
+    background-color: #d8d993;
+}
+
+.actionbar {
+    padding: 5px;
+    background-color: #d7d7d7;
+}
+
+.boardcast_status .dashicons {
+    margin-right: 5px;
+}
+
+.boardcast_status > span {
+    width: 100%;
+    clear: both;
+}
+
+/*
+http://www.telerik.com/android-ui
+*/
+#table_job_application .job_status{
+    padding: 3px;
+    border-radius: 3px;
+    display: inline-block;
+}
+#table_job_application .job_status.open {
+    background-color: #aaf0b2;
+    color: #15b311;
+}
+
+#table_job_application .job_status.pending {
+    background-color: #f0eb35;
+    color: #c37929;
+}
+
+#table_job_application .job_status.close {
+    background-color: #3a3a3a;
+    color: #eabe7c;
+}
+table.dataTable tbody tr.odd.selected,
+table.dataTable tbody tr.selected{
+    background-color: #aaf0b2 !important;
+}
+.dataTables_filter label,
+.dataTables_length label{
+    vertical-align: middle;
+}

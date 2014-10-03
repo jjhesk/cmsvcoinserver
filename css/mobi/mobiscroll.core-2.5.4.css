@@ -1,0 +1,2127 @@
+
+/*! jQuery Mobile v1.3.0 | Copyright 2010, 2013 jQuery Foundation, Inc. | jquery.org/license */
+
+
+.dw-calendar .dwc {
+    vertical-align: middle;
+}
+
+
+.dw-calendar .dw .dwc-h {
+    display: none;
+    width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.dw-calendar .dw .dw-cal-c {
+    margin: 0;
+    padding: 0;
+}
+
+
+.dw-cal {
+    width: 280px;
+    padding: 8px;
+    padding-top: 0;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    text-shadow: none;
+}
+
+
+.dw-cal-ev {
+    width: 336px;
+}
+
+
+.dw-cal-anim-c {
+    position: relative;
+    overflow: hidden;
+}
+
+
+.dw-cal-anim {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    opacity: 0;
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+
+
+.dw-cal-anim-a .dw-cal-anim {
+    z-index: 3;
+    opacity: 1;
+    -webkit-transition: -webkit-transform 200ms;
+    -moz-transition: -moz-transform 200ms;
+    transition: transform 200ms;
+}
+
+
+.dw-cal-anim-prev .dw-cal-anim {
+    -webkit-transform: translate3d(-50%,0,0);
+    -moz-transform: translate3d(-50%,0,0);
+    transform: translate3d(-50%,0,0);
+}
+
+
+.dw-cal-front {
+    z-index: 2;
+    position: relative;
+    height: 100%;
+}
+
+
+.dw-cal-anim-a .dw-cal-front {
+    visibility: hidden;
+}
+
+
+.dw-cal-slide {
+    float: left;
+    width: 50%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+}
+
+
+.dw-cal-header {
+    line-height: 40px;
+}
+
+
+.dw-cal-my {
+    font-size: 18px;
+}
+
+
+.dw-cal table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+.dw-cal th,
+.dw-cal td {
+    line-height: 29px;
+}
+
+
+.dw-cal th {
+    padding: 5px 0;
+}
+
+
+.dw-cal-nb {
+    border: 0;
+}
+
+
+.dw-cal .dw-cal-day {
+    text-align: right;
+    cursor: default;
+}
+
+
+.dw-cal .dw-cal-day-v {
+    cursor: pointer;
+}
+
+
+.dw-cal .dw-cal-day .dw-i {
+    position: relative;
+    margin: 0;
+    padding: 5px;
+    border: 0;
+    opacity: .3;
+}
+
+
+.dw-cal .dw-cal-day-v .dw-i {
+    opacity: 1;
+}
+
+
+.dw-cal .dw-cal-day-diff .dw-i {
+    opacity: .7;
+}
+
+
+.dw-cal .dw-week-nr {
+    width: 1.8em;
+    padding-right: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.dw-cal .dw-cal-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+.dw-cal .dw-cal-day-m {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 0;
+    height: 0;
+    border: 5px solid black;
+    border-color: #94c840 #94c840 transparent transparent;
+}
+
+
+.dw-cal-ev .dw-cal-day .dw-i {
+    padding-bottom: 20px;
+}
+
+
+.dw-cal .dw-cal-day-txt {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 20px;
+    padding: 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: none;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+
+.dw-cal .dw-cal-day-txt-ph {
+    visibility: hidden;
+}
+
+
+.dw-cal-prev {
+    float: left;
+}
+
+
+.dw-cal-next {
+    float: right;
+}
+
+
+.dw-cal-liq .dw {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.dw-cal-liq .dwwr {
+    padding: 0;
+}
+
+
+.dw-cal-liq .dw .dwwr .dw-cal-c {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+
+.dw-cal-liq .dw .dw-cal {
+    width: auto;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.dw-cal-liq.dw-modal .dw {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
+.dw-cal-liq.dw-modal .dwwr {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+.dw-cal-liq.dw-modal .dw-persp .dw {
+    border: 0;
+}
+
+
+.dw-cal-liq.dw-modal .dw-persp .dw-cal-c {
+    margin: 0;
+    padding: 0;
+}
+
+
+.dwbg .dw-cal {
+    color: #fff;
+    background: #000;
+}
+
+
+.dwbg .dw-cal-day {
+    border: 1px solid #000;
+    background: #222;
+}
+
+
+.dwbg .dw-cal-day-txt {
+    color: #000;
+    background: #fff;
+}
+
+
+.dwbg .dw-week-nr {
+    background: 0;
+}
+
+
+.dwbg .dw-cal-btn-d {
+    opacity: .3;
+}
+
+
+.dwbg .dw-cal-btn-txt {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 12px;
+    overflow: hidden;
+}
+
+
+.dwbg .dw-cal-prev .dw-cal-btn-txt {
+    margin: 12px 2px;
+    border-color: transparent #fff transparent transparent;
+}
+
+
+.dwbg .dw-cal-next .dw-cal-btn-txt {
+    margin: 12px 0 12px 14px;
+    border-color: transparent transparent transparent #fff;
+}
+
+
+.dwbg .dwwr .dw-cal-c {
+    margin: 5px 0;
+}
+
+
+.dwbg .dw-cal .dwb {
+    padding: 0;
+    background: 0;
+}
+
+
+.dwbg .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    border-color: transparent #636363 transparent transparent;
+}
+
+
+.dwbg .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #636363;
+}
+
+
+.dwbg .dw-cal .dw-sel .dw-i {
+    background: #636363;
+}
+
+
+.dwbg .dw-cal-day.dwb-a {
+    background: #888;
+}
+
+
+.android.dw-calendar .dw-cal .dwb {
+    height: 32px;
+    margin: 4px;
+    padding: 0;
+}
+
+
+.android.dw-calendar .dw-cal-c {
+    margin: 0;
+}
+
+
+.android .dw-cal {
+    padding: 5px;
+}
+
+
+.android .dw-cal-prev .dw-cal-btn-txt {
+    margin: 8px 8px 8px 0;
+}
+
+
+.android .dw-cal-next .dw-cal-btn-txt {
+    margin: 8px 0 8px 16px;
+}
+
+
+.android .dw-cal-header {
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+    color: #000;
+    background: #9c9c9c;
+}
+
+
+.android .dw-week-nr {
+    padding: 1px 2px 0 2px;
+    border-top: 0;
+    border-bottom: 0;
+    color: #000;
+    background: #9c9c9c;
+}
+
+
+.android .dw-cal-prev .dw-cal-btn-txt,
+.android .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    border-color: transparent #000 transparent transparent;
+}
+
+
+.android .dw-cal-next .dw-cal-btn-txt,
+.android .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #000;
+}
+
+
+.android .dw-cal-day-m {
+    border-color: #ffb25a #ffb25a transparent transparent;
+}
+
+
+.android .dw-cal .dw-sel .dw-i {
+    background: #636363;
+}
+
+
+.android-ics.dw-calendar .dw-cal-btn.dwb-a {
+    background: 0;
+}
+
+
+.android-ics.dw-calendar .dw-cal .dw-week-nr {
+    padding: 0 5px;
+    border-color: transparent;
+    color: #555;
+}
+
+
+.android-ics.dw-calendar tr:first-child td.dw-week-nr {
+    border-top: 1px solid #444;
+}
+
+
+.android-ics .dw .dw-cal-c {
+    padding: 5px 10px;
+}
+
+
+.android-ics .dw-cal {
+    padding: 0;
+    background: 0;
+}
+
+
+.android-ics .dw-cal th {
+    color: #555;
+}
+
+
+.android-ics .dw-cal-day {
+    border: 0;
+    border-top: 1px solid #444;
+    text-align: center;
+    background: 0;
+}
+
+
+.android-ics .dw-cal-day-m {
+    border-color: #31b6e7 #31b6e7 transparent transparent;
+}
+
+
+.android-ics .dw-cal-week-hl td,
+.android-ics .dw-cal .dw-sel {
+    background: #31b6e7;
+    background: rgba(49,182,231,.5);
+}
+
+
+.android-ics .dw-cal-week-hl .dw-week-nr,
+.android-ics .dw-cal-week-hl .dw-sel,
+.android-ics .dw-cal .dw-sel .dw-i {
+    background: 0;
+}
+
+
+.android-ics .dw-cal-prev .dw-cal-btn-txt {
+    border-color: transparent #7e7e7e transparent transparent;
+}
+
+
+.android-ics .dw-cal-next .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #7e7e7e;
+}
+
+
+.android-ics .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    border-color: transparent #319abd transparent transparent;
+}
+
+
+.android-ics .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #319abd;
+}
+
+
+.android-ics .dw-cal-day.dwb-a {
+    background: #29799c;
+}
+
+
+.android-ics.light .dw-cal {
+    color: #000;
+}
+
+
+.android-ics.light.dw-calendar tr:first-child td.dw-week-nr,
+.android-ics.light .dw-cal-day {
+    border-top: 1px solid #dbdbdb;
+}
+
+
+.android-ics.light .dw-cal-day-txt {
+    color: #fff;
+    background: #555;
+}
+
+
+.ios.dw-cal-liq .dw {
+    border: 1px solid #9fa2ab;
+    background: #fff;
+}
+
+
+.ios.dw-cal-liq .dwwr {
+    background: #fff;
+}
+
+
+.ios.dw-calendar .dwwr {
+    padding: 0;
+}
+
+
+.ios.dw-calendar .dwc {
+    margin: 0 8px;
+}
+
+
+.ios.dw-calendar .dwc-h {
+    margin: 0;
+}
+
+
+.ios.dw-calendar .dw-cal-c {
+    margin: 0;
+}
+
+
+.ios.dw-calendar .dw-cal .dw-cal-btn {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+
+.ios .dw-cal {
+    padding: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    background: 0;
+}
+
+
+.ios .dw-cal-header {
+    font-weight: bold;
+    color: #545454;
+    background: #ccc;
+    background: linear-gradient(#f2f2f2,#ccc);
+    background: -webkit-gradient(linear,left top,left bottom,from(#f2f2f2), to(#ccc) );
+    background: -moz-linear-gradient(#f2f2f2,#ccc);
+}
+
+
+.ios .dw-cal-prev .dw-cal-btn-txt,
+.ios .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    border-color: transparent #34404d transparent transparent;
+}
+
+
+.ios .dw-cal-next .dw-cal-btn-txt,
+.ios .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #34404d;
+}
+
+
+.ios .dw-cal th {
+    padding: 0;
+    font-size: 10px;
+    line-height: 14px;
+}
+
+
+.ios .dw-cal-day {
+    border: 0;
+    border-top: 1px solid #9fa2ab;
+    border-right: 1px solid #9fa2ab;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #34404d;
+    background: #cfced3;
+}
+
+
+.ios .dw-cal .dw-week-nr {
+    width: 2.8em;
+    padding: 2px 0 0 0;
+    border-top: 0;
+    border-bottom: 0;
+    font-size: 10px;
+    background: #ccc;
+}
+
+
+.ios .dw-cal-header .dw-week-nr {
+    background: 0;
+}
+
+
+.ios .dw-cal-day:last-child {
+    border-right: 0;
+}
+
+
+.ios .dw-cal-day .dw-i {
+    border-top: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+}
+
+
+.ios .dw-cal .dw-sel {
+    text-shadow: 0 1px 0 rgba(52,64,77,0.7);
+    color: #fff;
+    background: #1980e5;
+    -webkit-box-shadow: 0 0 8px rgba(52,64,77,0.7) inset;
+    box-shadow: 0 0 8px rgba(52,64,77,0.7) inset;
+}
+
+
+.ios .dw-cal .dw-sel .dw-i {
+    border-right: 0;
+    border-color: transparent;
+    background: 0;
+}
+
+
+.ios .dw-cal-day-m {
+    top: auto;
+    bottom: 4px;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border: 0;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    background: #34404d;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.7);
+}
+
+
+.ios .dw-cal .dw-sel .dw-cal-day-m {
+    background: #fff;
+    -webkit-box-shadow: 0 1px 0 rgba(52,64,77,0.7);
+    box-shadow: 0 1px 0 rgba(52,64,77,0.7);
+}
+
+
+.ios .dw-cal-day-txt {
+    text-shadow: none;
+    color: #fff;
+    background: #34404d;
+}
+
+
+.ios .dw-sel .dw-cal-day-txt {
+    color: #34404d;
+    background: #fff;
+}
+
+
+.ios .dw-cal-day.dwb-a {
+    background: #ddd;
+}
+
+
+.jqm.dw-calendar .dwc {
+    margin: 0 5px;
+    padding-bottom: 10px;
+}
+
+
+.jqm.dw-calendar .dwc-h {
+    margin: 0;
+}
+
+
+.jqm.dw-calendar .dw-cal-c {
+    margin: 0;
+    padding: 0;
+}
+
+
+.jqm .dw-cal {
+    border: 0;
+}
+
+
+.jqm .dw-cal-header {
+    border-bottom: 0;
+}
+
+
+.jqm .dw-cal-btn-txt {
+    display: inline-block;
+}
+
+
+.jqm .dw-cal-day {
+    text-align: center;
+}
+
+
+.jqm .dw-cal-day-m {
+    border-color: #aaa #aaa transparent transparent;
+}
+
+
+.jqm .dw-cal .dw-sel .dw-cal-day-m {
+    border-color: #fff #fff transparent transparent;
+}
+
+
+.jqm .dw-week-nr {
+    padding-top: 1px;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+    background: 0;
+}
+
+
+.jqm .dw-cal-day-txt {
+    right: 2px;
+    bottom: 2px;
+    left: 2px;
+    width: auto;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+
+.sense-ui.dw-calendar .dwwr {
+    overflow: hidden;
+}
+
+
+.sense-ui.dw-calendar.dw-inline .dw,
+.sense-ui.dw-calendar.dw-inline .dwwr {
+    border: 0;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+
+.sense-ui.dw-calendar.dw-inline .dw-cal-f {
+    height: 8px;
+}
+
+
+.sense-ui.dw-calendar .dw-cal .dw-cal-btn {
+    height: 30px;
+    margin: 4px;
+    padding: 0;
+}
+
+
+.sense-ui.dw-calendar .dw-cal-c {
+    margin: 0;
+}
+
+
+.sense-ui .dw-cal {
+    width: 240px;
+    margin: -1px;
+    padding: 0;
+    border: 1px solid #666;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    background: 0;
+}
+
+
+.sense-ui .dw-cal-ev {
+    width: 336px;
+}
+
+
+.sense-ui .dw-cal-btnc,
+.sense-ui .dw-cal .dw-sel .dw-i,
+.sense-ui .dw-cal-f {
+    background: #000;
+    background: linear-gradient(#8b8b8b,#5b5b5b 50%,#262626 50%,#000);
+    background: -webkit-gradient(linear,left bottom,left top,from(#000), color-stop(0.5,#262626), color-stop(0.5,#5b5b5b), to(#8b8b8b) );
+    background: -moz-linear-gradient(#8b8b8b,#5b5b5b 50%,#262626 50%,#000);
+}
+
+
+.sense-ui .dw-cal-my {
+    font-size: 16px;
+}
+
+
+.sense-ui .dw-cal-btn .dw-cal-btn-txt {
+    border-width: 8px;
+}
+
+
+.sense-ui .dw-cal-prev .dw-cal-btn-txt {
+    margin: 7px 16px 7px 8px;
+}
+
+
+.sense-ui .dw-cal-next .dw-cal-btn-txt {
+    margin: 7px 8px 7px 16px;
+}
+
+
+.sense-ui .dw-cal th {
+    border-top: 1px solid #666;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 12px;
+    background: #222;
+    background: linear-gradient(#444,#000);
+    background: -webkit-gradient(linear,left bottom,left top,from(#000), to(#444) );
+    background: -moz-linear-gradient(#444,#000);
+}
+
+
+.sense-ui .dw-cal-day {
+    padding: 1px;
+    border: 1px solid #666;
+    border-bottom: 0;
+    border-left: 0;
+    text-align: center;
+    text-shadow: 0 0 2px #000;
+    line-height: 27px;
+    background: 0;
+}
+
+
+.sense-ui .dw-cal .dw-week-nr {
+    padding: 1px 0;
+    text-shadow: none;
+    font-size: 12px;
+    color: #fff;
+    background-color: #000;
+}
+
+
+.sense-ui .dw-cal-day:last-child {
+    border-right: 0;
+}
+
+
+.sense-ui .dw-cal .dw-i {
+    border: 1px solid transparent;
+}
+
+
+.sense-ui .dw-cal .dw-sel .dw-i {
+    border-color: #777;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    line-height: 25px;
+}
+
+
+.sense-ui .dw-cal-day-txt {
+    -webkit-border-radius: 0 0 2px 2px;
+    border-radius: 0 0 2px 2px;
+}
+
+
+.sense-ui .dw-cal-day-m {
+    border-color: #b9b9b9 #b9b9b9 transparent transparent;
+}
+
+
+.sense-ui .dw-cal .dw-sel .dw-cal-day-m {
+    border-color: #c2f628 #c2f628 transparent transparent;
+}
+
+
+.sense-ui .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    border-color: transparent #fff transparent transparent;
+}
+
+
+.sense-ui .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    border-color: transparent transparent transparent #fff;
+}
+
+
+.wp.dw-calendar .dw-cal .dw-cal-btn {
+    height: auto;
+    padding: 0;
+}
+
+
+.wp.dw-calendar .dw-cal .dw-cal-btn:after {
+    display: none;
+}
+
+
+.wp.dw-cal-liq .dwbc {
+    padding: 5px 0;
+}
+
+
+.wp .dw-cal {
+    background: 0;
+}
+
+
+.wp .dw-cal-my {
+    text-transform: lowercase;
+}
+
+
+.wp .dw-cal-btn .dw-cal-btn-txt {
+    width: 26px;
+    height: 0;
+    margin: 7px;
+    padding-top: 26px;
+    border: 0;
+    background-image: url('/privateContent/wp_icons.png');
+    background-position: -130px 0;
+}
+
+
+.wp .dw-cal-next .dw-cal-btn-txt {
+    background-position: -156px 0;
+}
+
+
+.wp .dw-cal-prev.dwb-a .dw-cal-btn-txt {
+    background-position: -130px -26px;
+}
+
+
+.wp .dw-cal-next.dwb-a .dw-cal-btn-txt {
+    background-position: -156px -26px;
+}
+
+
+.wp .dw-cal th {
+    font-weight: normal;
+}
+
+
+.wp .dw-cal-day,
+.wp .dw-cal-day.dwb-a {
+    padding: 2px;
+    border: 0;
+    line-height: 20px;
+    background: 0;
+}
+
+
+.wp .dw-cal-day .dw-i {
+    top: 0;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 100%;
+    padding-top: 10px;
+    border: 1px solid #4c4c4c;
+}
+
+
+.wp .dw-cal-day.dwb-a .dw-i {
+    background: #4c4c4c;
+}
+
+
+.wp .dw-cal-day-m {
+    border-color: #fff #fff transparent transparent;
+}
+
+
+.wp td.dw-week-nr {
+    padding-top: 8px;
+}
+
+
+.wp.light .dw-cal-day-txt {
+    color: #fff;
+    background: #000;
+}
+
+
+.wp.light .dw-cal {
+    color: #000;
+}
+
+
+.wp.light .dw-cal-btn .dw-cal-btn-txt {
+    background-image: url('/privateContent/wp_icons_light.png');
+}
+
+
+.wp.light .dw-cal-day .dw-i {
+    border: 1px solid #b5b5b5;
+}
+
+
+.wp.light .dw-cal-day.dwb-a .dw-i {
+    background: #b5b5b5;
+}
+
+
+.wp.light .dw-cal-day-m {
+    border-color: #000 #000 transparent transparent;
+}
+
+
+.dw-timespan .dwtlbl {
+    display: none;
+}
+
+
+.android.dw-timespan .dwc {
+    padding-top: 30px;
+}
+
+
+.android.dw-timespan .dwl {
+    display: block;
+}
+
+
+.android.dw-timespan .dwhl {
+    margin-top: 5px;
+    padding-top: 0;
+}
+
+
+.android.dw-timespan .dwhl .dwl {
+    display: none;
+}
+
+
+.android-ics.dw-timespan .dwv {
+    font-size: 16px;
+}
+
+
+.ios.dw-timespan .dwtlbl {
+    display: inline;
+    visibility: hidden;
+    padding: 0 3px 0 8px;
+    font-size: 20px;
+}
+
+
+.ios.dw-timespan .dwhl .dwtlbl {
+    display: none;
+}
+
+
+.ios.dw-timespan .dwc {
+    padding: 10px 0;
+}
+
+
+.ios.dw-timespan .dwl {
+    z-index: 11;
+    top: 50%;
+    right: 0;
+    width: auto;
+    margin-top: -15px;
+    padding: 0 8px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    text-transform: lowercase;
+    font-size: 20px;
+    font-weight: bold;
+    color: #005de6;
+}
+
+
+.wp.dw-timespan .dwl {
+    display: block;
+    z-index: 10;
+    top: 50%;
+    width: auto;
+    height: auto;
+    margin: 17px 0 0 9px;
+    font-size: 11px;
+    line-height: 18px;
+    color: #fff;
+}
+
+
+.wp.dw-timespan.light .wp-none .dwl {
+    color: #000;
+}
+
+
+.wp.dw-timespan .dwhl .dwl,
+.wp.dw-timespan .dwa .dwl {
+    display: none;
+}
+
+
+.dw-timer .dwtlbl {
+    display: none;
+}
+
+
+.dw-timer .dwbc {
+    text-align: left;
+}
+
+
+.dw-timer .dwbc table {
+    width: 100%;
+}
+
+
+.dw-timer .dwbc td {
+    width: 1px;
+}
+
+
+.dw-timer .dwbc td.dwtcl {
+    text-align: right;
+}
+
+
+.dw-timer .dwbc td:last-child {
+    width: auto;
+}
+
+
+.dw-timer .dwb {
+    display: inline-block;
+    padding: 0 12px;
+    vertical-align: middle;
+}
+
+
+.android.dw-timer .dwc {
+    padding-top: 30px;
+}
+
+
+.android.dw-timer .dwl {
+    display: block;
+}
+
+
+.android.dw-timer .dwhl {
+    margin-top: 5px;
+    padding-top: 0;
+}
+
+
+.android.dw-timer .dwhl .dwl {
+    display: none;
+}
+
+
+.android .dwb-i {
+    display: block;
+    margin: 12px 0;
+    line-height: 16px;
+}
+
+
+.android .dwb-txt {
+    display: none;
+}
+
+
+.android .dw-timer-st .dwb-i {
+    width: 0;
+    height: 0;
+    margin: 12px 4px;
+    border: 8px solid transparent;
+    border-right-width: 0;
+    border-left-color: #333;
+}
+
+
+.android .dw-timer-r .dwb-i {
+    width: 16px;
+    height: 16px;
+    background: #333;
+}
+
+
+.android .dw-timer-l .dwb-i {
+    width: 10px;
+    height: 10px;
+    border: 3px solid #333;
+    border-radius: 8px;
+}
+
+
+.android .dw-timer-cl .dwb-txt {
+    display: block;
+}
+
+
+.android .dw-running .dw-timer-st .dwb-i {
+    width: 4px;
+    height: 16px;
+    margin: 12px 0;
+    border: 6px solid #333;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+
+.android-ics.dw-timer .dwtlbl {
+    display: inline;
+    visibility: hidden;
+    padding: 0 0 0 5px;
+    font-size: 18px;
+}
+
+
+.android-ics.dw-timer .dwhl .dwtlbl {
+    display: none;
+}
+
+
+.android-ics.dw-timer .dwl {
+    z-index: 11;
+    top: 50%;
+    right: 0;
+    width: auto;
+    margin-top: -15px;
+    padding: 0 5px;
+    text-transform: lowercase;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.android-ics.dw-timer .dwbc table {
+    width: 100%;
+}
+
+
+.android-ics.dw-timer .dwbc table td {
+    width: auto;
+}
+
+
+.android-ics.dw-timer .dw .dwb {
+    display: block;
+    padding: 0 15px;
+    border-right: 1px solid #424542;
+}
+
+
+.android-ics.dw-timer .dw .dwb-i {
+    display: block;
+    text-align: center;
+}
+
+
+.android-ics.light.dw-timer .dw .dwb {
+    border-right: 1px solid #dbdbdb;
+}
+
+
+.android-ics.dw-timer .dw td:last-child {
+    width: auto;
+}
+
+
+.android-ics.dw-timer .dw td:last-child .dwb {
+    border-right: 0;
+}
+
+
+.ios.dw-timer .dwwr {
+    padding: 0 3px;
+}
+
+
+.ios.dw-timer .dwtlbl {
+    display: inline;
+    visibility: hidden;
+    padding: 0 3px 0 8px;
+    font-size: 20px;
+}
+
+
+.ios.dw-timer .dwhl .dwtlbl {
+    display: none;
+}
+
+
+.ios.dw-timer .dw .dw-timer-btns {
+    margin-top: 40px;
+}
+
+
+.ios.dw-timer .dwbgr .dwb {
+    margin: 0;
+    border-right: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.ios.dw-timer .dwbgrf .dwb {
+    margin-left: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+
+.ios.dw-timer .dwbgrl .dwb {
+    margin-right: 5px;
+    border-right: 1px solid #1f1f1f;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+.ios.dw-timer .dw .dw-timer-cl {
+    border: 1px solid #194aab;
+    background: #194aab;
+    background: linear-gradient(#82aaff,#3162c4 50%,#194aab 50%);
+    background: -webkit-gradient(linear,left top,left bottom,from(#82aaff), color-stop(0.5,#3162c4), color-stop(0.5,#194aab) );
+    background: -moz-linear-gradient(#82aaff,#3162c4 50%,#194aab 50%);
+    background: -o-linear-gradient(#82aaff,#3162c4 50%,#194aab 50%);
+}
+
+
+.ios.dw-timer .dw .dwb-i {
+    text-align: left;
+}
+
+
+.ios.dw-timer .dwb-txt {
+    display: block;
+}
+
+
+.ios.dw-timer .dwc {
+    padding: 10px 0;
+}
+
+
+.ios.dw-timer .dwl {
+    z-index: 11;
+    top: 50%;
+    right: 0;
+    width: auto;
+    margin-top: -15px;
+    padding: 0 8px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    text-transform: lowercase;
+    font-size: 20px;
+    font-weight: bold;
+    color: #005de6;
+}
+
+
+.jqm.dw-timer .dwb {
+    padding: 0;
+}
+
+
+.jqm .dw-timer-st .ui-icon,
+.jqm .dw-timer-r .ui-icon {
+    position: relative;
+    background-image: none;
+}
+
+
+.jqm .dw-timer-st .ui-icon:after,
+.jqm .dw-timer-r .ui-icon:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    margin: 4px 7px;
+    border: 5px solid transparent;
+    border-right-width: 0;
+    border-left-color: #fff;
+}
+
+
+.jqm .dw-timer-r .ui-icon:after {
+    width: 8px;
+    height: 8px;
+    margin: 5px;
+    border: 0;
+    background: #fff;
+}
+
+
+.jqm .dw-running .dw-timer-st .ui-icon:after {
+    width: 2px;
+    height: 10px;
+    margin: 4px 5px;
+    border: 3px solid #fff;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+
+.sense-ui .dwb-i {
+    display: block;
+    margin: 12px 0;
+    line-height: 16px;
+}
+
+
+.sense-ui .dwb-txt {
+    display: none;
+}
+
+
+.sense-ui .dw-timer-st .dwb-i {
+    width: 0;
+    height: 0;
+    margin: 12px 4px;
+    border: 8px solid transparent;
+    border-right-width: 0;
+    border-left-color: #fff;
+}
+
+
+.sense-ui .dw-timer-r .dwb-i {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+}
+
+
+.sense-ui .dw-timer-l .dwb-i {
+    width: 10px;
+    height: 10px;
+    border: 3px solid #fff;
+    border-radius: 8px;
+}
+
+
+.sense-ui .dw-timer-cl .dwb-txt {
+    display: block;
+}
+
+
+.sense-ui .dw-running .dw-timer-st .dwb-i {
+    width: 4px;
+    height: 16px;
+    margin: 12px 0;
+    border: 6px solid #fff;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+
+.wp.dw-timer .dwl {
+    display: block;
+    z-index: 10;
+    top: 50%;
+    width: auto;
+    height: auto;
+    margin: 17px 0 0 9px;
+    font-size: 11px;
+    line-height: 18px;
+    color: #fff;
+}
+
+
+.wp.dw-timer.light .wp-none .dwl {
+    color: #000;
+}
+
+
+.wp.dw-timer .dwhl .dwl,
+.wp.dw-timer .dwa .dwl {
+    display: none;
+}
+
+
+.wp.dw-timer .dwbc table {
+    width: auto;
+    margin: 0 auto;
+}
+
+
+.wp.dw-timer .dwb-i {
+    text-align: center;
+}
+
+
+.wp.dw-timer .dwb-txt {
+    display: block;
+}
+
+
+.wp .dw .dw-timer-st:after {
+    background-position: -182px 0;
+}
+
+
+.wp .dw-running .dw-timer-st:after {
+    background-position: -208px 0;
+}
+
+
+.wp .dw .dw-locked .dw-v {
+    opacity: 0;
+    filter: Alpha(Opacity=0);
+}
+
+
+.wp .dw .dw-locked .dw-sel,
+.wp .dw-running .dwwl-seconds .dw-v,
+.wp .dw-running .dwwl-fract .dw-v {
+    opacity: 1;
+    filter: Alpha(Opacity=100);
+}
+
+
+.wp .dw .dw-timer-r:after {
+    background-position: -234px 0;
+}
+
+
+.wp .dw .dw-timer-l:after {
+    background-position: -52px 0;
+}
+
+
+.wp .dw .dw-timer-cl:after {
+    background-position: -26px 0;
+}
+
+
+.wp .dw .dw-timer-st.dwb-a:after {
+    background-position: -182px -26px;
+}
+
+
+.wp .dw-running .dw-timer-st.dwb-a:after {
+    background-position: -208px -26px;
+}
+
+
+.wp .dw .dw-timer-r.dwb-a:after {
+    background-position: -234px -26px;
+}
+
+
+.wp .dw .dw-timer-l.dwb-a:after {
+    background-position: -52px -26px;
+}
+
+
+.wp .dw .dw-timer-cl.dwb-a:after {
+    background-position: -26px -26px;
+}
+
+
+.dw-colorpicker .dw-li {
+    padding: 0;
+}
+
+
+.dw-colorpicker .dwc .dww .dw-li.dw-hl {
+    background: 0;
+}
+
+
+.dw-color {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(170,170,170,0.5);
+}
+
+
+.dw-color-hl {
+    display: none;
+    height: 100%;
+    background: rgba(255,255,255,.3);
+}
+
+
+.dw-hl .dw-color-hl {
+    display: block;
+}
+
+
+.dw-color-preview {
+    height: 24px;
+    margin: 0 -10px;
+    border-bottom: 1px solid black;
+    -webkit-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+    text-shadow: none;
+    line-height: 24px;
+    -webkit-transition: background-color .2s;
+    -moz-transition: background-color .2s;
+    transition: background-color .2s;
+}
+
+
+.dw-inline .dw-color-preview {
+    margin: 5px 2px 0 2px;
+    border: 1px solid #000;
+    border-radius: 3px;
+}
+
+
+.dw-colorpicker-liq .dwc,
+.dw-colorpicker-liq .dwi {
+    display: block;
+}
+
+
+.dw-colorpicker-liq .dwc table {
+    width: 100%;
+}
+
+
+.android .dw-color-preview {
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #333;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.android-ics.dw-colorpicker .dw .dwwol {
+    display: none;
+    z-index: 10;
+}
+
+
+.android-ics .dw-color-preview {
+    margin: 0;
+    border: 0;
+    border-bottom: 2px solid #31b6e7;
+    -webkit-border-radius: 2px 2px 0 0;
+    border-radius: 2px 2px 0 0;
+}
+
+
+.ios.dw-colorpicker .dwwr {
+    padding-top: 1px;
+}
+
+
+.ios.dw-colorpicker .dwc {
+    padding-bottom: 10px;
+}
+
+
+.ios .dw-color-preview {
+    margin: 12px 4px 0 4px;
+    border: 1px solid #000;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 1px rgba(255,255,255,0.3);
+    box-shadow: 0 1px 1px rgba(255,255,255,0.3);
+}
+
+
+.jqm .dw-color-preview {
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #000;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.sense-ui .dw-color-preview {
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #666;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.wp.dw-colorpicker .dw-li {
+    opacity: 1;
+}
+
+
+.wp.dw-colorpicker .dwwr .dwc .dww .dw-li .dw-i {
+    top: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: 0;
+}
+
+
+.wp .dw-color-preview {
+    margin: -10px -10px 0 -10px;
+    border: 0;
+    border-bottom: 1px solid #fff;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.wp.light .dw-color-preview {
+    border-bottom: 1px solid #000;
+}
+/* Datewheel overlay */
+.dw {
+	position: absolute;
+	top: 5%;
+	left: 0;
+	z-index: 1001;
+	color: #000;
+	font-family: arial, verdana, sans-serif;
+	font-size: 12px;
+	text-shadow: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-ms-touch-action: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.dwi {
+	position: static;
+	display: inline-block;
+}
+.dwwr {
+	min-width: 170px;
+	zoom: 1;
+	padding: 0 10px;
+	text-align: center;
+}
+/* Datewheel overlay background */
+.dw-persp, .dwo {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1001;
+}
+.dwo {
+	background: #000;
+	opacity: .7;
+	filter: Alpha(Opacity=70);
+}
+/* Bubble positionings */
+.dw-bubble .dw {
+	margin: 20px 0;
+}
+.dw-bubble .dw-arrw {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+.dw-bubble-top .dw-arrw {
+	bottom: -36px;
+}
+.dw-bubble-bottom .dw-arrw {
+	top: -36px;
+}
+.dw-bubble .dw-arrw-i {
+	margin: 0 30px;
+	position: relative;
+	height: 36px;
+}
+.dw-bubble .dw-arr {
+	display: block;
+}
+.dw-arr {
+	display: none;
+	position: absolute;
+	left: 0;
+	width: 0;
+	height: 0;
+	border-width: 18px 18px;
+	border-style: solid;
+	margin-left: -18px;
+}
+.dw-bubble-bottom .dw-arr {
+	top: 0;
+	border-color: transparent transparent #fff transparent;
+}
+.dw-bubble-top .dw-arr {
+	bottom: 0;
+	border-color: #fff transparent transparent transparent;
+}
+/* Datewheel wheel container wrapper */
+.dwc {
+	float: none;
+	margin: 0 2px 5px 2px;
+	padding-top: 30px;
+	display: inline-block;
+}
+.dwcc {
+	clear: both;
+}
+/* Datewheel label */
+.dwl {
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	white-space: nowrap;
+	position: absolute;
+	top: -30px;
+	width: 100%;
+}
+/* Datewheel value */
+.dwv {
+	padding: 10px 0;
+	border-bottom: 1px solid #000;
+}
+/* Datewheel wheel container */
+.dwrc {
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.dwwc {
+	margin: 0;
+	padding: 0 2px;
+	position: relative;
+	background: #000;
+	zoom: 1;
+}
+/* Datewheel wheels */
+.dwwl {
+	margin: 4px 2px;
+	padding: 0 2px;
+	position: relative;
+	z-index: 5;
+}
+.dwww {
+	position: relative;
+	padding: 1px;
+}
+.dww {
+	overflow: hidden;
+	position: relative;
+}
+.dw-moz .dww {
+	opacity: .99;
+	z-index: 2;
+}
+.dwsc .dwwl {
+	background: #888;
+	background: linear-gradient(#000 0%,#333 35%, #888 50%,#333 65%,#000 100%);
+	background: -webkit-gradient(linear,left bottom,left top,from(#000),color-stop(0.35, #333),color-stop(0.50, #888),color-stop(0.65, #333),to(#000));
+	background: -moz-linear-gradient(#000 0%,#333 35%, #888 50%,#333 65%,#000 100%);
+	background: -o-linear-gradient(#000 0%,#333 35%, #888 50%,#333 65%,#000 100%);
+}
+.dwsc .dww {
+	color: #fff;
+	background: #444;
+	background: linear-gradient(#000 0%,#444 45%, #444 55%, #000 100%);
+	background: -webkit-gradient(linear,left bottom,left top,from(#000),color-stop(0.45, #444),color-stop(0.55, #444),to(#000));
+	background: -moz-linear-gradient(#000 0%,#444 45%, #444 55%, #000 100%);
+	background: -o-linear-gradient(#000 0%,#444 45%, #444 55%, #000 100%);
+}
+.dw-bf {
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+}
+.dw-ul {
+	position: relative;
+	z-index: 2;
+}
+.dw-li {
+	padding: 0 5px;
+	display: block;
+	text-align: center;
+	line-height: 40px;
+	font-size: 26px;
+	white-space: nowrap;
+	text-shadow: 0 1px 1px #000;
+	vertical-align: bottom;
+	opacity: .3;
+	filter: Alpha(Opacity=30);
+}
+/* Higlighted */
+.dw-li.dw-hl {
+	background: #fff;
+	background: rgba(255,255,255,.3);
+}
+/* Valid entry */
+.dw-li.dw-v {
+	opacity: 1;
+	filter: Alpha(Opacity=100);
+}
+/* Hidden entry */
+.dw-li.dw-h {
+	visibility: hidden;
+}
+.dw-i {
+	position: relative;
+	height: 100%;
+}
+/* Wheel +/- buttons */
+.dwwb {
+	position: absolute;
+	z-index: 4;
+	left: 0;
+	cursor: pointer;
+	width: 100%;
+	height: 40px;
+	text-align: center;
+	opacity: 1;
+	transition: opacity .2s linear;
+	-webkit-transition: opacity .2s linear;
+}
+.dwa .dwwb {
+	opacity: 0;
+}
+.dwwbp {
+	top: 0;
+	-webkit-border-radius: 3px 3px 0 0;
+	border-radius: 3px 3px 0 0;
+	font-size: 40px;
+}
+.dwwbm {
+	bottom: 0;
+	-webkit-border-radius: 0 0 3px 3px;
+	border-radius: 0 0 3px 3px;
+	font-size: 32px;
+	font-weight: bold;
+}
+.dwpm .dwwc {
+	background: transparent;
+}
+.dwpm .dwwl {
+	padding: 0;
+}
+.dwpm .dw-li {
+	text-shadow: none;
+}
+.dwpm .dwwol {
+	display: none;
+}
+/* Datewheel wheel overlay */
+.dwwo {
+	position: absolute;
+	z-index: 3;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#000 0%,rgba(44,44,44,0) 52%, rgba(44,44,44,0) 48%, #000 100%);
+	background: -webkit-gradient(linear,left bottom,left top,from(#000),color-stop(0.52, rgba(44,44,44,0)),color-stop(0.48, rgba(44,44,44,0)),to(#000));
+	background: -moz-linear-gradient(#000 0%,rgba(44,44,44,0) 52%, rgba(44,44,44,0) 48%, #000 100%);
+	background: -o-linear-gradient(#000 0%,rgba(44,44,44,0) 52%, rgba(44,44,44,0) 48%, #000 100%);
+}
+/* Background line */
+.dwwol {
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 0;
+	margin-top: -1px;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #555;
+}
+/* Datewheel button */
+.dwbg .dwb {
+	cursor: pointer;
+	overflow: hidden;
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 15px;
+	margin: 0 2px;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px #000;
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	color: #fff;
+	background: #000;
+	background: linear-gradient(#6e6e6e 50%,#000 50%);
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0.5, #000),color-stop(0.5, #6e6e6e));
+	background: -moz-linear-gradient(#6e6e6e 50%,#000 50%);
+	background: -o-linear-gradient(#6e6e6e 50%,#000 50%);
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-border-radius: 5px;
+}
+/* Datewheel button container */
+.dwbc {
+	padding: 5px 0;
+	text-align: center;
+	clear: both;
+}
+.dwbc:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+/* Datewheel button wrapper */
+.dwbw {
+	display: inline-block;
+	float: left;
+	width: 50%;
+	position: relative;
+	z-index: 5;
+}
+.dwbc-p .dwbw {
+	width: 33.33%;
+}
+/* Hidden label */
+.dwhl {
+	padding-top: 10px;
+}
+.dwhl .dwl {
+	display: none;
+}
+/* Multiple selection */
+.dwms .dwwms .dw-li {
+	padding: 0 40px;
+	position: relative;
+}
+.dwms .dw-msel:after {
+	width: 40px;
+	text-align: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: '✔';
+}
+/* Backgrounds */
+.dwbg {
+	background: #fff;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+.dwbg .dwpm .dwwl {
+	border: 1px solid #aaa;
+}
+.dwbg .dwpm .dww {
+	color: #000;
+	background: #fff;
+	-webkit-border-radius: 3px;
+}
+.dwbg .dwwb {
+	background: #ccc;
+	color: #888;
+	text-shadow: 0 -1px 1px #333;
+	box-shadow: 0 0 5px #333;
+	-webkit-box-shadow: 0 0 5px #333;
+}
+.dwbg .dwwbp {
+	background: linear-gradient(#f7f7f7,#bdbdbd);
+	background: -webkit-gradient(linear,left bottom,left top,from(#bdbdbd),to(#f7f7f7));
+	background: -moz-linear-gradient(#f7f7f7,#bdbdbd);
+	background: -o-linear-gradient(#f7f7f7,#bdbdbd);
+}
+.dwbg .dwwbm {
+	background: linear-gradient(#bdbdbd,#f7f7f7);
+	background: -webkit-gradient(linear,left bottom,left top,from(#f7f7f7),to(#bdbdbd));
+	background: -moz-linear-gradient(#bdbdbd,#f7f7f7);
+	background: -o-linear-gradient(#bdbdbd,#f7f7f7);
+}
+.dwbg .dwb-a {
+	background: #3c7500;
+	background: linear-gradient(#94c840 50%,#3c7500 50%);
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0.5, #3c7500),color-stop(0.5, #94c840));
+	background: -moz-linear-gradient(#94c840 50%,#3c7500 50%);
+	background: -o-linear-gradient(#94c840 50%,#3c7500 50%);
+}
+.dwbg .dwwl .dwb-a {
+	background: #3c7500;
+	background: linear-gradient(#94c840,#3c7500);
+	background: -webkit-gradient(linear,left bottom,left top,from(#3c7500),to(#94c840));
+	background: -moz-linear-gradient(#94c840,#3c7500);
+	background: -o-linear-gradient(#94c840,#3c7500);
+}

@@ -1,0 +1,42 @@
+
+.ginput_container > select,
+.ginput_container > textarea,
+.ginput_container > input {
+    -webkit-tap-highlight-color: transparent; /*  galaxy devices  */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+.gform_page_footer > * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent; /*  galaxy devices  */
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+.gform_wrapper .gf_progressbar {
+    width: 99% !important;
+    margin: 0 auto !important;
+}
+
+.validation_error {
+    margin: 0px !important;
+    color: #ff6469 !important;
+    text-shadow: none;
+    font-size: 1em !important;
+}
+
+.gform_wrapper li.gfield.gfield_error {
+    background-color: rgba(255, 247, 247, 1);
+}
+
+.gform_wrapper .gform_ajax_spinner {
+    padding-left: 10px;
+    box-shadow: none;
+    border-radius: 0px;
+}
