@@ -1,0 +1,14 @@
+<?php
+
+define("GRID_SEND_ROOT_DIR", __dir__ . DIRECTORY_SEPARATOR);
+
+function sendGridLoader($string)
+{
+  if ($string == 'SendGrid' || stripos($string, 'SendGrid\\') === 0)
+  {
+    $file = str_replace('\\', '/', "$string.php");
+    include_once GRID_SEND_ROOT_DIR . $file;
+  }
+}
+
+spl_autoload_register("sendGridLoader");
