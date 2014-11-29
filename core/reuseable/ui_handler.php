@@ -124,9 +124,13 @@ if (!class_exists('ui_handler')):
         {
             $nid = $id == null ? '' : 'id="' . $id . '"';
             $ui = '<select ' . $nid . ' name="' . $name . '">';
-            $ui .= '<option value="">' . $default . '</option>';
+            $i = 1;
+            foreach ($default as $value) {
+                $ui .= '<option value="'.-$i.'">' . $value . '</option>';
+                $i++;
+            }
             foreach ($wpdb_result as $k => $v) {
-                foreach($v as $key => $j) {
+                foreach ($v as $key => $j) {
                     $content = $j;
                     $ui .= '<option value="' . $k . '">' . $content . '</option>';
                 }

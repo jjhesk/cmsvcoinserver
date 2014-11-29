@@ -1,16 +1,8 @@
 <?php
-/*define("DOMAIN_API", "http://54.191.0.137/app/api/");
-define("VCOIN_SERVER", "http://59.37.4.228:8019");
-define("AUTH_SERVER", "http://devlogin.vcoinapp.com");*/
-define("DOMAIN_API", "https://devlogin.vcoinapp.com/api/");
-define("AUTH_SERVER", "https://devlogin.vcoinapp.com");
-define("CMS_SERVER", "https://devcms.vcoinapp.com");
-define("VCOIN_SERVER", "https://54.186.64.145:8057");
-define("VCOIN_SERVER_NONSECURED", "http://54.186.64.145:8056");
-define("IMUSIC_UUID", "13EFFA66-052D-E411-8F85-3085A9B355FC");
-define("KEY_VCOINAPP", "yoqzLezk");
 
 
+//this will be used in the curl peer server request
+define("CERT_PATH", "/etc/pki/tls/cert.pem");
 define("HKM_LANGUAGE_PACK", "hkm_app_vcoin");
 define("HKM_LIBJS", get_stylesheet_directory_uri() . "/js/");
 define("LIBJS_ADMIN_MODEL", get_stylesheet_directory_uri() . "/js/adminmodel/");
@@ -63,30 +55,7 @@ define("VSLIDER", "slider");
 define("VENDOR", "ven");
 define("APPDISPLAY", "aph");
 define("LOC_STOCK_COUNT_MAX", 10);
-/**
- * production vcoin server domain with the slash
- */
-/*// production ..
-if ($_SERVER['SERVER_NAME'] == 'www.innoactor.com') {
-    define("VCOIN_SERVER", "https://testvcoin.innoactor.com/");
-    //settings
-    define("SERVER_TYPE_INNO", "production");
-}
-// testing..
-if ($_SERVER['SERVER_NAME'] == 'devwp.innoactor.com') {
-    define("VCOIN_SERVER", "https://devvcoin.innoactor.com/");
-    define("SERVER_TYPE_INNO", "development");
-}
 
-if ($_SERVER['SERVER_NAME'] == 'awswp.innoactor.com') {
-    define("VCOIN_SERVER", "https://devvcoin.innoactor.com/");
-    //settings
-    define("SERVER_TYPE_INNO", "production");
-}*/
-//if ($_SERVER["SERVER_NAME"] == "localhost") {
-// Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYPEER] = false;
-// Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYHOST] = 2;
-//}
 /**
  * load all the modules
  */
@@ -110,23 +79,25 @@ Mustache_Autoloader::register();
 global $system_script_manager;
 function child_create_objects()
 {
-    //  print_r("child theme child_create_objects");
-    //  if (class_exists('metabox_module')) {
-    //   print_r("rw meta box is found");
-    //  new metabox_module();
-    // }
-    // new gfExt();
     global $system_script_manager;
+    install_db::install_db_manually();
+    TitanPanelSetup::setup();
     $system_script_manager = new system_frontend();
-    new taxonomy_develop();
-    new connect_json_api();
-    new tokenBase();
-    new system_log_display();
-    new vcoin_product();
-    new vendor_cms();
-    new vcoin_coupon();
-    new app_host();
-    new vslider();
+    $m1 = new taxonomy_develop();
+    $m2 = new connect_json_api();
+    $m3 = new tokenBase();
+    $m4 = new system_log_display();
+    $m5 = new vcoin_product();
+    $m6 = new vendor_cms();
+    $m7 = new vcoin_coupon();
+    $m8 = new app_host();
+    $m9 = new vslider();
+    $m10 = new dashboard();
+    $m1 = $m2 = $m3 = $m4 = $m5 = $m6 = $m7 = $m8 = $m9 = $m10 = $system_script_manager = NULL;
+
+
+    CouponOperation::install_cron();
+    gc_collect_cycles();
 }
 
 /*function email_activation_custom_label($label) {
@@ -135,10 +106,4 @@ function child_create_objects()
 
 add_action('wp_loaded', 'child_create_objects', 11);
 
-function wps_hide_update_notice() {
-    if ( !current_user_can( 'manage_options' ) ) {
-        remove_action( 'admin_notices', 'update_nag', 3 );
-    }
-}
-add_action('admin_menu','wps_hide_update_notice');
 ?>

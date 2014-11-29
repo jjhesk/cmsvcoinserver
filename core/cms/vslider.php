@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月14日
  * Time: 下午6:36
@@ -12,6 +12,7 @@ if (!class_exists('vslider')) {
     {
         public function __construct()
         {
+            parent::__construct();
             register_post_type(VSLIDER, array(
                 'labels' => $this->add_tab(),
                 'public' => false,
@@ -33,10 +34,40 @@ if (!class_exists('vslider')) {
              */
             add_action('do_api_sliders_json', array(__CLASS__, 'jslider'));
             add_action('do_meta_boxes', array(__CLASS__, 'znn_slider_image_box'));
-            add_filter('rwmb_meta_boxes', array(__CLASS__, 'addRWMetabox'), 19, 1);
+            add_filter('rwmb_meta_boxes', array($this, 'addRWMetabox'), 19, 1);
+            add_action('rwmb_slider_basic_setup_box_after_save_post', array(__CLASS__, "savebox"), 10, 1);
             register_taxonomy_for_object_type('category', VSLIDER);
             $this->panel_metabox = new adminsupport(VSLIDER);
+            $this->panel_metabox->add_script_name('both', 'admin_slider');
             $this->addAdminSupportMetabox();
+            add_filter('manage_edit-' . VSLIDER . '_columns', array(__CLASS__, "add_new_columns"), 10, 1);
+            add_action('manage_' . VSLIDER . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
+        }
+
+        public function __destruct()
+        {
+            $this->panel_metabox = NULL;
+        }
+
+        public static function savebox($post_id)
+        {
+            try {
+                if (!isset($_POST['payment'])) return;
+                if (!isset($_POST['platform'])) return;
+                if (!isset($_POST['time_to_next'])) return;
+                if (!isset($_POST['slider_setup_status'])) return;
+                $status = (int)$_POST['slider_setup_status'];
+                if ($status === 1) {
+                    self::withUpdateFieldN($post_id, 'slider_setup_status', 2);
+                } else if ($status === 3) {
+                    self::withUpdateFieldN($post_id, 'slider_setup_status', 4);
+                } else if ($status === 5) {
+                    self::withUpdateFieldN($post_id, 'slider_setup_status', 6);
+                }
+            } catch (Exception $e) {
+                global $current_user;
+                inno_log_db::log_admin_stock_management($current_user->ID, $e->getCode(), $e->getMessage());
+            }
         }
 
         public static function znn_slider_image_box()
@@ -123,6 +154,9 @@ if (!class_exists('vslider')) {
         private static function get_selection_list($select)
         {
             switch ($select) {
+                case "coupons":
+                    $post_type = VCOUPON;
+                    break;
                 case "rewards":
                     $post_type = VPRODUCT;
                     break;
@@ -133,10 +167,13 @@ if (!class_exists('vslider')) {
                     $post_type = APPDISPLAY;
                     break;
             }
+
             $set = array(
                 'post_type' => $post_type,
                 'posts_per_page' => -1,
                 'post_status' => 'publish');
+
+
             $optionpost = null;
             $optionpost[-1] = "[ empty field here ]";
 
@@ -146,12 +183,20 @@ if (!class_exists('vslider')) {
             } else if ($select == 'android') {
                 $set[] = array('meta_query' => array('_platform' => 'android'));
             }
+            if (isset($_REQUEST["lang"])) {
+                $set['suppress_filters'] = false;
+            }
 
             $items = get_posts($set);
+
+
             foreach ($items as $item) {
                 $optionpost[$item->ID] = $item->ID . " - " . $item->post_title;
             }
-
+            unset($items);
+            unset($select);
+            unset($set);
+            unset($post_type);
             return $optionpost;
         }
 
@@ -185,12 +230,19 @@ if (!class_exists('vslider')) {
 
         private static function get_conditional_fields($select)
         {
-
-
             if ($select == 'rewards') {
                 return array(
                     array(
                         'name' => 'Reward', // TAXONOMY
+                        'id' => 'point_to', // ID for this field
+                        'type' => 'select', //options
+                        'options' => self::get_selection_list($select),
+                    )
+                );
+            } else if ($select == 'coupons') {
+                return array(
+                    array(
+                        'name' => 'Coupons', // TAXONOMY
                         'id' => 'point_to', // ID for this field
                         'type' => 'select', //options
                         'options' => self::get_selection_list($select),
@@ -223,7 +275,7 @@ if (!class_exists('vslider')) {
 
         }
 
-        public static function addRWMetabox($meta_boxes)
+        public function addRWMetabox($meta_boxes)
         {
             $step1 = array(
                 array(
@@ -240,19 +292,32 @@ if (!class_exists('vslider')) {
                         'ios' => 'iOS',
                         'android' => 'Android',
                         'rewards' => 'Rewards',
-                    )
+                        'coupons' => 'Coupons',
+                    ),
+                    'desc' => 'After this has changed, update the entry first then continue'
                 ),
                 array(
                     'name' => 'time to the next slide in ms',
                     'id' => 'time_to_next',
                     'type' => 'number'
+                ),
+                array(
+                    'name' => 'Setup status',
+                    'id' => 'slider_setup_status',
+                    'type' => $this->debug_field_type(),
+                    'std' => 0
                 )
             );
-            $step2 = self::get_conditional_fields('');
+
             if (isset($_GET['post'])) {
                 $post_id = $_GET['post'];
-                $select_name_space = get_post_meta($post_id, 'platform', true);
-                $step2 = self::get_conditional_fields($select_name_space);
+                $platform_setting = get_post_meta($post_id, 'platform', true);
+                $step2 = self::get_conditional_fields($platform_setting);
+                $isRewardCoupon = $platform_setting == 'rewards' || $platform_setting == 'coupons';
+            } else {
+                $platform_setting = "";
+                $step2 = self::get_conditional_fields('');
+                $isRewardCoupon = false;
             }
             $meta_boxes[] = array(
                 'pages' => array(VSLIDER),
@@ -268,23 +333,24 @@ if (!class_exists('vslider')) {
                 'fields' => array_merge($step1, $step2)
             );
             unset($step1);
-            // print_r($slider_basic_setup_box_arr);
             if (isset($_GET['post'])) {
-
-                $post_id = $_GET['post'];
-                // $list1 = get_terms($id, "_save_country", false);
-                // $list2 = get_post_meta($id, "_save_categories", false);
-                if ($select_name_space == 'rewards') {
-                    $list1 = wp_get_post_terms($post_id, 'country');
-                    $list2 = wp_get_post_categories($post_id);
-                } else if ($select_name_space == 'ios') {
-                    $list1 = wp_get_post_terms($post_id, 'countryios');
-                    $list3 = wp_get_post_terms($post_id, 'appcate');
-                } else if ($select_name_space == 'android') {
-                    $list1 = wp_get_post_terms($post_id, 'countryandroid');
-                    $list3 = wp_get_post_terms($post_id, 'appandroid');
+                $post_id = (int)$_GET['post'];
+                if ($isRewardCoupon) {
+                    $list_country = wp_get_post_terms($post_id, 'country');
+                    $list_cate = wp_get_post_categories($post_id);
+                } else if ($platform_setting == 'ios') {
+                    $list_country = wp_get_post_terms($post_id, 'countryios_nd');
+                    $list_cate_custom = wp_get_post_terms($post_id, 'appcate');
+                } else if ($platform_setting == 'android') {
+                    $list_country = wp_get_post_terms($post_id, 'countryandroid');
+                    $list_cate_custom = wp_get_post_terms($post_id, 'appandroid');
+                } else {
+                    $list_country = array();
+                    $list_cate_custom = array();
                 }
-                if (count($list1) > 0)
+                if (count($list_country) > 0) {
+                    //    inno_log_db::log_admin_stock_management(-1, 110100, $isRewardCoupon ? 1 : 0);
+                    $cat = $isRewardCoupon ? $list_cate : $list_cate_custom;
                     $meta_boxes[] = array(
                         'pages' => array(VSLIDER),
                         //This is the id applied to the meta box
@@ -296,55 +362,47 @@ if (!class_exists('vslider')) {
                         //This sets the priority within the context where the boxes should show
                         'priority' => 'high',
                         //Here we define all the fields we want in the meta box
-                        'fields' => self::field_generation(
-                                $list1,
-                                $select_name_space == 'rewards' ? $list2 : $list3,
-                                __("Slider - ", HKM_LANGUAGE_PACK),
-                                $select_name_space == 'rewards')
+                        'fields' => self::field_generation($list_country, $cat, __("Slider - ", HKM_LANGUAGE_PACK), $isRewardCoupon)
                     );
-                /*
-                                if (count($list2) > 0)
-                                    $meta_boxes[] = array(
-                                        'pages' => array(VSLIDER),
-                                        //This is the id applied to the meta box
-                                        'id' => 'slid_cat_list_box',
-                                        //This is the title that appears on the meta box container
-                                        'title' => __('Category Slider Collection', HKM_LANGUAGE_PACK),
-                                        //This defines the part of the page where the edit screen section should be shown
-                                        'context' => 'normal',
-                                        //This sets the priority within the context where the boxes should show
-                                        'priority' => 'high',
-                                        //Here we define all the fields we want in the meta box
-                                        'fields' => self::field_generate_cate_only($list2, __("Category Slider - ", HKM_LANGUAGE_PACK)));*/
+                }
 
-                unset($list1);
-                unset($list2);
+                //    unset($list_country);
+                //    unset($list_cate);
                 unset($post_id);
             }
             return $meta_boxes;
         }
 
-        private
-        static function field_generation($list_country, $cate_list, $prefix, $cate_real = false)
+        private static function field_generation($list_country, $cate_list, $prefix, $cate_real = false)
         {
             $slider_box = array();
             foreach ($list_country as $c1) {
                 foreach ($cate_list as $c21) {
-                    if ($cate_real)
+                    if ($cate_real) {
                         $c2 = get_category($c21);
-                    else $c2 = $c21;
+                    } else {
+                        $c2 = $c21;
+                    }
                     $slider_box[] = array(
-                        'name' => $prefix . "(" . $c1->term_id . "." . $c2->term_id . ") " . $c1->slug . "-" . $c2->slug,
-                        'desc' => 'Big button for the product /<strong style="color:red">Dimensions: 640 × 185px.</strong>',
+                        'name' => $prefix . "(" . $c1->term_id . "." . $c2->term_id . ") ",
+                        'desc' => '<strong style="color:red">Dimensions: 640 × 185px.</strong> Placement for ' . $c1->name . " : " . $c2->name,
                         'id' => 's_list_' . $c1->term_id . "_" . $c2->term_id,
                         'type' => 'image_advanced',
                         'max_file_uploads' => 5,
                     );
                 }
             }
+
+            //unset($list_country);
+            unset($prefix);
+            //unset($cate_list);
             return $slider_box;
         }
 
+        protected function isDebug()
+        {
+            return $this->titan->getOption("debug_slider_cfg");
+        }
 
         protected function addAdminSupportMetabox()
         {
@@ -355,8 +413,6 @@ if (!class_exists('vslider')) {
                 wp_localize_script( 'rwmb-image-advanced', 'rwmbImageAdvanced', array(
                     'frameTitle' => __( 'Select Images', 'rwmb' ),
                 ) );
-
-
                 */
             //
             // $this->panel_metabox
@@ -397,6 +453,37 @@ if (!class_exists('vslider')) {
                 }
             }
             return $content;
+        }
+
+        public static function manage_column($column_name, $id)
+        {
+            global $wpdb;
+            switch ($column_name) {
+                case 'type':
+                    echo get_post_meta($id, "platform", true);
+                    break;
+                case 'id':
+                    echo $id;
+                    break;
+
+                default:
+                    break;
+            } // end switch
+        }
+
+        public static function add_new_columns($new_columns)
+        {
+            $new_columns['cb'] = '<input type="checkbox" />';
+            $new_columns['id'] = __('ID');
+            $new_columns['title'] = _x('Slide', 'column name');
+            $new_columns['type'] = __('Post Type');
+            // $new_columns['author'] = __('Author');
+            // $new_columns['categories'] = __('Categories');
+            // $new_columns['tags'] = __('Tags');
+            // $new_columns['date'] = _x('Date', 'column name');
+            unset($new_columns['author']);
+            unset($new_columns['date']);
+            return $new_columns;
         }
 
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月12日
  * Time: 下午3:42
@@ -10,14 +10,23 @@ defined('ABSPATH') || exit;
 abstract class cmsBase
 {
     protected $panel_metabox;
+    protected $titan;
+    protected $post_type;
 
     public function __construct()
     {
+        $this->titan = TitanFramework::getInstance('vcoinset');
+    }
+
+    public function __destruct()
+    {
+        $this->titan = NULL;
+        $this->post_type = NULL;
     }
 
     abstract protected function add_tab();
 
-    abstract public static function addRWMetabox($meta_boxes);
+    abstract public function addRWMetabox($meta_boxes);
 
     abstract protected function addAdminSupportMetabox();
 
@@ -33,56 +42,48 @@ abstract class cmsBase
      */
     protected static function create_vcoin_merchant_account($post_id)
     {
+        if (!isset($_POST['innvendorid'])) throw new Exception("vendor id is not presented", 50211);
+        if (!isset($_POST['post_title'])) throw new Exception("post title is not presented", 50212);
         /**
          * VCoin account UUID
          */
         $vendor_id = $_POST['innvendorid'];
+        $display_name = $_POST['post_title'];
 
-        $get_uuid = api_handler::curl_post(VCOIN_SERVER . '/api/account/createmer', array(
+        $get_uuid = api_handler::curl_posts(VCOIN_SERVER . '/api/account/createmer', array(
             "reward_id" => $post_id,
-            "vendor_id" => $vendor_id
+            "vendor_id" => $vendor_id,
+            "displayname" => $display_name
         ), array(
-            CURLOPT_TIMEOUT => 10
+            CURLOPT_TIMEOUT => 30
         ));
         $get_uuid = json_decode($get_uuid);
         if (intval($get_uuid->result) > 0) throw new Exception($get_uuid->msg, $get_uuid->result);
 
-
         //update the and save into the field for the vcoin account id
-        update_post_meta($post_id, 'uuid_key', $get_uuid->data->accountid);
-
+        self::withUpdateFieldN($post_id, 'uuid_key', $get_uuid->data->accountid);
         /**
          * END VCOIN SERVER INJECTION
          */
-        self::syn_vcoin_action_data($get_uuid->data->accountid, $vendor_id, $post_id, 0);
     }
 
-    /**
-     * add data into the authenticate server DB table-merchants for mission triggers.
-     * @param $vcoin_account_id
-     * @param $vendor_id
-     * @param $post_id
-     * @param $nature
-     * @throws Exception
-     */
-    private static function syn_vcoin_action_data($vcoin_account_id, $vendor_id, $post_id, $nature)
+
+
+    protected function isDebug()
     {
+        return false;
+    }
 
-        $_nature = $nature === 0 ? "REWARD" : "COUPON";
-        $getresult = api_handler::curl_post(AUTH_SERVER . '/api/cms/add_merchant', array(
-            "item_id" => $post_id,
-            "vendor_id" => $vendor_id,
-            "vcoin_account" => $vcoin_account_id,
-            "nature" => $_nature
-        ));
+    protected function debug_field_type()
+    {
+        return $this->isDebug() ? "text" : "hidden";
+    }
 
-        $result = json_decode($getresult);
-
-        if ($result->result != 'success') {
-            inno_log_db::log_admin_stock_management(-1, $result->result, $result->msg);
-            throw new Exception($result->msg, $result->result);
-        } else {
-        }
-
+    protected static function json_decode_nice($json, $assoc = FALSE)
+    {
+        $json = str_replace(array("\n", "\r"), "", $json);
+        $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/', '$1"$3":', $json);
+        $json = preg_replace('/(,)\s*}$/', '}', $json);
+        return json_decode($json, $assoc);
     }
 }

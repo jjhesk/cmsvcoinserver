@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: hesk
  * Date: 9/15/14
  * Time: 10:23 PM
@@ -12,10 +12,10 @@ if (!class_exists('SearchList')) {
             array(
                 'post_type' => array(VCOUPON, VPRODUCT),
                 'post_status' => 'publish',
-                'posts_per_page' => -1,
+                'posts_per_page' => 10,
                 'orderby' => 'date',
                 'order' => 'DESC',
-                'paged' => 0
+                'paged' => 1
             );
         private $byLng;
 
@@ -33,8 +33,8 @@ if (!class_exists('SearchList')) {
 
             //search for developers app
             if (isset($devID)) {
-                $query = array('post_type' => APPDISPLAY);
-                $meta_query[] = array('_developer' => $devID);
+                $query['post_type'] = APPDISPLAY;
+                $meta_query['_developer'] = $devID;
             }
             $query['suppress_filters'] = true;
             if (isset($input->lang)) {
@@ -45,8 +45,8 @@ if (!class_exists('SearchList')) {
             //'suppress_filters' => true
             //filter by platform
             if (isset($platform)) {
-                $query = array('post_type' => APPDISPLAY);
-                $meta_query[] = array('_platform' => $platform);
+                $query['post_type'] = APPDISPLAY;
+                $meta_query['_platform'] = $platform;
                 if ($platform == 'ios') {
                     //filter by categories
                     if (intval($cat) > 0) {
@@ -74,11 +74,6 @@ if (!class_exists('SearchList')) {
 
             if (intval($cat) > 0) {
                 $query['cat'] = $cat;
-                /* $tax[] = array(
-                     'taxonomy' => 'category',
-                     'field' => 'id',
-                     'terms' => $cat,
-                 );*/
             }
             if (intval($country) > 0) {
                 $tax[] = array(
@@ -90,11 +85,11 @@ if (!class_exists('SearchList')) {
 
             //implementing the code
             if (count($meta_query) > 0) {
-                $meta_query[] = array('relation' => 'AND');
+                $meta_query['relation'] = 'AND';
                 $query['meta_query'] = $meta_query;
             }
             if (count($cat) > 0) {
-                $tax[] = array('relation' => 'AND');
+                $tax = array_merge($tax, array('relation' => 'AND'));
                 $query['tax_query'] = $tax;
             }
             if (isset($paging)) {
@@ -110,11 +105,13 @@ if (!class_exists('SearchList')) {
              } else {
                  $post_language_information = "";
              }*/
-            $comment = new AppComment("getlist");
-            $redeem_count = new Redemption();
+            $this->app_comment = new AppComment("getlist");
+            $this->app_redemption = new Redemption();
             $post_language_information = wpml_get_language_information($id);
             unset($post_language_information['text_direction']);
             unset($post_language_information['different_language']);
+
+
             if (get_post_type($id) == APPDISPLAY) {
                 return array(
                     "ID" => $id,
@@ -142,9 +139,9 @@ if (!class_exists('SearchList')) {
                     "lang" => $post_language_information,
                     "type" => "tangible",
                     //==================================================//
-                    "comment_count" => $comment->get_comment_count($id),
-                    "redeem_count" => $redeem_count->get_redemption_count(intval(get_post_meta($id, "stock_id", true))),
-                    "share_count" =>intval(get_post_meta($id, "share_count", true)),
+                    "comment_count" => $this->app_comment->get_comment_count($id),
+                    "redeem_count" => $this->app_redemption->get_redemption_count(intval(get_post_meta($id, "stock_id", true))),
+                    "share_count" => intval(get_post_meta($id, "share_count", true)),
                     "vendor" => array(
                         "ID" => $vendor_id,
                         "title" => get_the_title($vendor_id)
@@ -153,6 +150,7 @@ if (!class_exists('SearchList')) {
 
                 );
             } else if (get_post_type($id) == VCOUPON) {
+                $vendor_id = intval(get_post_meta($id, "innvendorid", true));
                 return array(
                     "ID" => $id,
                     "link" => get_permalink(),
@@ -162,8 +160,15 @@ if (!class_exists('SearchList')) {
                     "vcoin" => intval(get_post_meta($id, "v_coin", true)),
                     "lang" => $post_language_information,
                     "type" => "intangible",
-                    "comment_count" => $comment->get_comment_count($id),
-                    "share_count" =>intval(get_post_meta($id, "share_count", true)),
+                    //==================================================//
+                    "redeem_count" => $this->app_redemption->get_issued_coupons_count($id),
+                    "comment_count" => $this->app_comment->get_comment_count($id),
+                    "share_count" => intval(get_post_meta($id, "share_count", true)),
+                    "category" => $this->get_terms("category", $id),
+                    "vendor" => array(
+                        "ID" => $vendor_id,
+                        "title" => get_the_title($vendor_id)
+                    )
                 );
             } else {
                 return array();

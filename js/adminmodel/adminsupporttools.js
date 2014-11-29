@@ -5,6 +5,7 @@ var WPScreenOptionSupport = {};
 var MetaBoxSupport = {};
 var JAXSupport = {};
 var JAXAPIsupport = {};
+var AJAXLoader = {};
 var PostBoxWatch = {};
 var PublishingSupport = {};
 var MapFix = {};
@@ -17,6 +18,7 @@ jQuery(function ($) {
             d.$post_content_container = $("#post-body-content");
             d.$submiting_container = $("#submitdiv");
             d.$publishbutton = $("#publish", d.$submiting_container);
+            d.$content = $("#minor-publishing", d.$submiting_container);
             d.titlebar = $("h3.hndle", d.$submiting_container);
             d.preview_button = $("#post-preview", d.$submiting_container);
             d.post_title_field = $("#title", d.$post_content_container);
@@ -35,6 +37,7 @@ jQuery(function ($) {
             },
             publish_click: function (e) {
                 var d = e.data.that;
+                $("input").prop("disabled", false).removeClass("disabled");
                 $("select").prop("disabled", false).removeClass("disabled");
                 console.log(d);
                 d.$post_content_container.trigger("php_submit", [d]);
@@ -77,6 +80,10 @@ jQuery(function ($) {
                 var d = this;
                 d.post_title_field.val(l);
                 return d;
+            },
+            hideContent: function () {
+                var d = this;
+                d.$content.addClass("hidden");
             }
         }
         WPScreenOptionSupport = function () {
@@ -134,6 +141,7 @@ jQuery(function ($) {
                         if (key == keyParam) {
                             if (!value) {
                                 $("input#" + keyParam + "-hide", d.$container).trigger("click.postboxes");
+                                d.control_meta_box(key, true);
                                 d.control_list[keyParam] = true;
                             }
                         }
@@ -148,6 +156,7 @@ jQuery(function ($) {
                         if (key == keyParam) {
                             if (value) {
                                 $("input#" + keyParam + "-hide", d.$container).trigger("click.postboxes");
+                                d.control_meta_box(key, false);
                                 d.control_list[keyParam] = false;
                             }
                         }
@@ -161,12 +170,16 @@ jQuery(function ($) {
                     $.each(d.control_list, function (key, value) {
                         if (value != boool) {
                             $("input#" + key + "-hide", d.$container).trigger("click.postboxes");
+                            d.control_meta_box(key, boool);
                             d.control_list[key] = boool;
                         }
                     });
                 } else {
                     console.log("method OFF allow boolean only");
                 }
+            },
+            control_meta_box: function (key, boool) {
+                if (boool)  $("#" + key).show(); else $("#" + key).hide();
             },
             batch: function (controls, boool) {
                 var d = this;
@@ -234,6 +247,13 @@ jQuery(function ($) {
          }*/
 
         MetaBoxSupport = {
+            /**
+             *
+             * @param _after_el_id
+             * @param html
+             * @returns {*|jQuery|HTMLElement}
+             * @constructor
+             */
             InsertHTMLFieldSelectAfter: function (_after_el_id, html) {
                 var field = $('.rwmb-field:has(' + _after_el_id + ')');
                 field.after(html);
@@ -241,6 +261,13 @@ jQuery(function ($) {
                 // console.log("inserted." + html);
                 return $input;
             },
+            /**
+             *
+             * @param _after_el_id
+             * @param html
+             * @returns {*}
+             * @constructor
+             */
             InsertHTMLFieldSelectNextTo: function (_after_el_id, html) {
                 var field = null;
                 if (typeof _after_el_id == "string")
@@ -255,11 +282,38 @@ jQuery(function ($) {
                 // console.log("inserted." + html);
                 return field.next();
             },
+            /**
+             * using the callback field : field_target to get the field item
+             * @param $el
+             * @param elID
+             * @param text
+             * @param callback
+             * @constructor
+             */
+            InsertButtonNextTo: function ($el, elID, text, callback) {
+                if ($el instanceof jQuery) {
+                    $el.after('<input id="' + elID + '" type="button" value="' + text + '"/>');
+                    if (typeof elID == "string")
+                        $("#" + elID).on("click", {field_target: $el}, callback);
+                    else  console.log("elID is not string");
+                } else console.log("$el is not JQuery object");
+            },
+            /**
+             *
+             * @param els
+             * @param boolOFF
+             * @constructor
+             */
             InputControlEach: function (els, boolOFF) {
                 els.each(function (i) {
                     MetaBoxSupport.InputControlSingle($(this), boolOFF);
                 });
             },
+            /**
+             *
+             * @param idSelector
+             * @param value
+             */
             doSelect: function (idSelector, value) {
                 if (typeof (idSelector) === 'string') {
                     $('option[value=' + value + ']', idSelector).prop('selected', true);
@@ -268,6 +322,12 @@ jQuery(function ($) {
                     $('option[value=' + value + ']', idSelector).prop('selected', true);
                 }
             },
+            /**
+             *
+             * @param input
+             * @param boolOFF
+             * @constructor
+             */
             InputControlSingle: function (input, boolOFF) {
                 var type = input.prop("type"),
                     ele = input.prop("tagName");
@@ -275,6 +335,9 @@ jQuery(function ($) {
                 // console.log("tag config"+ele);
                 if (ele == "INPUT") {
                     switch (type) {
+                        case "number":
+                            input.prop("disabled", boolOFF);
+                            break;
                         case "checkbox":
                             input.prop("disabled", boolOFF);
                             break;
@@ -323,30 +386,95 @@ jQuery(function ($) {
                             break;
                     }
                 }
+            },
+            uuidGen: (function () {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+                }
+
+                return function () {
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                };
+            })(),
+            CreateSelection: function ($select_el, json_data) {
+                if ($select_el instanceof jQuery) {
+                    if (Handlebars == undefined) {
+                        console.log("Handlebars is not existed");
+                        return false;
+                    }
+                    var tmp = '<option value="{{reason_key}}">{{display_reason_string}}</option>',
+                        formater = Handlebars.compile(tmp), output = "";
+                    $.each(json_data, function (k, v) {
+                        output += formater({reason_key: k, display_reason_string: v});
+                    });
+                    $select_el.html(output);
+                } else   console.log("$select_el is not jquery");
             }
         }
-        //example JAXAPIsupport("http.../api/controller/method/", {id:25}, {that:d}, function(e, ){})
-        JAXAPIsupport = function (api, data, cbobject, callback) {
-            // console.log("ajax starts here");
-            //console.log(data);
-            $.post(api, data, function (response) {
-                // pac.loading(false);
-                console.log(response);
-                if (response.result == 'success') {
-                    if ($.type(response.obtain) === 'object') {
-                        if ($.type(callback) === "function")
-                            callback(cbobject, response.obtain);
-                    }
-                    else if ($.type(response.obtain) === 'string') {
-                        if ($.type(callback) === "function")
-                            callback(cbobject, response.obtain);
-                    }
-                } else {
-                    // alert("not found");
-                    console.log("No data found");
-                }
-            });
+        AJAXLoader = function (widget_id, size, usage) {
+            this.show_loading = true;
+
+            if (size == undefined) {
+                console.log("application size is not set");
+                return;
+            }
+            if (usage == undefined) {
+                console.log("usage is not set");
+                return;
+            }
+            if (size == undefined) {
+                size = "big";
+                console.log("size is not default");
+            }
+
+            if (size == "big")
+                this.$loading = $("<img id='loading' src='./images/loading.gif' style='display:none; width:30px;height:30px; margin: 0 50%; margin-bottom: 5px;'>");
+            else if (size == "normal") {
+                this.$loading = $("<img id='loading' src='./images/loading.gif' style='display:none;'>");
+            } else {
+                this.$loading = $("<img id='loading' src='./images/loading.gif' style='display:none;'>");
+            }
+            if (usage == "dashboard") {
+                this.$widget_container = $("#" + widget_id + " .inside");
+            } else if (usage == "app_reg") {
+                if (widget_id instanceof jQuery) {
+                    this.$widget_container = widget_id;
+                } else this.$widget_container = $("#" + widget_id);
+            }
+
+            if (this.$widget_container.size() === 0) {
+                console.log("this element dom did not find : #" + widget_id);
+                return;
+            }
+
+            if ($("#loading", this.$widget_container).size() == 0)
+                this.$widget_container.after(this.$loading);
+            else {
+                this.$loading = $("#loading", this.$widget_container);
+            }
         }
+        AJAXLoader.prototype = {
+            onLoad: function () {
+                var d = this;
+                if (d.show_loading) {
+                    console.log("start");
+                    d.$loading.show();
+                    d.show_loading = false;
+                }
+            },
+            onLoadDone: function () {
+                var d = this;
+                if (!d.show_loading) {
+                    d.$loading.hide();
+                    console.log("end");
+                    d.show_loading = true;
+                }
+            }
+        }
+
 
         JAXSupport = function (data, cbobject, callback) {
             console.log("ajax starts here");
@@ -365,6 +493,66 @@ jQuery(function ($) {
                 }
             });
         }
+        //example JAXAPIsupport("http.../api/controller/method/", {id:25}, {that:d}, function(e, ){})
+        JAXAPIsupport = function (api, data, cbobject, callback, failurecallback) {
+            this.api = api;
+            this.data = data;
+            this.cbobject = cbobject;
+            this.callback = callback;
+            this.failurecallback = failurecallback;
+        }
+        JAXAPIsupport.prototype = {
+            init: function () {
+                var d = this;
+                if (d.loader instanceof AJAXLoader) {
+                    d.loader.onLoad();
+                }
+                $.post(d.api, d.data, function (response) {
+                    // pac.loading(false);
+                    console.log(response);
+                    if (response.result == 'success') {
+                        if ($.type(response.obtain) === 'object') {
+                            if ($.type(d.callback) === "function")
+                                d.callback(d.cbobject, response.obtain);
+                        }
+                        else if ($.type(response.obtain) === 'string') {
+                            if ($.type(d.callback) === "function")
+                                d.callback(d.cbobject, response.obtain);
+                        }
+                        else if ($.type(response.obtain) === 'number') {
+                            if ($.type(d.callback) === "function")
+                                d.callback(d.cbobject, response.obtain);
+                        }
+                    } else {
+                        // alert("not found");
+                        console.log("No data found");
+                        if (d.failurecallback != undefined) {
+                            if ($.type(d.failurecallback) === "function") {
+                                d.failurecallback(d.cbobject, response.msg);
+                            } else {
+                                console.log("the callback function for the failure event is not propery set.");
+                            }
+                        } else {
+                            alert(response.msg);
+                        }
+                    }
+
+                    if (d.loader instanceof AJAXLoader) {
+                        d.loader.onLoadDone();
+                    }
+                });
+            },
+            add_loader: function (Loader) {
+                var d = this;
+                if (Loader instanceof AJAXLoader) {
+                    d.loader = Loader;
+                } else {
+                    console.log("instance type of not correct");
+                }
+            }
+        }
+
+
         PostBoxWatch = function () {
             var all_handlers = jQuery('.postbox .hndle, .postbox .handlediv');
             this.allHandlers = all_handlers;
@@ -390,7 +578,6 @@ jQuery(function ($) {
                 });
             }
         }
-
 
         URL_Helper = {
             getParamVal: function (paramName) {
@@ -420,6 +607,7 @@ jQuery(function ($) {
             }
         }
     }(document, "click tap touch"));
-});
+})
+;
 
 

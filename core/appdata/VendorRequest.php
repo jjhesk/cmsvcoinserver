@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年1月15日
  * Time: 下午4:00

@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a969cb61-d1f4-49da-8a40-182afa90f00c" name="Default" comment="" />
+    <ignored path="wp_vcoin_cms.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="wp_vcoin_cms" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="taxonomy_develop.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/cms/taxonomy_develop.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="14" selection-start="1088" selection-end="1088" vertical-scroll-proportion="0.37054086" vertical-offset="483" max-vertical-offset="2300">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/core/cms/system_log_display.php" />
+        <option value="$PROJECT_DIR$/core/logics/inno_db.php" />
+        <option value="$PROJECT_DIR$/js/admin/admin_coupon.js" />
+        <option value="$PROJECT_DIR$/core/logics/inno_log_db.php" />
+        <option value="$PROJECT_DIR$/js/admin/admin_reward.js" />
+        <option value="$PROJECT_DIR$/thirdparty/facebook/faceconn/Bookmark.php" />
+        <option value="$PROJECT_DIR$/thirdparty/facebook/faceconn/Comments.php" />
+        <option value="$PROJECT_DIR$/thirdparty/facebook/faceconn/AppConfig.php" />
+        <option value="$PROJECT_DIR$/thirdparty/facebook/faceconn/LikeBox.php" />
+        <option value="$PROJECT_DIR$/js/adminmodel/JobReportList.js" />
+        <option value="$PROJECT_DIR$/core/system_frontend.php" />
+        <option value="$PROJECT_DIR$/js/adminmodel/adminsupporttools.js" />
+        <option value="$PROJECT_DIR$/js/adminmodel/stock_config.js" />
+        <option value="$PROJECT_DIR$/view/admin_stock_count_box.php" />
+        <option value="$PROJECT_DIR$/thirdparty/facebook/faceconn/SendButton.php" />
+        <option value="$PROJECT_DIR$/core/cms/acascasc.php" />
+        <option value="$PROJECT_DIR$/js/admin/admin_vendor.js" />
+        <option value="$PROJECT_DIR$/core/appdata/VendorRequest.php" />
+        <option value="$PROJECT_DIR$/core/api/vendor.php" />
+        <option value="$PROJECT_DIR$/core/cms/vendor_cms.php" />
+        <option value="$PROJECT_DIR$/js/vendor/backbone.js" />
+        <option value="$PROJECT_DIR$/core/appdata/AppComment.php" />
+        <option value="$PROJECT_DIR$/js/admin/admin_system_log.js" />
+        <option value="$PROJECT_DIR$/js/adminmodel/stock_count_admin.js" />
+        <option value="$PROJECT_DIR$/core/reuseable/api_handler.php" />
+        <option value="$PROJECT_DIR$/functions.php" />
+        <option value="$PROJECT_DIR$/core/cms/vslider.php" />
+        <option value="$PROJECT_DIR$/core/appdata/SliderList.php" />
+        <option value="$PROJECT_DIR$/core/api/single.php" />
+        <option value="$PROJECT_DIR$/core/connect_json_api.php" />
+        <option value="$PROJECT_DIR$/core/appdata/SingleApp.php" />
+        <option value="$PROJECT_DIR$/core/appdata/StockOperation.php" />
+        <option value="$PROJECT_DIR$/core/api/stock.php" />
+        <option value="$PROJECT_DIR$/core/cms/vcoin_coupon.php" />
+        <option value="$PROJECT_DIR$/core/cms/vcoin_product.php" />
+        <option value="$PROJECT_DIR$/core/logics/cmsBase.php" />
+        <option value="$PROJECT_DIR$/core/logics/SingleBase.php" />
+        <option value="$PROJECT_DIR$/core/logics/listBase.php" />
+        <option value="$PROJECT_DIR$/core/appdata/AppList.php" />
+        <option value="$PROJECT_DIR$/core/appdata/RCoupon.php" />
+        <option value="$PROJECT_DIR$/core/appdata/ListTax.php" />
+        <option value="$PROJECT_DIR$/core/api/listing.php" />
+        <option value="$PROJECT_DIR$/core/appdata/RewardListing.php" />
+        <option value="$PROJECT_DIR$/core/appdata/SingleReward.php" />
+        <option value="$PROJECT_DIR$/core/api/crosscms.php" />
+        <option value="$PROJECT_DIR$/core/cms/app_host.php" />
+        <option value="$PROJECT_DIR$/core/cms/taxonomy_develop.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1135" />
+    <option name="y" value="-8" />
+    <option name="width" value="1873" />
+    <option name="height" value="1096" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>GeneralPHP</id>
+          </State>
+          <State>
+            <id>PHP</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PhpHierarchyChecksInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wp_vcoin_cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.lastSelected" value="vcs.Subversion" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../wp_vcoin_auth" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="SearchEverywhereHistory" value="" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\CCCHesk\DROPBOX\vcoin_server\wp_vcoin_cms\css" />
+      <recent name="C:\CCCHesk\DROPBOX\vcoin_server\wp_vcoin_cms\core\logics" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\CCCHesk\DROPBOX\vcoin_server\wp_vcoin_cms\core\appdata" />
+      <recent name="C:\CCCHesk\DROPBOX\vcoin_server\wp_vcoin_cms\core\reuseable" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a969cb61-d1f4-49da-8a40-182afa90f00c" name="Default" comment="" />
+      <created>1407746492500</created>
+      <updated>1407746492500</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1135" y="-8" width="1873" height="1096" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37191853" sideWeight="0.5532831" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26132023" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15657392" sideWeight="0.44537038" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18668923" sideWeight="0.5546296" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30231246" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3068246" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37191853" sideWeight="0.5532831" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18668923" sideWeight="0.5546296" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26259378" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14382403" sideWeight="0.44537038" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/thirdparty/facebook/sdk/facebook.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thirdparty/facebook/facebooksupport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="21" selection-start="199" selection-end="199" vertical-scroll-proportion="0.14139344" vertical-offset="0" max-vertical-offset="1464" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/mobi/mobiscroll.ios-2.5.4.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5635" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vendor/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6347" column="30" selection-start="190939" selection-end="190942" vertical-scroll-proportion="0.69588083" vertical-offset="144911" max-vertical-offset="220593" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/admin/admin_vendor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="34" selection-start="742" selection-end="743" vertical-scroll-proportion="0.09116809" vertical-offset="511" max-vertical-offset="1955" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/adminsupporttools.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="336" column="29" selection-start="14355" selection-end="14355" vertical-scroll-proportion="0.8603989" vertical-offset="7124" max-vertical-offset="9131" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/email.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="35" selection-start="318" selection-end="318" vertical-scroll-proportion="-0.5984556" vertical-offset="448" max-vertical-offset="966" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/vendor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="25" selection-start="1182" selection-end="1182" vertical-scroll-proportion="0.9273302" vertical-offset="264" max-vertical-offset="1058" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vendor/backbone.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="0" selection-start="51295" selection-end="51295" vertical-scroll-proportion="1.1561939" vertical-offset="0" max-vertical-offset="782" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/userBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="5" selection-start="2791" selection-end="2905" vertical-scroll-proportion="0.37408313" vertical-offset="1810" max-vertical-offset="7567" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/reuseable/hkm_cross_reference.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="31" selection-start="2309" selection-end="2673" vertical-scroll-proportion="-13.796875" vertical-offset="704" max-vertical-offset="9407" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/admin/admin_system_log.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="0" selection-start="3519" selection-end="3519" vertical-scroll-proportion="0.5772545" vertical-offset="1088" max-vertical-offset="2829" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/admin/admin_reward.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="3" selection-start="1663" selection-end="1663" vertical-scroll-proportion="0.6245757" vertical-offset="0" max-vertical-offset="1473" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/listing_support.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="557" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/stock_config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="8" selection-start="5440" selection-end="5440" vertical-scroll-proportion="3.6840215" vertical-offset="777" max-vertical-offset="4577" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/GridContentEditor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="557" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/CPManagement.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="198" column="61" selection-start="10065" selection-end="10074" vertical-scroll-proportion="0.0" vertical-offset="4277" max-vertical-offset="5911" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/stock_count_admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="0" selection-start="4220" selection-end="4220" vertical-scroll-proportion="0.41287458" vertical-offset="1928" max-vertical-offset="2829" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/reuseable/adminsupport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="24" selection-start="444" selection-end="444" vertical-scroll-proportion="-1.9321059" vertical-offset="2070" max-vertical-offset="9407" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/application_user_profile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="23" selection-start="1622" selection-end="1622" vertical-scroll-proportion="-9.125" vertical-offset="513" max-vertical-offset="2645" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/inno_db.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="24" selection-start="207" selection-end="207" vertical-scroll-proportion="0.16121495" vertical-offset="0" max-vertical-offset="29877" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="7" selection-start="2328" selection-end="2328" vertical-scroll-proportion="0.46495956" vertical-offset="828" max-vertical-offset="3151">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/vslider.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="281" column="65" selection-start="10929" selection-end="10936" vertical-scroll-proportion="0.36279684" vertical-offset="6188" max-vertical-offset="9407" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/adminmodel/ListSubmission.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="391" selection-end="391" vertical-scroll-proportion="0.26376146" vertical-offset="0" max-vertical-offset="1955" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/system_log_display.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.592" vertical-offset="1393" max-vertical-offset="2268" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/single.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="17" selection-start="163" selection-end="163" vertical-scroll-proportion="0.14104193" vertical-offset="4" max-vertical-offset="920" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/connect_json_api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="29" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.3621347" vertical-offset="865" max-vertical-offset="3289" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/VendorRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="10" selection-start="134" selection-end="134" vertical-scroll-proportion="0.080607474" vertical-offset="0" max-vertical-offset="9913" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/stock.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="143" column="67" selection-start="5464" selection-end="5464" vertical-scroll-proportion="0.8643868" vertical-offset="1754" max-vertical-offset="3542" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/vcoin_coupon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="40" selection-start="847" selection-end="847" vertical-scroll-proportion="-1.3458163" vertical-offset="2898" max-vertical-offset="6463" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/StockOperation.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="218" column="25" selection-start="7668" selection-end="7668" vertical-scroll-proportion="0.9865418" vertical-offset="3328" max-vertical-offset="6486" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/systemlog.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="61" selection-start="388" selection-end="418" vertical-scroll-proportion="-6.46875" vertical-offset="0" max-vertical-offset="1472" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/inno_log_db.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="732" selection-end="732" vertical-scroll-proportion="-10.09375" vertical-offset="137" max-vertical-offset="6302">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/cmsBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="170" selection-end="170" vertical-scroll-proportion="0.14039126" vertical-offset="154" max-vertical-offset="2047">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/SingleBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="40" selection-start="326" selection-end="326" vertical-scroll-proportion="0.3264516" vertical-offset="161" max-vertical-offset="1081">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/logics/listBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="167" selection-end="167" vertical-scroll-proportion="0.17206983" vertical-offset="0" max-vertical-offset="802">
+          <folding>
+            <element signature="e#7#86#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/SingleApp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="6" selection-end="6" vertical-scroll-proportion="-0.5349127" vertical-offset="452" max-vertical-offset="1334" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/listing.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="62" selection-start="6352" selection-end="6352" vertical-scroll-proportion="-17.25" vertical-offset="2921" max-vertical-offset="7866" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/reuseable/api_handler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="32" selection-start="1154" selection-end="1154" vertical-scroll-proportion="-12.03125" vertical-offset="489" max-vertical-offset="3864" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/crosscms.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="33" selection-start="4743" selection-end="4743" vertical-scroll-proportion="-33.59375" vertical-offset="949" max-vertical-offset="2645" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/vcoin_product.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="252" column="55" selection-start="11460" selection-end="11460" vertical-scroll-proportion="0.74415886" vertical-offset="4975" max-vertical-offset="11914">
+          <folding>
+            <marker date="1409804844899" expanded="true" signature="-1:-1" placeholder="SELECT trid ..$ids WHERE..." />
+            <marker date="1409804844899" expanded="true" signature="-1:-1" placeholder="SELECT eleme..$ids WHERE..." />
+            <marker date="1409804844899" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1409804844899" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1409804844899" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1409804844899" expanded="false" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/SingleReward.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="0" selection-start="1376" selection-end="1376" vertical-scroll-proportion="1.1380898" vertical-offset="0" max-vertical-offset="1909">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/RewardListing.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="41" selection-start="343" selection-end="343" vertical-scroll-proportion="0.15880322" vertical-offset="69" max-vertical-offset="1587">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/AppComment.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="505" selection-end="505" vertical-scroll-proportion="0.6881473" vertical-offset="0" max-vertical-offset="1564">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/AppList.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="26" selection-start="1868" selection-end="1868" vertical-scroll-proportion="1.6144994" vertical-offset="0" max-vertical-offset="2967">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/ListTax.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="28" selection-start="148" selection-end="148" vertical-scroll-proportion="0.10747664" vertical-offset="0" max-vertical-offset="2691">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/appdata/RCoupon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="29" selection-start="148" selection-end="148" vertical-scroll-proportion="0.07940161" vertical-offset="0" max-vertical-offset="1334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/vendor_cms.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="35" selection-start="2051" selection-end="2051" vertical-scroll-proportion="0.0" vertical-offset="1173" max-vertical-offset="3335">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/app_host.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="218" column="0" selection-start="9031" selection-end="9031" vertical-scroll-proportion="0.4535963" vertical-offset="4623" max-vertical-offset="5497">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/api/vcoin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="31" selection-start="2241" selection-end="2241" vertical-scroll-proportion="0.33256617" vertical-offset="1114" max-vertical-offset="2024">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/cms/taxonomy_develop.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="14" selection-start="1088" selection-end="1088" vertical-scroll-proportion="0.37054086" vertical-offset="483" max-vertical-offset="2300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

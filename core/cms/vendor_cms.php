@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月12日
  * Time: 上午10:35
@@ -10,11 +10,12 @@ if (!class_exists('vendor_cms')) {
     class vendor_cms extends cmsBase
     {
         private $vendor_panel_support;
+        private $address_input_admin;
 
         public function __construct()
         {
-
-            register_post_type(VENDOR, array(
+            $this->post_type = VENDOR;
+            register_post_type($this->post_type, array(
                 'labels' => $this->add_tab(),
                 'description' => __('Manage the albums in the backend.'),
                 'public' => true,
@@ -31,14 +32,31 @@ if (!class_exists('vendor_cms')) {
                 'menu_icon' => VCOIN_IMAGES_PATH . 'system_log_icon.png',
                 'hierarchical' => false,
             ));
+            add_filter('rwmb_meta_boxes', array($this, 'addRWMetabox'), 10, 1);
 
-            add_filter('rwmb_meta_boxes', array(__CLASS__, 'addRWMetabox'), 10, 1);
-            $this->vendor_panel_support = new adminsupport(VENDOR);
+            $this->vendor_panel_support = new adminsupport($this->post_type);
+            $this->address_input_admin = new adminposttab($this->post_type,
+                array(
+                    'localize' => array("setting_ob", array(
+                        "post_type" => $this->post_type,
+                        "comment_table_id" => "page_admin_address_cms",
+                        "debug_fields" => $this->isDebug())),
+                    'page_title' => '',
+                    'menu_title' => 'Address cms',
+                    'cap' => 'administrator',
+                    'menu_slug' => 'address_cms',
+                    'template_name' => 'admin_page_address_cms',
+                    'script_id' => 'page_admin_scanner',
+                    'style_id' => array('adminsupportcss', 'datatable', 'dashicons'),
+                )
+            );
+
+
             $this->addAdminSupportMetabox();
             //register_taxonomy_for_object_type('products', VPRODUCT);
         }
 
-        protected  function add_tab()
+        protected function add_tab()
         {
             $labels = array(
                 'name' => _x('Vendor - The vendors and its center locations', 'post type general name'),
@@ -58,7 +76,7 @@ if (!class_exists('vendor_cms')) {
             return $labels;
         }
 
-        public static function addRWMetabox($meta_boxes)
+        public function addRWMetabox($meta_boxes)
         {
             $meta_boxes[] = array(
                 'pages' => array(VENDOR),
@@ -95,12 +113,12 @@ if (!class_exists('vendor_cms')) {
                         'type' => 'text', //options
                         'desc' => "Please enter the URL for the company website"
                     ),
-                    array(
+                    /*array(
                         'name' => 'VCoin account UUID', // TAXONOMY
                         'id' => "vendid", // ID for this field
                         'type' => 'text', // options
                         'desc' => "This vendor UUID code should match up into the vCoin server system"
-                    ),
+                    ),*/
                     array(
                         'name' => 'Redemption Centers', // TAXONOMY
                         'id' => 'location_ids', // ID for this field
@@ -108,13 +126,13 @@ if (!class_exists('vendor_cms')) {
                         'options' => VendorRequest::select_list_addresses(),
                         'clone' => true
                     ),
-                    array(
+                    /*array(
                         'name' => 'VCoin', // TAXONOMY
                         'id' => 'location_ids', // ID for this field
                         'type' => 'text', // options
                         'options' => VendorRequest::select_list_addresses(),
                         'clone' => true
-                    ),
+                    ),*/
                     array(
                         'name' => 'Available coins', // TAXONOMY
                         'id' => 'available_coin', // ID for this field

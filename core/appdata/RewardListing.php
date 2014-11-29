@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月14日
  * Time: 上午11:00
@@ -12,8 +12,26 @@ if (!class_exists('RewardListing')) {
         private $result = array();
         private $query = array();
 
-        public function __construct($input)
+        public function __construct($Q)
         {
+
+            if (!isset($Q->cat))
+                throw new Exception("Missing category id", 1810);
+            else {
+                $category = $Q->cat;
+                $arr['category__in'] = $category;
+            }
+
+            if (!isset($Q->country))
+                throw new Exception("Missing country id", 1811);
+            else {
+                $arr['country'] = $Q->country;
+            }
+
+            if (isset($Q->p)) {
+                // $maxposts = get_option('posts_per_page');
+                $arr['paged'] = $Q->p;
+            }
 
 
             if (ICL_LANGUAGE_CODE == 'it') {
@@ -65,29 +83,24 @@ if (!class_exists('RewardListing')) {
                 "vcoin" => intval(get_post_meta($post_id, "v_coin", true))
             );
         }
-/*
-        private static function display_images($key, $id)
-        {
-
-        }*/
 
         /**
          * use for public query
          * @param $post_id
          * @return array
-         */
+
 
         public static function inloop($post_id)
-        {
-            return array(
-                "ID" => $post_id,
-                "link" => get_permalink(),
-                "image_sq_thumb" => self::display_images("inno_image_thumb", $post_id),
-                "video_image_cover" => self::display_images("inno_video_cover_image", $post_id),
-                "title" => get_the_title($post_id),
-                "vcoin" => intval(get_post_meta($post_id, "v_coin", true))
-            );
-        }
-
+         * {
+         * return array(
+         * "ID" => $post_id,
+         * "link" => get_permalink(),
+         * "image_sq_thumb" => self::display_images("inno_image_thumb", $post_id),
+         * "video_image_cover" => self::display_images("inno_video_cover_image", $post_id),
+         * "title" => get_the_title($post_id),
+         * "vcoin" => intval(get_post_meta($post_id, "v_coin", true))
+         * );
+         * }
+         */
     }
 }

@@ -15,6 +15,8 @@ jQuery(function ($) {
         var $container = this.$container;
         this.$redemption_centers_location = $(".rwmb-select", $container);
         this.is_clone = false;
+        this.domain = window.location.origin + "/api/";
+
         this.Init();
         //console.log($("option:selected", this.$inn_gift_offer_location).val());
 
@@ -29,7 +31,7 @@ jQuery(function ($) {
             var d = this;
             $selector.on("change", {that: d, k: $selector}, this.change_location_terminal);
         },
-        
+
         change_location_terminal: function (e) {
             var d = e.data.that, $selector = e.data.k;
 
@@ -68,8 +70,8 @@ jQuery(function ($) {
                 d.is_clone = true;
             }
             else {
-                var last_one = $(".location_details",items.last());
-                var new_terminal_no = parseInt(last_one.attr("id").slice(-1))+1;
+                var last_one = $(".location_details", items.last());
+                var new_terminal_no = parseInt(last_one.attr("id").slice(-1)) + 1;
                 var $input = $("#location_ids_" + new_terminal_no, items);
                 var $holder = $("<input type='text' class='location_details' disabled name='terminal[" + new_terminal_no + "]' " +
                     "id='terminal_" + new_terminal_no + "'>").insertAfter($input);
@@ -77,7 +79,7 @@ jQuery(function ($) {
                 last_one.remove();
                 d.get_terminal_no($holder, parseInt($input.val()));
                 d.attach_onchange_to_redemption_center($input);
-                }
+            }
 
         },
         display_terminal_box_onclone: function (e) {
@@ -85,7 +87,10 @@ jQuery(function ($) {
             d.display_terminal_box();
         },
         get_terminal_no: function ($text_input, selected_value) {
-            JAXAPIsupport("http://devcms.vcoinapp.com/api/vendor/get_terminal_num/", {
+            var d = this;
+            console.log(d.domain + "vendor/get_terminal_num/");
+            var loader = new AJAXLoader($text_input, "normal", "app_reg");
+            var enter = new JAXAPIsupport(d.domain + "vendor/get_terminal_num/", {
                 id: selected_value
             }, $text_input, function ($input, json) {
                 $input.val(
@@ -93,6 +98,8 @@ jQuery(function ($) {
                     //+ " " + json.country + " " + json.contact_number
                 );
             });
+            enter.add_loader(loader);
+            enter.init();
         }
     }
 });

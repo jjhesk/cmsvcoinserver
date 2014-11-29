@@ -24,7 +24,7 @@ jQuery(function ($) {
         this.ctx = this.chart_canvas.get(0).getContext("2d");
         this.couponAnalysisPie = {};
         this.chart_draw_status = 0;
-        this.api_domain = "http://devcms.vcoinapp.com/api/";
+        this.api_domain = window.location.origin + "/api/";
         this.coupon_id = -1;
         this.unused_coupons = new coupons_holder();
         this.claimed_coupons = new coupons_holder();
@@ -52,7 +52,8 @@ jQuery(function ($) {
         ChartInit: function () {
             var d = this;
 
-            JAXAPIsupport(d.api_domain + "cms/get_coupon_analysis_chart_data/", {
+            var loader = new AJAXLoader($("#coupon_analysis"), "big", "app_reg");
+            var enter = new JAXAPIsupport(d.api_domain + "cms/get_coupon_analysis_chart_data/", {
                 claimed: 0, id: d.coupon_id
             }, d, function (that, json) {
                 that.unused_coupons.setcoupons(
@@ -63,8 +64,8 @@ jQuery(function ($) {
                         label: "In Stock Coupons"
                     }
                 );
-
-                JAXAPIsupport(d.api_domain + "cms/get_coupon_analysis_chart_data/", {
+                var loader2 = new AJAXLoader($("#coupon_analysis"), "big", "app_reg");
+                var enter2 = new JAXAPIsupport(d.api_domain + "cms/get_coupon_analysis_chart_data/", {
                     claimed: 1, id: d.coupon_id
                 }, d, function (that, json) {
                     that.claimed_coupons.setcoupons(
@@ -119,7 +120,13 @@ jQuery(function ($) {
                     $null_element.on("mouseover", {that: d}, d.clear_chart_tooltip);
                     $(".pie-legend").append($null_element);
                 });
+                enter2.add_loader(loader2);
+                enter2.init();
             });
+
+            enter.add_loader(loader);
+            enter.init();
+
         },
         /**
          * to clear the tooltip for last element of the legend template

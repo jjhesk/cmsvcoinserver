@@ -4,7 +4,7 @@
   Controller description: Get reward items details<br>Author: Ryo
  */
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: ryo
  * Date: 14年8月21日
  * Time: 下午5:01
@@ -13,6 +13,7 @@
 if (!class_exists('JSON_API_Single_Controller')) {
     class JSON_API_Single_Controller
     {
+
         /**
          * display a single reward item in json for the mobile app
          */
@@ -68,7 +69,7 @@ if (!class_exists('JSON_API_Single_Controller')) {
                 global $json_api;
                 $id = $json_api->query->id;
                 if (!isset($id)) throw new Exception("ID is missing", 1001);
-                $comment = new AppComment("list");
+                $comment = new AppComment($id);
                 api_handler::outSuccessDataWeSoft($comment->get_counts_from_id($id));
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());
@@ -79,12 +80,13 @@ if (!class_exists('JSON_API_Single_Controller')) {
          * 14.1
          * add share count on the object_id
          */
-        public static function add_share_count(){
+        public static function add_share_count()
+        {
             try {
                 global $json_api;
                 $id = $json_api->query->id;
                 if (!isset($id)) throw new Exception("ID is missing", 1001);
-                $comment = new AppComment("addcountshare");
+                $comment = new AppComment($id);
                 api_handler::outSuccessDataWeSoft($comment->addcountshare($id));
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());

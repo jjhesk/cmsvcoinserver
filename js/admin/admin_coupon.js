@@ -19,6 +19,14 @@ jQuery(function ($) {
             screen_option.ON("coupon_redemption_analysis");
 
             var coupon_analysis = new CouponAnalysis("coupon_redemption_analysis", 1, 2, 3);
+            var dateexp = $("#inn_exp_date").val(),
+                oDateOne = new Date(),
+                oDateTwo = new Date(dateexp);
+            if (oDateOne > oDateTwo){
+                status_support.PubLabel("Retire Coupon");
+                status_support.publishEnable(false);
+            }
+
         }
 
     }(document, 'gform_wrapper', 1000));

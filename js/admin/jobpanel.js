@@ -22,8 +22,7 @@ jQuery(function ($) {
             status_support = new PublishingSupport(),
             postbox_handler = new PostBoxWatch(),
             order_confirmation = new OrderConfirmation("postconfirmation"),
-            report_listing = null
-            ;
+            report_listing = null;
         /*
 
 

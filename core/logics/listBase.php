@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年9月4日
  * Time: 下午12:57
@@ -10,12 +10,33 @@ abstract class listBase
 {
     protected $list_result = array();
     protected $filter_keys_setting = 0;
+    protected $category_list_type;
+    protected $app_comment, $app_redemption;
+
+    function __destruct()
+    {
+        $this->app_comment = NULL;
+        $this->app_redemption = NULL;
+    }
 
     protected function display_images($key, $id)
     {
-        $list = get_post_meta($id, $key, true);
-        $optionpost = wp_get_attachment_image_src($list, 'original');
-        return $optionpost[0];
+        try {
+            $list = get_post_meta($id, $key, false);
+            if (count($list) > 0) {
+                return $this->get_image($list[0]);
+            } else {
+                return "";
+            }
+        } catch (Exception $e) {
+            return "";
+        }
+    }
+
+    protected function get_image($image_id)
+    {
+        $attachment = wp_get_attachment_image_src((int)$image_id, 'original');
+        return $attachment[0];
     }
 
     protected function doQuery($input_config)
@@ -25,15 +46,20 @@ abstract class listBase
         if (isset($_REQUEST["unittestdev"])) {
             inno_log_db::log_admin_coupon_management(-1, 13921, print_r($input_config, true));
         }
+
         if ($custom->have_posts()) :
-            while ($custom->have_posts()) : $custom->the_post();
-                $h = $this->inDaLoop($custom->post->ID);
-                if ($h != false) {
+            while ($custom->have_posts()) : $custom->next_post();
+                try {
+                    $h = $this->inDaLoop($custom->post->ID);
                     $this->list_result[] = $h;
+                } catch (Exception $e) {
+
                 }
             endwhile;
+            wp_reset_postdata();
+        else:
+            throw new Exception("no data found", 1019);
         endif;
-        wp_reset_postdata();
     }
 
     abstract protected function inDaLoop($id, $args = array());
@@ -70,7 +96,22 @@ abstract class listBase
         foreach ($array_terms as $cat) :
             $this->list_result[] = $this->catloop($cat, isset($query_tax_preset["with_image"]) == true, strtolower($taxonomy_id) == "category", $taxonomy_id);
         endforeach;
+        if (isset($_REQUEST["lang"]))
+            $this->list_result[] = $this->all_button_initiate($taxonomy_id, $_REQUEST["lang"]);
+        else
+            $this->list_result[] = $this->all_button_initiate($taxonomy_id, "en");
+    }
 
+    protected function all_button_initiate($taxonomy_id, $lang = "en")
+    {
+        return array(
+            "unpress" => "",
+            "press" => "",
+            "unpress_s" => "",
+            "press_s" => "",
+            "name" => "",
+            "id" => -1,
+        );
     }
 
     /**
@@ -88,6 +129,8 @@ abstract class listBase
         endforeach;
         return $ar;
     }
+
+
 
     /**
      * cate data loop

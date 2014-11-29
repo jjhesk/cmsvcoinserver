@@ -1,19 +1,28 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年9月10日
  * Time: 下午4:53
  */
 class CouponLogic
 {
-    protected $table;
+    protected $table, $db, $post_id, $winner;
 
     function __construct()
     {
         global $wpdb;
-        $this->table = $wpdb->prefix . "";
+        $this->db = $wpdb;
+        $this->table = $wpdb->prefix . "post_coupon_claim";
+        $this->winner = $wpdb->prefix . "post_winner_coupons";
+    }
+
+    public function remove_post($post_id)
+    {
+        $L = $this->db->prepare("DELETE FROM $this->table WHERE coupon_id=%d", (int)$post_id);
+        $this->db->query($L);
+        return true;
     }
 
     /**
@@ -22,13 +31,22 @@ class CouponLogic
      * @param $coupon_id
      * @return bool
      */
-    private function check_sufficient_coupons($coupon_id)
+    protected function check_sufficient_coupons($coupon_id)
     {
         global $wpdb;
-        $pre = $wpdb->prepare("SELECT count(*) FROM imusicworld_transaction_coupon
+        $pre = $wpdb->prepare("SELECT count(*) FROM $this->table
              WHERE coupon_id=%d AND redeem_agent=-1", intval($coupon_id));
         $result = $wpdb->get_var($pre);
         return intval($result) > 1;
+    }
+
+    /**
+     * to retrieve the claim list of users from the db for this coupon
+     */
+    protected function get_claim_data($post_id)
+    {
+        $query = $this->db->prepare("SELECT * FROM $this->table where coupon_id=%d AND redeem_agent<>-1", (int)$post_id);
+        return $this->db->get_results($query, ARRAY_A);
     }
 
     /**
@@ -54,12 +72,12 @@ class CouponLogic
             $time = current_time('mysql');
             //   inno_log_db::log_redemption_error(-m, 342422, "exp dat set:" . $exp);
 
-            $pre = $wpdb->prepare("SELECT ID FROM imusicworld_transaction_coupon
+            $pre = $wpdb->prepare("SELECT ID FROM $this->table
              WHERE coupon_id=%d AND redeem_agent=-1 LIMIT 0, 1", $coupon_id);
             $available_coupon_id = intval($wpdb->get_var($pre));
 
             $prepared = $wpdb->prepare("
-                 UPDATE imusicworld_transaction_coupon
+                 UPDATE $this->table
                  SET
                  redeem_agent=%d,
                  coin_spent=%d,
@@ -88,7 +106,7 @@ class CouponLogic
     {
         global $wpdb;
         $prepared = $wpdb->prepare("
-                            SELECT * FROM imusicworld_transaction_coupon
+                            SELECT * FROM $this->table
                             WHERE
                             redeem_agent=%d AND
                             coupon_id=%d AND
@@ -136,5 +154,6 @@ class CouponLogic
         $updated = $wpdb->query($prepared);
         return true;
     }
+
 
 } 

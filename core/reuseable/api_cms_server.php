@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年9月11日
  * Time: 上午11:37
@@ -39,5 +39,7 @@ if (!class_exists('api_cms_server')) {
                 return $object->data;
             }
         }
+
+
     }
 }

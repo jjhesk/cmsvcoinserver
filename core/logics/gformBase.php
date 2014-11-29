@@ -2,7 +2,7 @@
 defined('ABSPATH') || exit;
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * the basic db handling and data exchange
  * User: hesk
  * Date: 4/23/14

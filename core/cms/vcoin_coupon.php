@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月12日
  * Time: 下午3:41
@@ -12,9 +12,15 @@ if (!class_exists('vcoin_coupon')) {
         private $vcoin_panel_support;
         private $sub_tab_comment;
 
+        public function __destruct()
+        {
+            $this->vcoin_panel_support = NULL;
+        }
+
         public function __construct()
         {
-            register_post_type(VCOUPON, array(
+            $this->post_type = VCOUPON;
+            register_post_type($this->post_type, array(
                 'labels' => $this->add_tab(),
                 'description' => __('Manage the ablums in the backend.'),
                 'public' => true,
@@ -32,9 +38,9 @@ if (!class_exists('vcoin_coupon')) {
                 'hierarchical' => false,
             ));
 
-            add_filter('rwmb_meta_boxes', array(__CLASS__, 'addRWMetabox'), 10, 1);
+            add_filter('rwmb_meta_boxes', array($this, 'addRWMetabox'), 10, 1);
 
-            $this->vcoin_panel_support = new adminsupport(VCOUPON);
+            $this->vcoin_panel_support = new adminsupport($this->post_type);
             $this->vcoin_panel_support->add_title_input_place_holder(__("Enter COUPON ID/TITLE", HKM_LANGUAGE_PACK));
             $this->vcoin_panel_support->change_publish_button_label(__("Create/Update Coupon Ad", HKM_LANGUAGE_PACK));
             $this->vcoin_panel_support->add_script_name('both', 'admin_coupon');
@@ -43,33 +49,36 @@ if (!class_exists('vcoin_coupon')) {
             /**
              * add submenu "comment"
              */
-            $this->sub_tab_comment = new adminposttab(VCOUPON,
-                array('localize' => array(
-                    "setting_ob",
-                    array(
+            $this->sub_tab_comment = new adminposttab($this->post_type,
+                array(
+                    'localize' => array("setting_ob", array(
                         "post_type" => VCOUPON,
-                        "comment_table_id" => "admin_page_coupon_comment_table",
-                    )
-                ),
-                    'menu_title' => 'comment',
+                        "comment_table_id" => "admin_comment_table",)),
+                    'page_title' => '',
+                    'menu_title' => 'Comment',
                     'cap' => 'administrator',
                     'menu_slug' => 'coupon_submenu_comment',
-                    'template_name' => 'admin_page_coupon_comment_table',
+                    'template_name' => 'admin_page_comment_table',
                     'script_id' => 'page_admin_comment_table',
                     'style_id' => array('adminsupportcss', 'datatable', 'dashicons'),
                 ));
 
 
             $this->addAdminSupportMetabox();
-            register_taxonomy_for_object_type('category', VCOUPON);
+            register_taxonomy_for_object_type('category', $this->post_type);
             add_action('rwmb_post_inno_coupon_after_save_post', array(__CLASS__, "savebox"), 10, 1);
             add_action('rwmb_post_add_coupons_before_save_post', array(__CLASS__, "save_post_add_coupons"), 10, 1);
+            add_action('before_delete_post', array(__CLASS__, "remove_post_adjustment"), 10, 1);
+            add_filter('manage_edit-' . $this->post_type . '_columns', array(__CLASS__, "add_new_columns"), 10, 1);
+            add_action('manage_' . $this->post_type . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
+
         }
 
         public static function add_reward_support()
         {
 
         }
+
 
         public static function savebox($post_id)
         {
@@ -80,7 +89,59 @@ if (!class_exists('vcoin_coupon')) {
 
                 if (intval($status) == 0) {
                     self::withUpdateFieldN($post_id, 'coupon_configuration_complete', 1);
+                    /**
+                     * create vcoin merchant account
+                     */
+                    self::create_vcoin_merchant_account($post_id);
                 }
+
+                $post_language_information = wpml_get_language_information($post_id);
+                $lang = $post_language_information["locale"];
+                $terms = get_the_category($post_id);
+                $needing_found = false;
+                if ($terms) {
+                    foreach ($terms as $category) {
+                        $cat_id = $category->cat_ID;
+                        //   en  zh-hant  ja
+                        //  1905, 1923, 1922
+                        /*  if ($lang == "en" && $cat_id == 1905) {
+                              $needing_found = true;
+                          } else if ($lang == "ja" && $cat_id == 1922) {
+                              $needing_found = true;
+                          } else if ($lang == "zh-hant" && $cat_id == 1923) {
+                              $needing_found = true;
+                          } */
+
+                        if ($cat_id == 1905) {
+                            $needing_found = true;
+                        }
+                    }
+                }
+                if (!$needing_found) {
+                    /*   if ($lang == "en") {
+                           $cat_ID = 1905;
+                       } else if ($lang == "ja") {
+                           $cat_ID = 1922;
+                       } else if ($lang == "zh-hant") {
+                           $cat_ID = 1923;
+                       } else {
+                           $cat_ID = 1905;
+                       }*/
+                    $cat_ID = 1905;
+                    $term_taxonomy_ids = wp_set_object_terms($post_id, $cat_ID, 'category');
+                    /*  if (is_wp_error($term_taxonomy_ids)) {
+                      }*/
+                    // inno_log_db::log_admin_coupon_management($current_user->ID, 1192, $lang . " id" . $cat_ID);
+                }
+                $lang = NULL;
+                $cat_ID = NULL;
+                $post_language_information = NULL;
+                $term_taxonomy_ids = NULL;
+                $needing_found = NULL;
+                $post_id = NULL;
+                $terms = NULL;
+                $status = NULL;
+
             } catch (Exception $e) {
                 //inno_log_db::log_admin_stock_management($current_user->ID, $e->getCode(), $e->getMessage());
             }
@@ -95,8 +156,11 @@ if (!class_exists('vcoin_coupon')) {
                     inno_log_db::log_admin_coupon_management($current_user->ID, 1214, "No redemption code is added");
                     return;
                 }
-                unset($_POST["codezx"]);
+
                 self::update_coupon_codex($post_id, $code_x);
+                unset($post_id);
+                unset($_POST["codezx"]);
+                unset($code_x);
             } catch (Exception $e) {
                 inno_log_db::log_admin_coupon_management($current_user->ID, $e->getCode(), $e->getMessage());
             }
@@ -124,7 +188,7 @@ if (!class_exists('vcoin_coupon')) {
         }
 
 
-        public static function addRWMetabox($meta_boxes)
+        public function addRWMetabox($meta_boxes)
         {
 
             $meta_boxes[] = array(
@@ -140,11 +204,8 @@ if (!class_exists('vcoin_coupon')) {
                 //Here we define all the fields we want in the meta box
                 'fields' => array(
                     array('name' => __('Offer Expiry Date(*)', HKM_LANGUAGE_PACK),
-// TAXONOMY
                         'id' => "inn_exp_date",
-// ID for this field
                         'type' => 'date',
-//options
                         'desc' => 'The time of expiration',
                     ),
                     array(
@@ -163,22 +224,60 @@ if (!class_exists('vcoin_coupon')) {
                         'std' => 30,
                         'desc' => 'The length of days for redemption from the time of customer redemption.',
                     ),
-
-//start fields
+                    array('type' => 'divider'),
+                    array(
+                        'name' => __('Game Play (*)', HKM_LANGUAGE_PACK),
+                        'id' => 'game_type',
+                        'type' => 'select',
+                        'options' => array(
+                            "na" => __("Default", HKM_LANGUAGE_PACK),
+                            "luck_draw" => __("LUCKY DRAW", HKM_LANGUAGE_PACK),
+                            "web_stock_1" => __("Simple Web Redemption", HKM_LANGUAGE_PACK),
+                            "web_stock_2" => __("FIFO Web Redemption", HKM_LANGUAGE_PACK)
+                        ),
+                        "desc" => "
+<strong>Default:</strong> customer will be able to use the vcoinapp to make redemptions of the e-coupon. The e-coupons will be revealed to them in the app and they can use it as a coupon for other purposes such as online shop discount coupon.<br><strong>Lucky Draw:</strong>This campaign will be taken place at the cut off peroid (Offer Expiry Date) at midnight. This allow unlimited e-coupon codes to be issued and limit only the amount of the customers to be able to grant the prize of the said item. The reserved stock amount (Total Stock Available) will be used for limiting to the outcome of the customers. The result will be sent via email to the admin email account. <br>
+<strong> Simple Web Redemption</strong> featured with codes amount = stock amount<br>
+ Using First-come-first-serve model, the total amount of e-coupon codes = number of concert tickets. The user will see if the ticket is still available in the real stock count directly. The only part is the validation of the e-coupon codes on the website it requires the codes from the cms server to make proper validation (for the codes amount) in order complete the website redemptions.<br>
+<strong>FIFO Web Redemption</strong> featured with server amount (Total Stock Available) = stock amount<br>
+ The stock amount will be pointed to the reserve stock amount for the second check. In this case, the e-coupon codes is unlimited. The serve stock amount will be used to check against the claim api coming from the web service and it will determine when the availability will be stopped. With the cut off time period, the form is release to the public with this model has First-come-first-serve model to check against each form submission for one single claim success on the status.
+", "std" => "na",
+                    ),
+                    array(
+                        'name' => __('Total Stock Available', HKM_LANGUAGE_PACK),
+                        'id' => "stock_available_total",
+                        'type' => 'number',
+                        'std' => 0,
+                        'desc' => 'This field is only available in the lucky draw section.',
+                    ),
                     array('type' => 'divider'),
                     array(
                         'name' => __('PRODUCT VIDEO URL(*)', HKM_LANGUAGE_PACK),
                         'id' => "coupon_video_url",
-// ID for this field
                         'type' => 'text',
                         'desc' => 'Enter a full URL path with the file format *.mp4 H.264 AVC android support format',
                     ),
-                    array('type' => 'divider'),
+                    array('name' => __('Video Play VCoin Payout(*)', HKM_LANGUAGE_PACK),
+                        'id' => "v_coin_payout",
+                        'type' => 'number',
+                        'desc' => 'This amount will take out from the merchant of the following vcoin uuid. The merchant to make sure that there are sufficient v-coin to be given when user watched the video provided by this merchant. Just to remind that if the vcoin account of this coupon has run out of the vcoin then the payout will automatically drop back to zero.',
+                    ),
                     array(
-                        'name' => __('V Coin VAL(*)', HKM_LANGUAGE_PACK),
+                        'type' => 'text',
+                        'name' => 'VCoin UUID',
+                        'id' => 'uuid_key',
+                    ),
+                    array('type' => 'divider'),
+                    array('name' => __('V Coin VAL(*)', HKM_LANGUAGE_PACK),
                         'id' => "v_coin",
                         'type' => 'number',
-                        'desc' => 'The cost of v coin for sale, the cost of redemption in v-coin',
+                        'desc' => 'This amount is cost to make a redemption of this product or good.',
+                    ),
+                    array(
+                        'name' => __('Redemption Lock', HKM_LANGUAGE_PACK),
+                        'id' => "release_redemption",
+                        'type' => 'checkbox',
+                        'desc' => 'Yes: Only allow to see the product introduction and the video but the user is not allowed to make redemption of this product or good. NO: vice versa.',
                     ),
                     array('type' => 'divider'),
                     array(
@@ -187,18 +286,6 @@ if (!class_exists('vcoin_coupon')) {
                         'type' => 'select', //options
                         'options' => VendorRequest::get_wp_vendor_list(),
                     ),
-                    /*
-                    array(
-                        'name' => 'Vendor Name',
-                        'id' => "vend_name",
-                        'type' => 'hidden',
-                    ),
-                    array(
-                        'name' => 'Vendor JSON',
-                        'id' => "innvendorobject",
-                        'type' => 'hidden',
-            
-                    ),*/
                     array(
                         'name' => __('Coupon Type (*)', HKM_LANGUAGE_PACK),
                         'id' => 'coupon_type',
@@ -246,12 +333,6 @@ if (!class_exists('vcoin_coupon')) {
                     ),
                     array('type' => 'divider'),
                     array(
-                        'name' => __('Redemption Lock', HKM_LANGUAGE_PACK),
-                        'id' => "release_redemption",
-                        'type' => 'checkbox',
-                        'desc' => 'Check this when this product is not ready for redemption. The unchecked box will allow user to play video and do redemption process.',
-                    ),
-                    array(
                         'name' => 'Coupon config complete',
                         'id' => "coupon_configuration_complete",
                         'type' => 'hidden',
@@ -272,11 +353,11 @@ if (!class_exists('vcoin_coupon')) {
                 'fields' => array(
 
                     array(
-                        'name' => __('Slider', HKM_LANGUAGE_PACK),
-                        'desc' => 'Moving slider on the reward channel /<strong style="color:red">Dimensions: 640 × 375px.</strong>',
+                        'name' => __('Group Images', HKM_LANGUAGE_PACK),
+                        'desc' => 'Group images for the single reward items /<strong style="color:red">Dimensions: 640 × 375px.</strong>',
                         'id' => 'inno_image_slider',
                         'type' => 'image_advanced',
-                        'max_file_uploads' => 1,
+                        'max_file_uploads' => 5,
                     ),
                     array(
                         'name' => __('Small Thumb', HKM_LANGUAGE_PACK),
@@ -337,7 +418,7 @@ if (!class_exists('vcoin_coupon')) {
 
                     array(
                         'name' => __('Redemption Codes Input Bank', HKM_LANGUAGE_PACK),
-                        'desc' => '(required) (copy and paste the code from the cvs file in here) the format should be using single space to separate all the coupon codes',
+                        'desc' => '(required) (copy and paste the code from the cvs file in here) the format should be using single space to separate all the coupon codes. You can also get your code from here: <a href="http://www.randomcodegenerator.com/generate-codes#result">random code gen</a>.',
                         'id' => 'codezx',
                         'type' => 'textarea',
                     ),
@@ -365,12 +446,16 @@ if (!class_exists('vcoin_coupon')) {
             $prepared = $wpdb->prepare($template_prepared, $codex, $coupon_id);
 
             $found = $wpdb->get_row($prepared);
+            unset($prepared);
             if (!$found) {
                 $wpdb->insert($table, $_new_coupon,
                     array(
                         '%s',
                         '%d'
                     ));
+                unset($table);
+                unset($_new_coupon);
+                unset($template_prepared);
                 return $wpdb->insert_id;
             } else {
                 inno_log_db::log_coupons(-1, 773923, "failure to add coupon on with code:" . $codex . " for coupon id:" . $coupon_id);
@@ -397,6 +482,10 @@ if (!class_exists('vcoin_coupon')) {
                 $msg = 'Total redemption code of ' . $added . ' have added to the coupon system. - Coupon ID : ' . $post_id;
                 inno_log_db::log_admin_coupon_management($current_user->ID, 1213, $msg);
             }
+
+            $code_x_serial = NULL;
+            $added = NULL;
+            $msg = NULL;
             return true;
         }
 
@@ -409,5 +498,56 @@ if (!class_exists('vcoin_coupon')) {
                 __("Coupon Redemption Analysis", HKM_LANGUAGE_PACK),
                 get_oc_template('admin_coupon_analysis'));
         }
+
+        public static function remove_post_adjustment($post_id)
+        {
+            // We check if the global post type isn't ours and just return
+            global $post_type, $wpdb;
+            if ($post_type != VCOUPON) return;
+            $C = new CouponLogic();
+            $C->remove_post($post_id);
+            return true;
+        }
+
+        public static function manage_column($column_name, $id)
+        {
+            global $wpdb;
+            switch ($column_name) {
+                case 'type':
+                    echo get_post_meta($id, "game_type", true);
+                    break;
+                case 'id':
+                    echo $id;
+                    break;
+                case 'exp':
+                    echo get_post_meta($id, "inn_exp_date", true);
+                    break;
+                case 'vendor':
+                    $n = (int)get_post_meta($id, "innvendorid", true);
+                    echo get_the_title($n);
+                    break;
+                default:
+                    break;
+            } // end switch
+        }
+
+        public static function add_new_columns($new_columns)
+        {
+            $new_columns['cb'] = '<input type="checkbox" />';
+            $new_columns['id'] = __('ID');
+            $new_columns['title'] = _x('Coupon', 'column name');
+            $new_columns['type'] = __('Game Type');
+            $new_columns['exp'] = __('Expiry');
+            $new_columns['vendor'] = __('Vendor');
+            // $new_columns['author'] = __('Author');
+            // $new_columns['categories'] = __('Categories');
+            // $new_columns['tags'] = __('Tags');
+            // $new_columns['date'] = _x('Date', 'column name');
+            unset($new_columns['author']);
+            unset($new_columns['date']);
+            unset($new_columns['categories']);
+            return $new_columns;
+        }
+
     }
 }

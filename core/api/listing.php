@@ -42,24 +42,8 @@ if (!class_exists('JSON_API_Listing_Controller')) {
         public static function rewards()
         {
             global $json_api;
-
             try {
-                $arr = array();
-                if (isset($json_api->query->cat)) {
-                    $category = $json_api->query->cat;
-                    $arr['category__in'] = $category;
-                }
-
-                if (isset($json_api->query->country)) {
-                    $arr['country'] = $json_api->query->country;
-                }
-
-                if (isset($json_api->query->p)) {
-                    // $maxposts = get_option('posts_per_page');
-                    $arr['paged'] = $json_api->query->p;
-                }
-                $reward_listing = new RewardListing($arr);
-
+                $reward_listing = new RewardListing($json_api->query);
                 api_handler::outSuccessDataWeSoft($reward_listing->getResultArr());
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());

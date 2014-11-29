@@ -6,6 +6,19 @@
 if (!class_exists('JSON_API_Stock_Controller')) {
     class JSON_API_Stock_Controller
     {
+
+        public static function stock_count_ext_v2()
+        {
+            try {
+                global $json_api;
+                $arr = new SingleRewardExt($json_api->query->id);
+                api_handler::outSuccessDataWeSoft($arr->list_reward_details());
+            } catch (Exception $e) {
+                api_handler::outFail($e->getCode(), $e->getMessage());
+            }
+        }
+
+
         /**
          * listing for the cms ajax only
          */
@@ -14,9 +27,8 @@ if (!class_exists('JSON_API_Stock_Controller')) {
             global $json_api;
             try {
                 if (!isset($json_api->query->id)) throw new Exception("missing 0 param", 1003);
-                $stock_id = $json_api->query->id;
                 $j_stock_operation = new StockOperation();
-                $stock = $j_stock_operation->list_stock_data($stock_id);
+                $stock = $j_stock_operation->list_stock_data($json_api->query->id, true);
                 api_handler::outSuccessDataTable($stock);
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());
@@ -41,14 +53,14 @@ if (!class_exists('JSON_API_Stock_Controller')) {
         public static function change_stock_count()
         {
             global $json_api;
-            $stock_count_id = $json_api->query->stock_count_id;
 
-            $new_count = $json_api->query->new_count;
-
-            $stock = new StockOperation();
-            $stock->add_count_v2($stock_count_id, $new_count);
-
-            api_handler::outSuccessData($stock_count_id);
+            try {
+                $stock = new StockOperation();
+                $result = $stock->add_count_v2($json_api->query);
+                api_handler::outSuccessData($result);
+            }catch (Exception $e) {
+                api_handler::outFail($e->getCode(), $e->getMessage());
+            }
         }
 
         /**

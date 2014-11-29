@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: ryo
  * Date: 14年8月6日
  * Time: 下午3:29
@@ -74,6 +74,12 @@ if (!class_exists('system_log_display')) {
             //)
             //);
         }
+
+        public function __destruct()
+        {
+            $this->system_log = NULL;
+        }
+
 
         public static function render_admin_page_system_log()
         {

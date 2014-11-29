@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || exit;
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年1月6日
  * Time: 上午10:38
@@ -18,6 +18,7 @@ if (!class_exists('api_handler')) {
         public static function outputJson($mix)
         {
             header('Content-Type: application/json');
+            status_header(200);
             echo json_encode($mix);
             die();
         }
@@ -47,6 +48,18 @@ if (!class_exists('api_handler')) {
             if (!$return) self::outputJson($out); else return $out;
         }
 
+        public static function outFailWeSoft($code, $message, $return = false)
+        {
+            $out = array(
+                "msg" => $message,
+                "result" => $code,
+                "timestamp" => -1,
+                "status" => "failure",
+                "data" => ""
+            );
+            if (!$return) self::outputJson($out); else return $out;
+        }
+
         public static function outFail($code, $message, $return = false)
         {
             $out = array(
@@ -57,6 +70,16 @@ if (!class_exists('api_handler')) {
                 "data" => "failure"
             );
             if (!$return) self::outputJson($out); else return $out;
+        }
+
+        public static function curl_posts($url, array $post = NULL, array $options = array())
+        {
+            $options = wp_parse_args(array(
+                CURLOPT_TIMEOUT => 10,
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_CAINFO => CERT_PATH,
+            ), $options);
+            return self::curl_post($url, $post, $options);
         }
 
         /**
@@ -81,7 +104,7 @@ if (!class_exists('api_handler')) {
             );
 
             $ch = curl_init();
-           // $final_set = wp_parse_args($options, $defaults);
+            // $final_set = wp_parse_args($options, $defaults);
             curl_setopt_array($ch, ($options + $defaults));
             if (!$result = curl_exec($ch)) {
                 // trigger_error(curl_error($ch));

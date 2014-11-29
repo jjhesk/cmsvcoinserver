@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || exit;
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年8月8日
  * Time: 下午4:14
@@ -56,6 +56,10 @@ if (!class_exists('vcoinBase')) {
             return $this;
         }
 
+        /**
+         * @param $reference
+         * @return $this
+         */
         public function setTransactionReference($reference)
         {
             $this->reference = $reference;
@@ -77,26 +81,25 @@ if (!class_exists('vcoinBase')) {
                 $this->send_uuid = userBase::getVal($this->user_less_coin->ID, "uuid_key");
             if ($this->send_uuid == "") throw new Exception("less coin user account key is missing.", 1020);
 
-
             if (!isset($this->receive_uuid) && isset($this->user_gain_coin))
                 $this->receive_uuid = userBase::getVal($this->user_gain_coin->ID, "uuid_key");
             if ($this->receive_uuid == "") throw new Exception("gain coin user account key is missing.", 1020);
 
-            inno_log_db::log_admin_stock_management(-1,333333,"eeeee");
-
-            $json = api_handler::curl_post(VCOIN_SERVER . "/api/coin/move",
+            //inno_log_db::log_admin_stock_management(-1,15333303,"eeeee");
+            $json = api_handler::curl_post(VCOIN_SERVER . "/api/coin/move/",
                 array(
                     "debit" => $this->receive_uuid,
                     "credit" => $this->send_uuid,
                     "ref_code" => $this->reference,
                     "amount" => $this->amount
-                    ),
+                ),
                 array(
                     CURLOPT_TIMEOUT => 30,
-                ));
+                )
+            );
 
             $res = json_decode($json);
-            unset($uuid);
+            //unset($uuid);
             unset($json);
 
             if (intval($res->result) > 0) {
@@ -106,11 +109,14 @@ if (!class_exists('vcoinBase')) {
             }
         }
 
-        public function get_tranaction_reference()
+        /**
+         * @return mixed
+         */
+        public function get_transaction_reference()
         {
-            while (isset($this->transaction_reference)) {
-                return $this->transaction_reference;
-            }
+            // while (isset($this->transaction_reference)) {
+            return $this->transaction_reference;
+            // }
         }
 
 

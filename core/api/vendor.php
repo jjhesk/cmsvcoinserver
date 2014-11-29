@@ -4,7 +4,7 @@
   Controller description: Backend API for presenting the JSON of vendor.<br>Author: Ryo
  */
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: ryo
  * Date: 14年8月13日
  * Time: 下午3:57

@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年7月31日
  * Time: 下午12:10
  */
 class userBase
 {
+
+
     public static function UpdateUserMeta($user_id, $data)
     {
         if (is_array($data)) {
@@ -206,7 +208,7 @@ class userBase
     public static function getName($userID)
     {
         $user_info = get_userdata($userID);
-        //          print_r($user_info -> display_name);
+        //print_r($user_info -> display_name);
         return isset($user_info->display_name) ? $user_info->display_name : "There is no such user from the id" . $userID . " line@44 oc_db_account.php";
     }
 

@@ -1,13 +1,26 @@
 <?php
 
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年9月30日
  * Time: 上午11:53
  */
 class SingleRewardHistory extends SingleBase
 {
+
+    public function __construct($ID)
+    {
+        global $wpdb;
+        $this->post_id = (int)$ID;
+        if (isset($_GET['lang']))
+            $this->lang = $_GET['lang'];
+        if (!$this->isType(get_post_type($this->post_id))) throw new Exception("post type check failed. this object_id is not valid for this post type or this id is not exist", 1047);
+        $this->db = $wpdb;
+        $this->content = $this->queryobject();
+    }
+
+
     protected function isType($type)
     {
         return $type == VPRODUCT;
@@ -36,8 +49,8 @@ class SingleRewardHistory extends SingleBase
         // $image_slider = $this->get_product_image("inno_image_slider");
         $image_small_thumb = $this->get_product_image("inno_image_thumb");
         $image_video_cover = $this->get_product_image("inno_video_cover_image");
-        $country = $this->get_terms("country");
-        $category = $this->get_terms("category");
+        $country = $this->get_terms_images("country");
+        $category = $this->get_terms_images("category");
         return get_defined_vars();
     }
 

@@ -4,7 +4,7 @@
  * This is the Push Server Gateway for MD server SMS service
  * @source : http://www.md-sms.com/download/SMSOpenAPI.SMS.MD.5.05.pdf
  * http://www.md-sms.com/main.jsp;jsessionid=262e2a82045e7f78c1f7d0e04032?l=c#mainTabPanel:TabAPIH
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年9月11日
  * Time: 上午10:08

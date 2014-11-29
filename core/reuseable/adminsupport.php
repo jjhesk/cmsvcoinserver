@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by HKM Corporation.
  * User: Hesk
  * Date: 14年5月15日
  * Time: 下午12:10
@@ -22,7 +22,7 @@ if (!class_exists('adminsupport')):
 
         public function register()
         {
-            //  wp_register_style('adminsupportcss', HKM_LIBCSS . 'admin/normalcontrol.css', array(), '1');
+            wp_register_style('adminsupportcss', HKM_LIBCSS . 'admin/normalcontrol.css', array(), '1');
             //   wp_register_script('ocjp', HKM_LIBJS . 'admin/jobpanel.js', array('jquery', 'jquery-ui-autocomplete'), $this->ver, true);
         }
 
@@ -136,10 +136,14 @@ if (!class_exists('adminsupport')):
         {
             $screen = get_current_screen();
             if ($screen->post_type == $this->post_type) {
-                if (isset($this->style_script_id))
+              //  inno_log_db::log_admin_vendor_management(-1, 2120001, $this->post_type);
+                if (isset($this->style_script_id)){
+                    inno_log_db::log_admin_vendor_management(-1, 2120001, $this->style_script_id);
                     wp_enqueue_style($this->style_script_id);
+                }
 
-                wp_enqueue_script($this->script_id);
+                if (isset($this->script_id))
+                    wp_enqueue_script($this->script_id);
                 $this->check_localize($hook);
             }
         }
