@@ -71,7 +71,7 @@ abstract class cmsBase
 
     protected function isDebug()
     {
-        return false;
+        return true;
     }
 
     protected function debug_field_type()

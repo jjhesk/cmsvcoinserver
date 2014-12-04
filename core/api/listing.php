@@ -117,20 +117,8 @@ if (!class_exists('JSON_API_Listing_Controller')) {
                 global $json_api;
                 $query = $json_api->query;
                 $cat_list = new ListTax();
-                if (isset($query->type)) {
-                    if ($query->type == 'android') {
-                        //   $platform_countries = 'countryandroid';
-                        api_handler::outSuccessDataWeSoft($cat_list->list_cat_android());
-                    } else if ($query->type == 'ios') {
-                        api_handler::outSuccessDataWeSoft($cat_list->list_cat_ios());
-                        //  $platform_countries = 'countryios';
-                    } else if ($query->type == 'reward') {
-                        api_handler::outSuccessDataWeSoft($cat_list->list_cat_reward());
-                    } else {
-                        //  $platform_countries = 'country';
-                        api_handler::outFail(303, "valuable \"type\" is not properly set.");
-                    }
-                }
+                $cat_list->getRequest($query);
+                api_handler::outSuccessDataWeSoft($cat_list->getResultArr());
                 throw new Exception("type key is missing.. ", 1001);
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());

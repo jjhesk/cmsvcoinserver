@@ -32,52 +32,51 @@ if (!class_exists('ListTax')) {
             $this->final_set = wp_parse_args($args, $this->preset);
         }
 
-        public function list_cat_reward()
+        public function getRequest($Q)
         {
             try {
+                if (!isset($Q->country)) throw new Exception("Missing country code", 1814);
+                if (!isset($Q->type)) throw new Exception("Type code", 1814);
+                if (!isset($Q->lang)) throw new Exception("language code", 1814);
                 $this->final_set['with_image'] = true;
 
-                $this->listCateBy('category', $this->final_set);
-                return $this->getResultArr();
+                switch ($Q->type) {
+                    case "android":
+                        $by = "appandroid";
+                        $country_cat = "countryandroid";
+                        $post_type = APPDISPLAY;
+                        break;
+                    case "rewards":
+                        $by = "category";
+                        $country_cat = "country";
+                        $post_type = VPRODUCT;
+                        break;
+                    case "ios":
+                        $by = "appcate";
+                        $country_cat = "countryios";
+                        $post_type = APPDISPLAY;
+                        break;
+                    default:
+                        throw new Exception("type is not supported", 1814);
+                        break;
+                }
+                $this->listCateBy($by, $country_cat, $Q->country, $this->final_set, $post_type);
             } catch (Exception $e) {
                 throw $e;
             }
         }
 
-        public function list_cat_android()
-        {
-            try {
-                $this->final_set['with_image'] = true;
-                if (isset($_REQUEST["lang"])) $this->final_set['lang'] = $_REQUEST["lang"];
-                $this->listCateBy('appandroid', $this->final_set);
-                return $this->getResultArr();
-            } catch (Exception $e) {
-                throw $e;
-            }
-        }
-
-        public function list_cat_ios()
-        {
-            try {
-                $this->final_set['with_image'] = true;
-                if (isset($_REQUEST["lang"])) $this->final_set['lang'] = $_REQUEST["lang"];
-                $this->listCateBy('appcate', $this->final_set);
-                return $this->getResultArr();
-            } catch (Exception $e) {
-                throw $e;
-            }
-        }
 
         public function listCountryCodes()
         {
             $this->filter_keys_setting = 1;
-            $this->listCateBy($this->final_set['taxonomy'], $this->final_set);
+            $this->listCatBySimple($this->final_set['taxonomy'], $this->final_set);
         }
 
         public function listCountry()
         {
             $this->final_set['with_image'] = true;
-            $this->listCateBy($this->final_set['taxonomy'], $this->final_set);
+            $this->listCatBySimple($this->final_set['taxonomy'], $this->final_set);
             /*   try {
                    $this->listCateBy($this->final_set['taxonomy'], $this->final_set);
                    return $this->getResultArr();

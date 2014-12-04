@@ -363,10 +363,11 @@ if (!class_exists('JSON_API_Crosscms_Controller')) {
                  * return $h->catloop(get_the_category_by_ID(1905), true, false, "category");
                  * }
                  */
-                api_handler::outSuccessDataWeSoft(array(
+                api_handler::outSuccessDataWeSoft($arr);
+                /*api_handler::outSuccessDataWeSoft(array(
                     "list" => $arr,
                     "cate" => SingleCate::catloop(get_the_category_by_ID(1905), true, false, "category")
-                ));
+                ));*/
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());
             }

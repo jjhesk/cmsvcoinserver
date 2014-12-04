@@ -14,6 +14,7 @@ if (!class_exists('JSON_API_Single_Controller')) {
     class JSON_API_Single_Controller
     {
 
+
         /**
          * display a single reward item in json for the mobile app
          */

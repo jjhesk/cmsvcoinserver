@@ -161,31 +161,37 @@ if (!class_exists('JSON_API_Cms_Controller')) {
             global $wpdb, $current_user, $json_api;
             try {
                 //     $user_id = $current_user->ID;
-                $user_role = $current_user->roles[0];
-                if ($user_role != "administrator") throw new Exception("you are not permitted to use this API", 101011);
+                /*$user_role = $current_user->roles[0];
+                if ($user_role != "administrator") throw new Exception("you are not permitted to use this API", 101011);*/
 
                 $primaryKey = 'ID';
 
                 $columns = array(
                     array('db' => 'ID', 'dt' => 'ID'),
-                    array('db' => 'devuser', 'dt' => 'devuser'),
-                    array('db' => 'devname', 'dt' => 'devname'),
-                    array('db' => 'status', 'dt' => 'status'),
-                    array('db' => 'store_id', 'dt' => 'store_id'),
-                    array('db' => 'app_key', 'dt' => 'app_key'),
-                    array('db' => 'app_secret', 'dt' => 'app_secret'),
-                    array('db' => 'platform', 'dt' => 'platform'),
-                    array('db' => 'post_id', 'dt' => 'post_id'),
-                    array('db' => 'deposit', 'dt' => 'deposit'),
-                    array('db' => 'payout', 'dt' => 'payout'),
-                    array('db' => 'description', 'dt' => 'description'),
-                    array('db' => 'vcoin_account', 'dt' => 'vcoin_account'),
-                    array('db' => 'app_title', 'dt' => 'app_title'),
-                    array('db' => 'icon', 'dt' => 'icon'),
-                    array('db' => 'image_urls', 'dt' => 'image_urls'),
+                    array('db' => 'trace_id', 'dt' => 'trace_id'),
+                    array('db' => 'stock_ext_id', 'dt' => 'stock_ext_id'),
+                    array('db' => 'vstatus', 'dt' => 'vstatus'),
+                    array('db' => 'qr_a', 'dt' => 'qr_a'),
+                    array('db' => 'qr_b', 'dt' => 'qr_b'),
+                    array('db' => 'distribution', 'dt' => 'distribution'),
+                    array('db' => 'handle_mac_address', 'dt' => 'handle_mac_address'),
+                    array('db' => 'handle_terminal_id', 'dt' => 'handle_terminal_id'),
+                    array('db' => 'handle_requirement', 'dt' => 'handle_requirement'),
+                    array('db' => 'names', 'dt' => 'names'),
+                    array('db' => 'action_taken_by', 'dt' => 'action_taken_by'),
+                    array('db' => 'user', 'dt' => 'user'),
+                    array('db' => 'stock_id', 'dt' => 'stock_id'),
+                    array('db' => 'vcoin', 'dt' => 'vcoin'),
+                    array('db' => 'obtained', 'dt' => 'obtained'),
+                    array('db' => 'address', 'dt' => 'address'),
+                    array('db' => 'offer_expiry_date', 'dt' => 'offer_expiry_date'),
+                    array('db' => 'claim_time', 'dt' => 'claim_time'),
+                    array('db' => 'time', 'dt' => 'time'),
                 );
-                $data_result = sspclass::simple($_GET, $wpdb, $wpdb->prefix . "post_app_registration",
+                $data_result = sspclass::simple($_GET, $wpdb, $wpdb->prefix . "post_redemption",
                     $primaryKey, $columns, $json_api->query);
+
+                inno_log_db::log_admin_stock_management(-1, 8888, print_r($data_result, true));
 
                 api_handler::outSuccessPagingDataTable($data_result);
 

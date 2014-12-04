@@ -12,35 +12,63 @@ if (!class_exists('RewardListing')) {
         private $result = array();
         private $query = array();
 
+
         public function __construct($Q)
         {
-
+            $arr = array();
             if (!isset($Q->cat))
                 throw new Exception("Missing category id", 1810);
             else {
-                $category = $Q->cat;
-                $arr['category__in'] = $category;
+                if (intval($Q->cat) != -1) {
+                    $category = intval($Q->cat);
+                    $arr['category__in'] = $category;
+                }
+            }
+
+            if (!isset($Q->lang))
+                throw new Exception("Missing lang code", 1812);
+            else {
+                if ($Q->lang == "en") {
+                    $arr['language'] = "en";
+                }
+                else if ($Q->lang == "ja") {
+                    $arr['language'] = "ja";
+                }
+                else $arr['language'] = "zh-hant";
             }
 
             if (!isset($Q->country))
                 throw new Exception("Missing country id", 1811);
             else {
-                $arr['country'] = $Q->country;
+                if (intval($Q->country) != -1) {
+                    $term = get_term_by('id', intval($Q->country), 'country', OBJECT);
+
+                    inno_log_db::log_admin_stock_management(-1, 6666, print_r($Q->country, true));
+                    //$this->query = $term;
+                    $arr['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'country',
+                            'field' => 'slug',
+                            'terms' => array($term->slug),
+                        ),
+                        'orderby' => 'title',
+                    );
+                }
             }
 
             if (isset($Q->p)) {
                 // $maxposts = get_option('posts_per_page');
-                $arr['paged'] = $Q->p;
+                $arr['paged'] = intval($Q->p);
             }
 
 
-            if (ICL_LANGUAGE_CODE == 'it') {
+            /*if (ICL_LANGUAGE_CODE == 'it') {
                 $taxonomy = "tipologia_prodotto";
             } elseif (ICL_LANGUAGE_CODE == 'en') {
                 $taxonomy = "TAXONOMY-ENGLISH";
             } else {
                 $taxonomy = "TAXONOMY-DEFAULT";
-            }
+            }*/
             $this->config = array(
                 // 'suppress_filters' => true,
                 'language' => 'en',
@@ -51,25 +79,7 @@ if (!class_exists('RewardListing')) {
                 'orderby' => 'date',
             );
 
-            if (isset($input['country'])) {
-                $term = get_term_by('id', intval($input['country']), 'country', OBJECT);
-                $this->query = $term;
-                $this->config['tax_query'] = array(
-                    array(
-                        'taxonomy' => 'country',
-                        'field' => 'slug',
-                        'terms' => array($term->slug),
-                    ),
-                    'orderby' => 'title',
-                );
-
-                unset($input['country']);
-            }
-            if (isset($input['cat'])) {
-
-
-            }
-            $this->doQuery(wp_parse_args($input, $this->config));
+            $this->doQuery(wp_parse_args($arr, $this->config));
         }
 
         protected function inDaLoop($post_id, $args = array())

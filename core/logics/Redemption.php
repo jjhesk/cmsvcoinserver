@@ -408,7 +408,6 @@ if (!class_exists('Redemption')) {
         }
 
 
-
         /**
          * @return mixed
          */
@@ -587,18 +586,19 @@ if (!class_exists('Redemption')) {
         public function redeemobtain_vendor_scan_advanced($Q)
         {
             if (!isset($Q->step)) throw new Exception("process step is missing.", 1061);
-            if (!isset($Q->user)) throw new Exception("user step is missing.", 1065);
+            // if (!isset($Q->user)) throw new Exception("user step is missing.", 1065);
             $step_process = intval($Q->step);
             if ($step_process == 1) {
                 if (!isset($Q->qr)) throw new Exception("QR code is missing.", 1062);
-                $get_first_row = "SELECT * FROM $this->transaction_table_product WHERE user=" . $Q->user . " AND (qr_a='" . $Q->qr . "' OR qr_b='" . $Q->qr . "') ";
+                $get_first_row = "SELECT * FROM $this->transaction_table_product WHERE qr_a='" . $Q->qr . "' OR qr_b='" . $Q->qr . "' ";
                 $redeem_record = $this->db->get_row($get_first_row);
+                $redeem_record->product_name = get_the_title((int)$redeem_record->stock_id);
                 if (!$redeem_record) throw new Exception("This redemption product is not available to you, please try to check out our redemption products first.", 1063);
                 //got the redemption row now
                 $this->transaction_result_success = $redeem_record;
             } else if ($step_process == 2) {
                 if (!isset($Q->trace_id)) throw new Exception("the trace ID is missing.", 1064);
-                $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE user=%d AND trace_id=%s", (int)$Q->user, $Q->trace_id);
+                $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE trace_id=%s", $Q->trace_id);
                 $redeem_record = $this->db->get_row($get_first_row);
                 if (!$redeem_record) throw new Exception("redemption data is not verified or found", 1068);
                 if (intval($redeem_record->obtained) == 1) throw new Exception("This redemption has been claimed", 1066);
@@ -633,8 +633,6 @@ if (!class_exists('Redemption')) {
             } else {
                 throw new Exception("step val is invalid.", 1667);
             }
-
-
             $step_process = NULL;
             $get_first_row = NULL;
             $redeem_record = NULL;
@@ -659,10 +657,9 @@ if (!class_exists('Redemption')) {
 
         public function get_redemption_count($stock_id)
         {
-
             $transaction_table = $this->db->prefix . "post_redemption";
-            $getcount = $this->db->prepare("SELECT COUNT(*) FROM $transaction_table WHERE stock_id=%d", $stock_id);
-            $t = $this->db->get_var($getcount);
+            $get_count = $this->db->prepare("SELECT COUNT(*) FROM $transaction_table WHERE stock_id=%d", $stock_id);
+            $t = $this->db->get_var($get_count);
             return !$t ? 0 : intval($t);
         }
 

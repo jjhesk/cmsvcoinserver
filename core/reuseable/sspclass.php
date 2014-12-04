@@ -258,6 +258,7 @@ class sspclass
 			 $order
 			 $limit
 			 ";
+
         // Main query to actually get the data
         $data = $db->get_results($prepare_statement, ARRAY_A);
         // Data set length after filtering

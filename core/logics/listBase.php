@@ -76,25 +76,50 @@ abstract class listBase
         return $this->list_result;
     }
 
+    protected function listCatBySimple($taxonomy_id, $args = array())
+    {
+        $terms_array = get_terms($taxonomy_id, $args);
+        $this->generateList($terms_array, $taxonomy_id, $args);
+    }
+
     /**
      * this is the complex listing of the list cate and taxonomy handler
      *
      * @param $taxonomy_id
+     * @param $country_cat
+     * @param $country_term_id
      * @param array $query_tax_preset
+     * @param $post_type
+     * @internal param null $country_cat_id
      */
-    protected function listCateBy($taxonomy_id, $query_tax_preset = array())
+    protected function listCateBy($taxonomy_id, $country_cat, $country_term_id, $query_tax_preset = array(), $post_type)
     {
+        /* if (strtolower($taxonomy_id) == "category") {
+             $terms_array = get_terms($taxonomy_id, $query_tax_preset);
 
-        if (strtolower($taxonomy_id) == "category") {
-            $array_terms = get_categories(wp_parse_args(array(
-                "type" => VPRODUCT
-            ), $query_tax_preset));
-        } else {
-            $array_terms = get_terms($taxonomy_id, $query_tax_preset);
-        }
+                         $taxonomy_ids = array();
+                         foreach ($terms_array as $obj) {
+                             $taxonomy_ids[] = $obj->term_id;
+                         }
+                         $get_terms = new get_terms_cpt($taxonomy_ids,VPRODUCT);
+                         $array_terms = $get_terms->get_terms_with_cpt();
 
+               $array_terms = get_terms_cpt::postTypeTaxonomy("category", $country_cat_id, VPRODUCT, $query_tax_preset);
+         } else {
+              $array_terms = get_terms($taxonomy_id, $query_tax_preset);
+         }*/
+
+        $array_terms = get_terms_cpt::postTypeTaxonomy($taxonomy_id, $country_cat, $country_term_id, $post_type, $query_tax_preset);
+
+        $this->generateList($array_terms, $taxonomy_id, $query_tax_preset);
+    }
+
+    private function generateList($array_terms, $taxonomy_id, $query_tax_preset)
+    {
         foreach ($array_terms as $cat) :
-            $this->list_result[] = $this->catloop($cat, isset($query_tax_preset["with_image"]) == true, strtolower($taxonomy_id) == "category", $taxonomy_id);
+            $this->list_result[] = $this->catloop($cat, isset($query_tax_preset["with_image"]) == true,
+            strtolower($taxonomy_id) == "category" || strtolower($taxonomy_id) == "appandroid" || strtolower($taxonomy_id) == "appcate"
+                , $taxonomy_id);
         endforeach;
         if (isset($_REQUEST["lang"]))
             $this->list_result[] = $this->all_button_initiate($taxonomy_id, $_REQUEST["lang"]);
@@ -130,8 +155,6 @@ abstract class listBase
         return $ar;
     }
 
-
-
     /**
      * cate data loop
      *
@@ -150,6 +173,8 @@ abstract class listBase
         }
         if ($isCate) {
             $desc = category_description($cat->term_id);
+            $term = get_term_by("id", $cat->term_id, $taxonomy_id);
+            $cat_name = taxonomy_develop::clean_term_name($term->name);
         } else {
             $text = trim(wp_kses(term_description($cat->term_id, $taxonomy_id), array()));
             $desc = str_replace('\n', "", $text);
@@ -157,7 +182,7 @@ abstract class listBase
 
         if ($this->filter_keys_setting === 1) {
             return array(
-                "name" => trim($cat->name),
+                "name" => trim($cat_name),
                 "countrycode" => $desc
             );
         } else {
@@ -168,13 +193,13 @@ abstract class listBase
                     "unpress_s" => z_taxonomy_image_url($cat->term_id, 3),
                     "press_s" => z_taxonomy_image_url($cat->term_id, 4),
 
-                    "name" => trim($cat->name),
+                    "name" => trim($cat_name),
                     "description" => $desc,
                     "id" => intval($cat->term_id),
                 );
             } else {
                 return array(
-                    "name" => trim($cat->name),
+                    "name" => trim($cat_name),
                     "description" => $desc,
                     "id" => intval($cat->term_id),
                 );

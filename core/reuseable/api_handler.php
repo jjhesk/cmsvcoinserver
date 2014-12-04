@@ -41,6 +41,19 @@ if (!class_exists('api_handler')) {
             self::outputJson(array("data" => $data, "result" => "success", "code" => 1, "timestamp" => $d->getTimestamp()));
         }
 
+        /**
+         * This is for the use of server-side datatable.js(paging)
+         * @param $data
+         */
+        public static function outSuccessPagingDataTable($data)
+        {
+            $d = new DateTime();
+            $meta = array("result" => "success", "code" => 1, "timestamp" => $d->getTimestamp());
+            $data = array_merge($data, $meta);
+            $d = NULL;
+            self::outputJson($data);
+        }
+
         public static function outSuccess($return = false)
         {
             $d = new DateTime();

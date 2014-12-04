@@ -29,12 +29,15 @@ if (!class_exists('taxonomy_develop')) {
             //$matcer = /##[^\s]*/g;
             global $wpdb;
             $existing_term = $wpdb->get_row($wpdb->prepare("SELECT name FROM $wpdb->terms WHERE term_id = %d", $term_id), ARRAY_A);
-            $string_after = preg_replace('/##[^\s]*/', "", $existing_term['name']);
-            $string_after = preg_replace('/@[^\s]*/', "", $string_after);
-            $existing_term['name'] = $string_after;
+            $existing_term['name'] = self::clean_term_name($existing_term['name']);
             $wpdb->update($wpdb->terms, array(
-                "name" => $string_after
+                "name" => $existing_term['name']
             ), compact('term_id'));
+        }
+
+        public static function clean_term_name($str){
+            $string_after = preg_replace('/##[^\s]*/', "", $str);
+            return $string_after = preg_replace('/@[^\s]*/', "", $string_after);
         }
 
         private function init_country_tax()
