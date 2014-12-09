@@ -194,15 +194,30 @@ if (!class_exists('system_frontend')) {
                     'slider_checker'
                 ), '1.0', false);
 
-            /*wp_register_script('switcher', LIBJS_ADMIN_MODEL . 'admin_profile_switcher.js', array(), '1.0', false);
-            wp_register_script('admin_cat', LIBJS_ADMIN . 'admin_cat.js',
-                array(
-                    'switcher'
-                ), '1.0', false);*/
+            wp_register_script('page_admin_scanner', LIBJS_ADMIN . 'admin_scanner.js', array(
+                'adminsupport',
+                'datatable',
+                'onecall_core_bar',
+                'datatable_reload_ajax',
+                'scan_details'
+            ), '1.0', false);
+
+            wp_register_script('scan_details', LIBJS_ADMIN_MODEL . 'admin_scan_details.js', array('switcher'), '1.0', false);
+
+            wp_register_script('page_admin_vendor_address', LIBJS_ADMIN . 'admin_vendor_address.js', array(
+                'adminsupport',
+                'datatable',
+                'onecall_core_bar',
+                'datatable_reload_ajax',
+                'edit_vendor_address'
+            ), '1.0', false);
+
+            wp_register_script('edit_vendor_address', LIBJS_ADMIN_MODEL . 'admin_edit_vendor_address.js', array('datatable_reload_ajax'), '1.0', false);
+
+            wp_register_script('switcher', LIBJS_ADMIN_MODEL . 'admin_profile_switcher.js', array(), '1.0', false);
 
             wp_register_script('page_admin_system_log', LIBJS_ADMIN . 'admin_system_log.js', array('page_list_support', 'datatable', 'onecall_core_bar', 'datatable_reload_ajax'), '1.0', false);
             wp_register_script('page_admin_comment_table', LIBJS_ADMIN . 'admin_comment_table.js', array('adminsupport', 'datatable', 'onecall_core_bar', 'datatable_reload_ajax'), '1.0', false);
-            wp_register_script('page_admin_scanner', LIBJS_ADMIN . 'admin_scanner.js', array('adminsupport', 'datatable', 'onecall_core_bar', 'datatable_reload_ajax'), '1.0', false);
             wp_register_script('gfordersupport', HKM_LIBJS . 'gravityforms/order.js', array('onecall_core_bar', 'gmaps', 'jquery'), '1.0', false);
             wp_register_script('gfnewcomsupport', HKM_LIBJS . 'gravityforms/reg_company.js', array('jquery', 'onecall_core_bar'), '1.0', false);
             /*royalslider css*/
@@ -218,7 +233,7 @@ if (!class_exists('system_frontend')) {
             wp_register_style('datatable', HKM_LIBCSS . 'dtable/dataTables.css', false, '1', 'screen');
             //remodal
             wp_register_style('remodal', HKM_LIBCSS . 'admin/jquery.remodal.css', false, '1', 'screen');
-            wp_register_style('profile_button', HKM_LIBCSS . 'admin/admin_profile_button.css', array(), '1', 'screen');
+            //wp_register_style('profile_button', HKM_LIBCSS . 'admin/admin_profile_button.css', array(), '1', 'screen');
             /*royalslider css*/
             wp_register_style('rs-core', HKM_LIBCSS . 'royalslider/core.css', null, '9.5');
             wp_register_style('rs-min-white', HKM_LIBCSS . 'royalslider/rs-minimal-white.css', array("rs-core"), '9.5');

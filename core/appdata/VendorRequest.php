@@ -87,7 +87,7 @@ if (!class_exists('VendorRequest')) {
             global $wpdb;
             //$vendor = VendorRequest::get_vendor_by_product_id($post_id);
 
-            $vendor = get_post_meta($post_id,"location_ids",false);
+            $vendor = get_post_meta($post_id, "location_ids", false);
             $address = array();
             foreach ($vendor[0] as $k => $v) {
                 $prep = $wpdb->prepare("SELECT * FROM cms_stock_address WHERE ID=%d", $v);
@@ -338,8 +338,61 @@ if (!class_exists('VendorRequest')) {
             return $ui;
         }
 
+        public static function get_all_vendor_addresses()
+        {
+            global $wpdb;
+            $table = $wpdb->prefix . "stock_address";
+            $query = $wpdb->prepare("SELECT * FROM $table");
+            return $wpdb->get_results($query);
+        }
 
+        public static function insert_vendor_address($Q)
+        {
+            global $wpdb;
 
+            if (!isset($Q->zh_short)) throw new Exception ("Missing Chinese Traditional short name", 100120);
+            if (!isset($Q->ja_short)) throw new Exception ("Missing Japanese short name", 100121);
+            if (!isset($Q->en_short)) throw new Exception ("Missing English short name", 100122);
+            if (!isset($Q->zh)) throw new Exception ("Missing Chinese Traditional full name", 100123);
+            if (!isset($Q->ja)) throw new Exception ("Missing Japanese full name", 100124);
+            if (!isset($Q->en)) throw new Exception ("Missing English full name", 100125);
+            if (!isset($Q->sms_no)) throw new Exception ("Missing Terminal Number (phone number for sms)", 100126);
+            if (!isset($Q->contact_no)) throw new Exception ("Missing Contact Number", 100127);
+            if (!isset($Q->email)) throw new Exception ("Missing Email", 100128);
+            if (!isset($Q->business_hr)) throw new Exception ("Missing Office Hours For Redemption Operations", 100129);
+            if (!isset($Q->country)) throw new Exception ("Missing Country", 100130);
+
+            $table = $wpdb->prefix . "stock_address";
+            return $wpdb->insert(
+                $table,
+                array(
+                    'short_zh' => $Q->zh_short,
+                    'short_ja' => $Q->ja_short,
+                    'short_en' => $Q->en_short,
+                    'zh' => $Q->zh,
+                    'ja' => $Q->ja,
+                    'en' => $Q->en,
+                    'terminal' => (int)$Q->sms_no,
+                    'contact_number' => (int)$Q->contact_no,
+                    'email' => $Q->email,
+                    'business_hour' => $Q->business_hr,
+                    'country' => $Q->country
+                ),
+                array(
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s'
+                )
+            );
+        }
 
         public static function action_request_stock_addresses_ui_json()
         {

@@ -40,5 +40,24 @@ if (!class_exists('JSON_API_Vendor_Controller')) {
             $result = VendorRequest::get_address_detail($json_api->query->id);
             api_handler::outSuccessData($result);
         }
+
+        public static function list_vendor_address()
+        {
+            try {
+                api_handler::outSuccessDataTable(VendorRequest::get_all_vendor_addresses());
+            } catch (Exception $e) {
+                api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
+            }
+        }
+
+        public static function insert_address()
+        {
+            global $json_api;
+            try {
+                api_handler::outSuccessData(VendorRequest::insert_vendor_address($json_api->query));
+            } catch (Exception $e) {
+                api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
+            }
+        }
     }
 }

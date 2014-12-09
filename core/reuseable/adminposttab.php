@@ -32,7 +32,7 @@ class adminposttab
     {
         $this->post_type = $post_type;
         $this->config = $config;
-        $this->screen_id = $this->post_type ."_page_". $this->config['menu_slug'];
+        $this->screen_id = $this->post_type . "_page_" . $this->config['menu_slug'];
         $this->script_localizer = $this->config['localize'];
         $this->slug = 'edit.php?post_type=' . $this->post_type;
         add_action("admin_menu", array(&$this, 'add_sub_tab'));
@@ -44,7 +44,7 @@ class adminposttab
         //what is the validated screen ID format
         add_submenu_page(
             $this->slug,
-            $this->config['page_title'],
+            isset($this->config['page_title']) ? $this->config['page_title'] : "no title",
             $this->config['menu_title'],
             $this->config['cap'],
             $this->config['menu_slug'],

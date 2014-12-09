@@ -529,6 +529,7 @@ jQuery(function ($) {
                         if (d.failurecallback != undefined) {
                             if ($.type(d.failurecallback) === "function") {
                                 d.failurecallback(d.cbobject, response.msg);
+                                alert(response.msg);
                             } else {
                                 console.log("the callback function for the failure event is not propery set.");
                             }

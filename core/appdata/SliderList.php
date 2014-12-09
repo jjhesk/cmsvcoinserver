@@ -60,7 +60,7 @@ class SliderList extends listBase
         $c1 = (int)$t[0];
         $c2 = (int)$t[1];
         $this->ignore_type = !isset($Q->type);
-        $this->all_zero = $c1 === 0 && $c2 === 0;
+        $this->all_zero = $c1 === 0 && $c2 === 0 || $c1 === -1 && $c2 === -1 || $c1 === 0 && $c2 === -1 || $c1 === -1 && $c2 === 0;
         if (!$this->all_zero && $this->ignore_type) throw new Exception("type is not set", 111002);
         if ($Q->type == 'rewards' || $Q->type == 'coupons') {
             if ($this->all_zero) {
@@ -70,19 +70,19 @@ class SliderList extends listBase
                      "meta_compare" => "="*/
                     'meta_query' => $this->meta_query($Q)
                 );
-            } elseif ($c1 === 0) {
+            } elseif ($c1 === 0 || $c1 === -1) {
                 $args = array(
                     'cat' => $c2,
-                    'meta_query' =>$this->meta_query($Q)
+                    'meta_query' => $this->meta_query($Q)
                 );
-            } elseif ($c2 === 0) {
+            } elseif ($c2 === 0 || $c2 === -1) {
                 $args = array(
                     'tax_query' => array(
                         'taxonomy' => 'country',
                         'field' => 'id',
                         'terms' => $c1
                     ),
-                    'meta_query' =>$this->meta_query($Q)
+                    'meta_query' => $this->meta_query($Q)
                 );
             } else {
                 $args = array(
@@ -92,7 +92,7 @@ class SliderList extends listBase
                         'field' => 'id',
                         'terms' => $c1
                     ),
-                    'meta_query' =>$this->meta_query($Q)
+                    'meta_query' => $this->meta_query($Q)
                 );
             }
         } else if ($Q->type == 'ios') {
@@ -112,7 +112,7 @@ class SliderList extends listBase
                     ),
                     'meta_query' => $this->meta_query($Q)
                 );
-            } elseif ($c2 === 0) {
+            } elseif ($c2 === 0 || $c2 === -1) {
                 $args = array(
                     'tax_query' => array(
                         array(
@@ -122,7 +122,7 @@ class SliderList extends listBase
                         ),
 
                     ),
-                    'meta_query' =>$this->meta_query($Q)
+                    'meta_query' => $this->meta_query($Q)
                 );
             } else {
                 $args = array(
@@ -141,15 +141,12 @@ class SliderList extends listBase
                     'meta_query' => $this->meta_query($Q)
                 );
             }
-
-
         } else if ($Q->type == 'android') {
-
             if ($this->all_zero) {
                 $args = array(
                     'meta_query' => $this->meta_query($Q)
                 );
-            } elseif ($c1 === 0) {
+            } elseif ($c1 === 0 || $c1 === -1) {
                 $args = array(
                     'tax_query' => array(
 
@@ -159,9 +156,9 @@ class SliderList extends listBase
                             'terms' => $c2
                         ),
                     ),
-                    'meta_query' =>$this->meta_query($Q)
+                    'meta_query' => $this->meta_query($Q)
                 );
-            } elseif ($c2 === 0) {
+            } elseif ($c2 === 0 || $c2 === -1) {
                 $args = array(
                     'tax_query' => array(
                         array(
@@ -190,19 +187,14 @@ class SliderList extends listBase
                     'meta_query' => $this->meta_query($Q)
                 );
             }
-
-
         } else {
             throw new Exception("parameter type is not matched", 1012);
         }
-
-
         $this->country_id = (int)$t[0];
         $this->cat_id = (int)$t[1];
         $this->final_set = wp_parse_args($args, $this->preset);
         $this->done = false;
         $this->doQuery($this->final_set);
-
     }
 
     /**

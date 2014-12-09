@@ -596,9 +596,19 @@ if (!class_exists('StockOperation')) {
             }
         }
 
-        public function fillqr()
+        public function update_obtain_status($id, $status)
         {
+            $table = $this->db->prefix . "post_redemption";
+            $this->db->update(
+                $table,
+                array(
+                    'action_taken_by' => "ADMIN",
+                    'obtained' => (int)$status
+                ),
+                array('ID' => (int)$id));
 
+            $query = $this->db->prepare("SELECT * FROM $table WHERE ID=%d", $id);
+            return $this->db->get_row($query);
         }
     }
 }

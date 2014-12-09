@@ -87,6 +87,10 @@ if (!class_exists('vcoin_product')) {
                     'style_id' => array('adminsupportcss', 'datatable', 'dashicons'),
                 )
             );
+
+            add_filter('manage_edit-' . $this->post_type . '_columns', array(__CLASS__, "add_new_columns"), 10, 1);
+            add_action('manage_' . $this->post_type . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
+
             //add_action('icl_make_duplicate', array(&$this, "duplicate_post_after"), 12, 4);
         }
 
@@ -524,8 +528,44 @@ if (!class_exists('vcoin_product')) {
 
             return $meta_boxes;
         }
-
-
+        public static function add_new_columns($new_columns)
+        {
+            $new_columns['cb'] = '<input type="checkbox" />';
+            $new_columns['id'] = __('ID');
+            $new_columns['title'] = _x('Coupon', 'column name');
+            $new_columns['s_count'] = __('Share Count');
+            $new_columns['exp'] = __('Expiry');
+            $new_columns['vendor'] = __('Vendor');
+            // $new_columns['author'] = __('Author');
+            // $new_columns['categories'] = __('Categories');
+            // $new_columns['tags'] = __('Tags');
+            // $new_columns['date'] = _x('Date', 'column name');
+            unset($new_columns['author']);
+            unset($new_columns['date']);
+            unset($new_columns['categories']);
+            return $new_columns;
+        }
+        public static function manage_column($column_name, $id)
+        {
+            global $wpdb;
+            switch ($column_name) {
+                case 's_count':
+                    echo get_post_meta($id, "share_count", true);
+                    break;
+                case 'id':
+                    echo $id;
+                    break;
+                case 'exp':
+                    echo get_post_meta($id, "inn_exp_date", true);
+                    break;
+                case 'vendor':
+                    $n = (int)get_post_meta($id, "innvendorid", true);
+                    echo get_the_title($n);
+                    break;
+                default:
+                    break;
+            } // end switch
+        }
         protected function addAdminSupportMetabox()
         {
             if (isset($this->vcoin_panel_support)) {

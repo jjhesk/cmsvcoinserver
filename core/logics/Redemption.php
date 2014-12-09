@@ -7,7 +7,7 @@ if (!class_exists('Redemption')) {
      * Date: 14年8月29日
      * Time: 上午10:07
      */
-    class Redemption
+    class Redemption extends inno_db
     {
         protected $reward_item_id;
         protected $qr_code;
@@ -403,7 +403,7 @@ if (!class_exists('Redemption')) {
         {
             $date = new DateTime();
             $q1 = md5($date->getTimestamp());
-            $q2 = md5($date->getTimestamp());
+            $q2 = md5($date->getTimestamp() * rand(0, 10000));
             return array($q1, $q2);
         }
 
@@ -569,6 +569,19 @@ if (!class_exists('Redemption')) {
 
         }
 
+        protected function getImage($id)
+        {
+            //inno_video_cover_image
+            $list = (int)get_post_meta($id, "inno_image_thumb", true);
+            // inno_log_db::log_admin_vendor_management(-1, 29112, print_r($list));
+            // $arr = array();
+            $image_attributes = wp_get_attachment_image_src((int)$list, 'large');
+            if ($image_attributes) {
+                $image = $image_attributes[0];
+            } else $image = "";
+            return $image;
+        }
+
         /**
          * this scan will need to scan once from the vendor's device with additional
          * proofing document or code
@@ -589,10 +602,23 @@ if (!class_exists('Redemption')) {
             // if (!isset($Q->user)) throw new Exception("user step is missing.", 1065);
             $step_process = intval($Q->step);
             if ($step_process == 1) {
+
+                $this->stock_operation = new StockOperation();
+
                 if (!isset($Q->qr)) throw new Exception("QR code is missing.", 1062);
                 $get_first_row = "SELECT * FROM $this->transaction_table_product WHERE qr_a='" . $Q->qr . "' OR qr_b='" . $Q->qr . "' ";
                 $redeem_record = $this->db->get_row($get_first_row);
+
+
+                $route_stock = $this->stock_operation->get_count_row_by_id($redeem_record->stock_ext_id);
                 $redeem_record->product_name = get_the_title((int)$redeem_record->stock_id);
+                $redeem_record->product_image = $this->getImage($redeem_record->stock_id);
+                $redeem_record->extension = isset($route_stock->label) ? $route_stock->label : "";
+                $redeem_record->address = parent::get_address_auto($redeem_record->address);
+
+
+
+
                 if (!$redeem_record) throw new Exception("This redemption product is not available to you, please try to check out our redemption products first.", 1063);
                 //got the redemption row now
                 $this->transaction_result_success = $redeem_record;
@@ -610,18 +636,16 @@ if (!class_exists('Redemption')) {
                     //need to verify the location ID
                     $address = $redeem_record->address;
                     if (!isset($Q->handle_mac_address)) throw new Exception("the mac address is missing.", 1669);
-
-
                 }
                 /**
                  * need to adding more references on the action taken by column
                  */
-
                 $done = $this->db->update($this->transaction_table_product,
                     array(
                         "obtained" => 1,
-                        "action_taken_by" => "ADVANCE",
+                        "action_taken_by" => "QR",
                         "claim_time" => current_time('timestamp'),
+                        "handle_mac_address" => $Q->mac_id
                     ),
                     array("ID" => (int)$redeem_record->ID));
 

@@ -46,7 +46,7 @@ if (!class_exists('vendor_cms')) {
                     'cap' => 'administrator',
                     'menu_slug' => 'address_cms',
                     'template_name' => 'admin_page_address_cms',
-                    'script_id' => 'page_admin_scanner',
+                    'script_id' => 'page_admin_vendor_address',
                     'style_id' => array('adminsupportcss', 'datatable', 'dashicons'),
                 )
             );

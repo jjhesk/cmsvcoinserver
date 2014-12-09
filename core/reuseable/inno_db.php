@@ -446,54 +446,6 @@ if (!class_exists('inno_db')):
         }
 
         /**
-         * this is the transaction of addition new redemption record to the db from the submission of the post form
-         * @param $args
-         * @return bool
-         * @throws Exception
-         */
-        protected function setNewTransaction($args)
-        {
-            extract($args);
-            // if (empty($userid) || empty($productid) || empty($address)) return false;
-            global $wpdb;
-            $date = new DateTime();
-            $new_redemption_key = md5($date->getTimestamp() . $facebook_id . $product_id . $address);
-
-            //
-
-            /* $offerexp = get_post_meta($product_id, 'inn_exp_date', true);
-
-             if (empty($offerexp)) {
-                 //  $date->modify('next month');
-
-             } else {
-                 $date = new DateTime($offerexp);
-             }*/
-            $n = intval(get_post_meta($product_id, 'rdays', true));
-            $day = $n == 1 || $n == -1 ? "day" : "days";
-            $date->modify('+' . $n . ' ' . $day);
-            //  "exp_date";
-            $enter_data_object = array(
-                'stockid' => intval($product_id),
-                'fbid' => $facebook_id,
-                'payment_done' => 1,
-                'verification_md5' => $new_redemption_key,
-                'country' => $country,
-                'claim_address' => $address,
-                'emailcode' => $emailcode,
-                'offer_expiry_date' => $date->format('Y-m-d'),
-                'cost_spent' => $vcoin
-            );
-            $wpdb->insert("cms_transaction_redeem", $enter_data_object);
-            if ($wpdb->insert_id > 0) {
-                return $wpdb->insert_id;
-            } else {
-                throw new Exception("fail to insert redemption record cased : " . json_encode($enter_data_object), 101);
-                return false;
-            }
-        }
-
-        /**
          * @param int $address_id
          * @param int $vendor_id
          * @return string
@@ -676,17 +628,30 @@ if (!class_exists('inno_db')):
         /**
          * retrieve the address object from ID
          * @param $address_id
-         * @param string $lang
          * @return mixed
          */
-        protected static function get_address_object($address_id, $lang = 'zh')
+        protected static function get_address_object($address_id)
         {
             global $wpdb;
-            $prep = $wpdb->prepare("SELECT * FROM cms_stock_address WHERE ID=%d", $address_id);
-            $result = $wpdb->get_row($prep);
+            $table = $wpdb->prefix . "stock_address";
+            $L = $wpdb->prepare("SELECT * FROM $table WHERE ID=%d", (int)$address_id);
+            $result = $wpdb->get_row($L);
             return $result;
         }
 
+        protected static function get_address_auto($address_id)
+        {
+            $row = self::get_address_object($address_id);
+            $message = "";
+            if (isset($row->zh)) {
+                $message = $row->zh;
+            } else if (isset($row->en)) {
+                $message = $row->en;
+            } else if (isset($row->ja)) {
+                $message = $row->ja;
+            }
+            return $message;
+        }
 
         /**
          *  change the redemption status by staff manually and this will be logged on the system automatically

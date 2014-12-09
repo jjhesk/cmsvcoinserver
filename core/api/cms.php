@@ -177,7 +177,6 @@ if (!class_exists('JSON_API_Cms_Controller')) {
                     array('db' => 'handle_mac_address', 'dt' => 'handle_mac_address'),
                     array('db' => 'handle_terminal_id', 'dt' => 'handle_terminal_id'),
                     array('db' => 'handle_requirement', 'dt' => 'handle_requirement'),
-                    array('db' => 'names', 'dt' => 'names'),
                     array('db' => 'action_taken_by', 'dt' => 'action_taken_by'),
                     array('db' => 'user', 'dt' => 'user'),
                     array('db' => 'stock_id', 'dt' => 'stock_id'),
@@ -188,13 +187,52 @@ if (!class_exists('JSON_API_Cms_Controller')) {
                     array('db' => 'claim_time', 'dt' => 'claim_time'),
                     array('db' => 'time', 'dt' => 'time'),
                 );
-                $data_result = sspclass::simple($_GET, $wpdb, $wpdb->prefix . "post_redemption",
-                    $primaryKey, $columns, $json_api->query);
 
-                inno_log_db::log_admin_stock_management(-1, 8888, print_r($data_result, true));
+                $d = new DateTime();
+                $present_timestamp = $d->getTimestamp();
+
+                $start_time = $present_timestamp - ($present_timestamp % 86400) - 28800;
+
+                if (isset($json_api->query->sort)) {
+                    $sort = $json_api->query->sort;
+                    if ($sort == "unscanned")
+                        $condition = "action_taken_by='NA' AND obtained=0 AND UNIX_TIMESTAMP(time)>=" . $start_time;
+                    else if ($sort == "all") {
+                        $condition = "";
+                    }
+                } else $condition = "";
+
+                $data_result = sspclass::simple($_GET, $wpdb, $wpdb->prefix . "post_redemption",
+                    $primaryKey, $columns, $condition);
 
                 api_handler::outSuccessPagingDataTable($data_result);
 
+            } catch (Exception $e) {
+                api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
+            }
+        }
+
+        public static function get_vendor_qr()
+        {
+            global $json_api;
+            try {
+                if (!isset($json_api->query->id)) throw new Exception("Missing id", 101112);
+                $stock = new StockOperation();
+                $result = $stock->getQRbyRow($json_api->query->id);
+                api_handler::outSuccessData($result->qr);
+            } catch (Exception $e) {
+                api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
+            }
+        }
+
+        public static function update_obtain()
+        {
+            global $json_api;
+            try {
+                if (!isset($json_api->query->id)) throw new Exception("Missing id", 101113);
+                $stock = new StockOperation();
+                $result = $stock->update_obtain_status($json_api->query->id, $json_api->query->status);
+                api_handler::outSuccessData($result);
             } catch (Exception $e) {
                 api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
             }
