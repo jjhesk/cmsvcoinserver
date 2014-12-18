@@ -94,9 +94,9 @@ jQuery(function ($) {
             screen_option.ON("slid_list_box");
             screen_option.ON("slider_basic_setup_box");
             metabox_control();
-            metabox_support.InputControlSingle($("#payment"), true);
+            metabox_support.InputControlSingle($("#payment"), false);
             metabox_support.InputControlSingle($("#platform"), true);
-            metabox_support.InputControlSingle($("#time_to_next"), true);
+            metabox_support.InputControlSingle($("#time_to_next"), false);
         }
         //status_support.PubLabel();
 

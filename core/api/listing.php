@@ -126,14 +126,16 @@ if (!class_exists('JSON_API_Listing_Controller')) {
 
         }
 
-
+        /**
+         * API Name: top_sliders
+         */
         public static function top_sliders()
         {
             global $json_api;
             try {
-                $query = $json_api->query;
+
                 $slider = new SliderList();
-                $slider->get_slider_in_cat($query);
+                $slider->get_slider_in_cat($json_api->query);
                 api_handler::outSuccessDataWeSoft($slider->getResultArr());
             } catch (Exception $e) {
                 api_handler::outFail($e->getCode(), $e->getMessage());

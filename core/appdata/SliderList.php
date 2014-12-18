@@ -24,6 +24,7 @@ class SliderList extends listBase
         'post_parent' => '',
         'post_status' => 'publish');
     private $final_set = array(), $result = array(), $done = false, $cat_id = 0, $country_id = 0;
+    private $coupon_cat_request = false;
 
     /**
      * @param array $args
@@ -36,15 +37,36 @@ class SliderList extends listBase
     private function meta_query($Q)
     {
         $meta = array();
+
+
         if (isset($Q->pointing)) $meta[] = array(
             'key' => 'point_to',
             'value' => $Q->pointing,
             'compare' => '='
         );
+
+
         if (isset($Q->type)) $meta[] = array(
             'key' => 'platform',
-            'value' => $Q->type,
+            'value' => !$this->coupon_cat_request ? $Q->type : "coupons",
             'compare' => '='
+        );
+        return $meta;
+    }
+
+    private function meta_query_reward_coupons($Q)
+    {
+        $meta = array();
+
+        if (isset($Q->pointing)) $meta[] = array(
+            'key' => 'point_to',
+            'value' => $Q->pointing,
+            'compare' => '='
+        );
+        $meta[] = array(
+            'key' => 'platform',
+            'value' => array("rewards", "coupons"),
+            'compare' => 'IN'
         );
         return $meta;
     }
@@ -57,8 +79,11 @@ class SliderList extends listBase
     {
         if (!isset($Q->ids)) throw new Exception("parameter ids is not set", 111001);
         $t = explode(".", $Q->ids);
-        $c1 = (int)$t[0];
-        $c2 = (int)$t[1];
+        $c1 = (int)$t[0]; //for country
+        $c2 = (int)$t[1]; //for category
+        if (in_array($c2, vcoin_coupon::get_coupon_cate_ids())) {
+            $this->coupon_cat_request = true;
+        }
         $this->ignore_type = !isset($Q->type);
         $this->all_zero = $c1 === 0 && $c2 === 0 || $c1 === -1 && $c2 === -1 || $c1 === 0 && $c2 === -1 || $c1 === -1 && $c2 === 0;
         if (!$this->all_zero && $this->ignore_type) throw new Exception("type is not set", 111002);
@@ -68,7 +93,7 @@ class SliderList extends listBase
                     /* "meta_key" => "point_to",
                      "meta_value" => $pointer,
                      "meta_compare" => "="*/
-                    'meta_query' => $this->meta_query($Q)
+                    'meta_query' => $this->meta_query_reward_coupons($Q)
                 );
             } elseif ($c1 === 0 || $c1 === -1) {
                 $args = array(
@@ -79,17 +104,17 @@ class SliderList extends listBase
                 $args = array(
                     'tax_query' => array(
                         'taxonomy' => 'country',
-                        'field' => 'id',
+                        'field' => 'term_id',
                         'terms' => $c1
                     ),
-                    'meta_query' => $this->meta_query($Q)
+                    'meta_query' => $this->meta_query_reward_coupons($Q)
                 );
             } else {
                 $args = array(
                     'cat' => $c2,
                     'tax_query' => array(
                         'taxonomy' => 'country',
-                        'field' => 'id',
+                        'field' => 'term_id',
                         'terms' => $c1
                     ),
                     'meta_query' => $this->meta_query($Q)
@@ -106,7 +131,7 @@ class SliderList extends listBase
 
                         array(
                             'taxonomy' => 'appcate',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c2
                         ),
                     ),
@@ -117,7 +142,7 @@ class SliderList extends listBase
                     'tax_query' => array(
                         array(
                             'taxonomy' => 'countryios',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c1
                         ),
 
@@ -129,12 +154,12 @@ class SliderList extends listBase
                     'tax_query' => array(
                         array(
                             'taxonomy' => 'countryios',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c1
                         ),
                         array(
                             'taxonomy' => 'appcate',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c2
                         ),
                     ),
@@ -152,7 +177,7 @@ class SliderList extends listBase
 
                         array(
                             'taxonomy' => 'appandroid',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c2
                         ),
                     ),
@@ -163,7 +188,7 @@ class SliderList extends listBase
                     'tax_query' => array(
                         array(
                             'taxonomy' => 'countryandroid',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c1
                         ),
 
@@ -175,12 +200,12 @@ class SliderList extends listBase
                     'tax_query' => array(
                         array(
                             'taxonomy' => 'countryandroid',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c1
                         ),
                         array(
                             'taxonomy' => 'appandroid',
-                            'field' => 'id',
+                            'field' => 'term_id',
                             'terms' => $c2
                         ),
                     ),
@@ -239,17 +264,16 @@ class SliderList extends listBase
         return $k;
     }
 
+
     /**
-     * @param $post_id
+     * @param $SQL
      * @return array
      * @throws Exception
      */
-    private function get_all_slid($post_id)
+    private function bottom_loop($SQL)
     {
         global $wpdb;
-        $name_field = 's_list_%';
-        $L = $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE %s AND post_id=%d", $name_field, $post_id);
-        $RR = $wpdb->get_results($L);
+        $RR = $wpdb->get_results($SQL);
         $thumb_ids = array();
         if ($RR) {
             if (count($RR) > 0) {
@@ -266,6 +290,38 @@ class SliderList extends listBase
         $k = $this->get_slid($thumb_ids);
         if (count($k) == 0) throw new Exception("skip to next", 101099);
         return $k;
+
+    }
+
+    private function get_only_cate($post_id, $cate)
+    {
+        global $wpdb;
+        $name_field = 's_list_%_' . $cate;
+        $L = $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE %s AND post_id=%d", $name_field, $post_id);
+        return $this->bottom_loop($L);
+    }
+
+    private function get_only_country($post_id, $country)
+    {
+        global $wpdb;
+        $name_field = 's_list_' . $country . '_%';
+        $L = $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE %s AND post_id=%d", $name_field, $post_id);
+
+        return $this->bottom_loop($L);
+
+    }
+
+    /**
+     * @param $post_id
+     * @return array
+     * @throws Exception
+     */
+    private function get_all_slid($post_id)
+    {
+        global $wpdb;
+        $name_field = 's_list_%';
+        $L = $wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE meta_key LIKE %s AND post_id=%d", $name_field, $post_id);
+        return $this->bottom_loop($L);
     }
 
     /**
@@ -277,7 +333,7 @@ class SliderList extends listBase
      */
     protected function inDaLoop($post_id_found, $args = array())
     {
-        $l = wp_get_attachment_image_src(get_post_thumbnail_id($post_id_found), 'large');
+        // $l = wp_get_attachment_image_src(get_post_thumbnail_id($post_id_found), 'large');
         $i = intval(get_post_meta($post_id_found, "time_to_next", true));
         $post_id = intval(get_post_meta($post_id_found, "point_to", true));
         //  $list1 = wp_get_post_terms($post_id, 'country');
@@ -286,6 +342,10 @@ class SliderList extends listBase
         if ($this->all_zero) {
             $sliders = $this->get_all_slid($post_id_found);
             // inno_log_db::log_admin_coupon_management(-1, 660422, print_r($sliders, true));
+        } else if ($this->country_id == -1) {
+            $sliders = $this->get_only_cate($post_id_found, $this->cat_id);
+        } else if ($this->cat_id == -1) {
+            $sliders = $this->get_only_country($post_id_found, $this->country_id);
         } else {
             $sliders = $this->get_slid_list($post_id_found, $this->country_id, $this->cat_id);
         }
@@ -294,7 +354,8 @@ class SliderList extends listBase
             "id" => (int)$post_id_found,
             "post_type" => get_post_meta($post_id_found, "platform", true),
             //get_post_type($post_id_found),
-            "thumb" => isset($l[0]) ? $l[0] : "",
+            //  "thumb" => isset($l[0]) ? $l[0] : "",
+            "thumb" => "",
             "post_id" => (int)$post_id,
             "time_to_next" => (int)$i,
             "slides" => $sliders

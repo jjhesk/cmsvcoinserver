@@ -150,6 +150,9 @@ jQuery(function ($) {
             if ($extension_obj != "na") new StockTagging($extension, $extension_obj, false);
             else $extension.parent().parent().addClass("hidden");
 
+
+
+
         } else if (stock_config_status == 0) {
             $extension.val("na");
             status_support.publishEnable(false);

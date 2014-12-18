@@ -1,7 +1,4 @@
-<div class="log_menu tablenav top">
-    <button class="newentry button hide">Add New Entry</button>
-</div>
-<table id="datainput" class="form-table hidden">
+<table id="datainput" class="form-table">
     <tr>
         <th>Chinese Traditional:</th>
         <td><input id="zh_short" class="regular-text zh-short" type="text" placeholder="short name"/>
@@ -47,9 +44,15 @@
         </td>
     </tr>
     <tr>
+        <th>ID:</th>
+        <td><input id="address_id" class="regular-text" type="text" placeholder="" disabled/></td>
+    </tr>
+    <tr>
         <th></th>
         <td>
             <button class="button btn-primary button-primary" id="add_entry">Add Entry</button>
+            <button class="button btn-primary button-primary hidden" id="update_entry">Update Entry</button>
+            <button class="button btn-primary button-primary hidden" id="cancel_update">Cancel</button>
         </td>
     </tr>
 </table>

@@ -87,12 +87,16 @@ if (!class_exists('api_handler')) {
 
         public static function curl_posts($url, array $post = NULL, array $options = array())
         {
-            $options = wp_parse_args(array(
-                CURLOPT_TIMEOUT => 10,
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_CAINFO => CERT_PATH,
-            ), $options);
-            return self::curl_post($url, $post, $options);
+            try {
+                $options = wp_parse_args(array(
+                    CURLOPT_TIMEOUT => 10,
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_CAINFO => CERT_PATH,
+                ), $options);
+                return self::curl_post($url, $post, $options);
+            } catch (Exception $e) {
+                throw $e;
+            }
         }
 
         /**
@@ -100,6 +104,7 @@ if (!class_exists('api_handler')) {
          * @param string $url to request
          * @param array $post values to send
          * @param array $options for cURL
+         * @throws Exception
          * @return string
          */
         public static function curl_post($url, array $post = NULL, array $options = array())
@@ -121,7 +126,8 @@ if (!class_exists('api_handler')) {
             curl_setopt_array($ch, ($options + $defaults));
             if (!$result = curl_exec($ch)) {
                 // trigger_error(curl_error($ch));
-                self::outFail(955, curl_error($ch));
+                //                self::outFail(955, curl_error($ch));
+                throw new Exception(curl_error($ch), 955);
                 //   inno_log_db::log_login_china_server_info(-1, 955, curl_error($ch), "-");
             } else
                 curl_close($ch);

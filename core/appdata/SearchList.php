@@ -30,13 +30,12 @@ if (!class_exists('SearchList')) {
             $paging = $input->p;
             $tax = array();
             $meta_query = array();
-
             //search for developers app
             if (isset($devID)) {
                 $query['post_type'] = APPDISPLAY;
                 $meta_query['_developer'] = $devID;
             }
-            $query['suppress_filters'] = true;
+            $query['suppress_filters'] = false;
             if (isset($input->lang)) {
                 $this->byLng = $input->lang;
             } else {
@@ -71,14 +70,15 @@ if (!class_exists('SearchList')) {
             if (isset($keyword)) {
                 $query['s'] = $keyword;
             }
-
+            if (!isset($cat)) $cat = -1;
+            if (!isset($country)) $country = -1;
             if (intval($cat) > 0) {
                 $query['cat'] = $cat;
             }
             if (intval($country) > 0) {
                 $tax[] = array(
                     'taxonomy' => 'country',
-                    'field' => 'id',
+                    'field' => 'term_id',
                     'terms' => $country,
                 );
             }

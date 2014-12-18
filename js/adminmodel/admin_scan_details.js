@@ -20,40 +20,40 @@ jQuery(function ($) {
                 var d = this;
                 d.$container.removeClass("hidden");
 
-                var render = {
-                    extension: d.data.stock_ext_id,
-                    phone_qr: d.data.qr_a,
-                    email_qr: d.data.qr_b,
-                    action: d.data.action_taken_by
-                };
-                $("#admin_scan_details_table").html(d.detailTemplate(render));
-
                 var loader = new AJAXLoader($("#toggle_vendor_qr"), "normal", "app_reg");
                 var enter = new JAXAPIsupport(d.domain_api + "cms/get_vendor_qr/", {
                     id: d.data.stock_ext_id
                 }, d, function (that, json) {
-                    $("#vendor_qr", that.$container).html(that.vendorQRTemplate({vendor_qr: json}));
+                    $("#vendor_qr", that.$container).html(that.vendorQRTemplate({vendor_qr: json.qr}));
+                    var render = {
+                        extension: that.data.stock_ext_id,
+                        phone_qr: that.data.qr_a,
+                        email_qr: that.data.qr_b,
+                        action: that.data.action_taken_by,
+                        ext_name: json.label,
+                        product_name: json.product_name,
+                        thumb: json.thumb,
+                        user_id: that.data.user,
+                        mac: that.data.handle_mac_address
+                    };
+                    $("#admin_scan_details_table").html(that.detailTemplate(render));
 
                     var $toggle_button = $(".toggle_qr", that.$container);
                     $.each($toggle_button, function (key, val) {
                         $(this).on(interactions, {that: that}, that.toggle_qr_code);
-                    })
+                    });
+
+                    var $back_button = $("#back", that.$container), $obtain = $("#obtain_status", that.$container);
+                    $back_button.on(interactions, {that: that}, that.off_table);
+
+                    $.each($(".hidden_field_switcher"), function (h) {
+                        new Switcher($(this));
+                    });
+                    that.switch_obtain_status(that.data.obtained);
+                    $obtain.on(interactions, {that: that}, that.update_obtain_status);
                 });
                 enter.add_loader(loader);
                 enter.init();
-
-                console.log(d.data);
-                var $back_button = $("#back", d.$container), $obtain = $("#obtain_status", d.$container);
-                $back_button.on(interactions, {that: d}, d.off_table);
-
-                $.each($(".hidden_field_switcher"), function (h) {
-                    new Switcher($(this));
-                });
-
-                $obtain.on(interactions, {that: d}, d.update_obtain_status);
-
-                d.switch_obtain_status(d.data.obtained);
-
             },
             update_obtain_status: function (e) {
                 var d = e.data.that;
@@ -62,7 +62,6 @@ jQuery(function ($) {
 
                 M.InputControlSingle($back_btn, true);
                 $back_btn.off(interactions);
-
                 var loader = new AJAXLoader($("#obtain_loader"), "normal", "app_reg");
                 var enter = new JAXAPIsupport(d.domain_api + "cms/update_obtain/", {
                     id: d.data.ID, status: obtain_status

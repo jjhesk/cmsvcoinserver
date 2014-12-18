@@ -153,7 +153,7 @@ class install_db
 
         $this->db->query(
             "CREATE TABLE IF NOT EXISTS {$this->api_tables['stock_address']} (
-          ID bigint(20) NOT NULL AUTO_INCREMENT,
+             ID bigint(20) NOT NULL AUTO_INCREMENT,
              email_opt enum('optin','optout') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'optout',
              terminal varchar(100) COLLATE utf8_unicode_ci NOT NULL,
              zh text COLLATE utf8_unicode_ci NOT NULL,
@@ -175,7 +175,7 @@ class install_db
 
         $this->db->query(
             "CREATE TABLE IF NOT EXISTS {$this->api_tables['stock_count']} (
-       ID bigint(20) NOT NULL AUTO_INCREMENT,
+         ID bigint(20) NOT NULL AUTO_INCREMENT,
          label varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
          stock_id bigint(20) NOT NULL,
          extension tinyint(4) NOT NULL,

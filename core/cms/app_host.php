@@ -82,8 +82,8 @@ if (!class_exists("app_host")) {
 
 
             add_filter('rwmb_meta_boxes', array($this, 'addRWMetabox'), 10, 1);
-           // $this->vcoin_panel_support = new adminsupport(VPRODUCT);
-         //   $this->addAdminSupportMetabox();
+            // $this->vcoin_panel_support = new adminsupport(VPRODUCT);
+            //   $this->addAdminSupportMetabox();
             add_action("rwmb_post_sc_meta_after_save_post", array(__CLASS__, "savebox"), 10, 1);
             // register_taxonomy_for_object_type('post_tag', APPDISPLAY);
             // register_taxonomy_for_object_type('category', APPDISPLAY);
@@ -93,6 +93,7 @@ if (!class_exists("app_host")) {
 
             add_filter('manage_edit-' . APPDISPLAY . '_columns', array(__CLASS__, "add_new_columns"), 10, 1);
             add_action('manage_' . APPDISPLAY . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
+            add_action('save_post', array(__CLASS__, "save_cat"), 10, 1);
 
             /**
              * add submenu "comment"
@@ -133,6 +134,31 @@ if (!class_exists("app_host")) {
                 "menu_name" => __("HostApp", HKM_LANGUAGE_PACK)
             );
             return $labels;
+        }
+
+        /**
+         * this is the global method callback
+         * there are alot of conditions need to be filtered.
+         * @param $post_id
+         */
+        public static function save_cat($post_id)
+        {
+            global $post_type;
+            if (wp_is_post_revision($post_id)) return;
+            if ($post_type != APPDISPLAY) return;
+
+            $platform = get_post_meta($post_id, "_platform", true);
+            if ($platform == "ios") {
+                $cat = "appcate";
+                $country = "countryios_nd";
+            } else {
+                $cat = "appandroid";
+                $country = "countryandroid";
+            }
+
+            $update_cat = new PostUpdate($post_id, APPDISPLAY);
+            $update_cat->synchronize_all_cat($cat);
+            $update_cat->synchronize_all_cat($country);
         }
 
         public function addRWMetabox($meta_boxes)

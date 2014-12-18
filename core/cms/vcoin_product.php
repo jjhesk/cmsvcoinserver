@@ -52,6 +52,7 @@ if (!class_exists('vcoin_product')) {
             register_taxonomy_for_object_type('category', $this->post_type);
             add_action('rwmb_post_sc_meta_after_save_post', array(__CLASS__, "savebox"), 10, 1);
             add_action('rwmb_post_gift_meta_after_save_post', array(__CLASS__, "save_post_gift_meta"), 10, 1);
+            add_action('save_post', array(__CLASS__, "save_cat"), 10, 1);
             add_action('before_delete_post', array(__CLASS__, "remove_post_adjustment"), 10, 1);
             /**
              * add submenu "comment"
@@ -113,6 +114,22 @@ if (!class_exists('vcoin_product')) {
             return $this->titan->getOption("debug_reward_cfg");
         }
 
+        /**
+         * this is the global method callback
+         * there are alot of conditions need to be filtered.
+         * @param $post_id
+         */
+        public static function save_cat($post_id)
+        {
+            global $post_type;
+            if (wp_is_post_revision($post_id)) return;
+            if ($post_type != VPRODUCT) return;
+
+            $update_cat = new PostUpdate($post_id, VPRODUCT);
+            $update_cat->synchronize_all_cat("category");
+            $update_cat->synchronize_all_cat("country");
+        }
+
         public static function save_post_gift_meta($post_id)
         {
             global $wpdb;
@@ -158,6 +175,12 @@ if (!class_exists('vcoin_product')) {
                      * create vcoin merchant account
                      */
                     self::create_vcoin_merchant_account($post_id);
+
+                    /**
+                     * give amount of vcoin to this vendor product
+                     */
+                    self::update_coin(get_post_meta($post_id, "uuid_key", true), 1000);
+
                     /**
                      * update some important fields
                      */
@@ -242,12 +265,10 @@ if (!class_exists('vcoin_product')) {
                         'desc' => 'pick and choose the available location',
                     ),
                     array(
-                        'type' => 'hidden',
+                        'type' => $this->debug_field_type(),
                         'name' => 'VCoin UUID',
                         'id' => 'uuid_key',
                     ),
-
-
                     /*  array(
                           'name' => __('Target Country (*)', HKM_LANGUAGE_PACK), // TAXONOMY
                           'id' => "inn_gift_offer_location", // ID for this field
@@ -269,7 +290,7 @@ if (!class_exists('vcoin_product')) {
                         'name' => __('Vendor and Address', HKM_LANGUAGE_PACK), // TAXONOMY
                         'id' => "innvendorid", // ID for this field
                         'type' => 'select', //options
-                        //   'options' => VendorRequest::requestlist(),
+                        //'options' => VendorRequest::requestlist(),
                         //get_wp_vendor_list
                         'options' => VendorRequest::get_wp_vendor_list(),
                         'desc' => "Select the address to put these address to be available for the customers to come pick up the items."
@@ -306,8 +327,7 @@ if (!class_exists('vcoin_product')) {
                         'options' => array(
                             '0' => __('Traditional redemption center', HKM_LANGUAGE_PACK),
                             '1' => __('Restaurant with table number', HKM_LANGUAGE_PACK),
-                            '2' => __('Restaurant without table number', HKM_LANGUAGE_PACK),
-                            // '3' => __('Coupon redemption', HKM_LANGUAGE_PACK),
+                            '2' => __('Restaurant without table number', HKM_LANGUAGE_PACK)
                         ),
                     ),
                     /*array(
@@ -325,19 +345,16 @@ if (!class_exists('vcoin_product')) {
                         'type' => $this->debug_field_type(),
                         'std' => 0,
                     ),
-
                     array(
                         'name' => 'JSON carrier',
                         'id' => "assign_location_ids",
                         'type' => $this->debug_field_type(),
                     ),
-
                     array(
                         'name' => 'stock id',
                         'id' => "stock_id",
                         'type' => $this->debug_field_type(),
-                    ),
-
+                    )
                 ));
 
             $meta_boxes[] = array(
@@ -353,11 +370,8 @@ if (!class_exists('vcoin_product')) {
                 //Here we define all the fields we want in the meta box
                 'fields' => array(
                     array('name' => __('Listing Expiration (*)', HKM_LANGUAGE_PACK),
-// TAXONOMY
                         'id' => "inn_exp_date",
-// ID for this field
                         'type' => 'date',
-//options
                         'desc' => 'The time of expiration on the reward channel listing.. (not implemented yet)',
                     ),
                     array(
@@ -528,6 +542,7 @@ if (!class_exists('vcoin_product')) {
 
             return $meta_boxes;
         }
+
         public static function add_new_columns($new_columns)
         {
             $new_columns['cb'] = '<input type="checkbox" />';
@@ -545,6 +560,7 @@ if (!class_exists('vcoin_product')) {
             unset($new_columns['categories']);
             return $new_columns;
         }
+
         public static function manage_column($column_name, $id)
         {
             global $wpdb;
@@ -566,6 +582,7 @@ if (!class_exists('vcoin_product')) {
                     break;
             } // end switch
         }
+
         protected function addAdminSupportMetabox()
         {
             if (isset($this->vcoin_panel_support)) {

@@ -8,6 +8,7 @@ jQuery(function ($) {
             status_support = new PublishingSupport(),
             postbox_handler = new PostBoxWatch();
 
+        screen_option.OFF("categorydiv");
 
         var coupon_config_status = parseInt($("#coupon_configuration_complete").val());
         if (coupon_config_status != 1) {

@@ -61,6 +61,7 @@ if (!class_exists('StockOperation')) {
          */
         public function check_count($stock_id, $location, $ext, $get_num = true, $take_amount)
         {
+            $this->stock_id = $stock_id;
             if (!isset($ext)) $ext = 0;
             $this->check_amount = (int)$take_amount;
             $prepared = $this->db->prepare("SELECT * FROM $this->stock_table WHERE stock_id=%d AND location_id=%d AND extension=%d", (int)$stock_id, (int)$location, (int)$ext);
@@ -110,6 +111,15 @@ if (!class_exists('StockOperation')) {
         public function getStockId()
         {
             return (int)$this->stock_id;
+        }
+
+        /**
+         * return the extension label on the spec
+         * @return string
+         */
+        public function get_stock_extension_label()
+        {
+            return $this->current_stock_r->lbbel;
         }
 
         /**
@@ -494,6 +504,19 @@ if (!class_exists('StockOperation')) {
         {
             $Row = new self();
             return $Row->get_count_row_by_id($ID);
+        }
+
+        public function getImage($stock_id)
+        {
+            //inno_video_cover_image
+            $list = (int)get_post_meta($stock_id, "inno_image_thumb", true);
+            // inno_log_db::log_admin_vendor_management(-1, 29112, print_r($list));
+            // $arr = array();
+            $image_attributes = wp_get_attachment_image_src((int)$list, 'large');
+            if ($image_attributes) {
+                $image = $image_attributes[0];
+            } else $image = "";
+            return $image;
         }
 
         public function get_count_row_by_id($ID)

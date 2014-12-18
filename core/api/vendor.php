@@ -59,5 +59,15 @@ if (!class_exists('JSON_API_Vendor_Controller')) {
                 api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
             }
         }
+
+        public static function edit_address()
+        {
+            global $json_api;
+            try {
+                api_handler::outSuccessData(VendorRequest::edit_vendor_address($json_api->query));
+            } catch (Exception $e) {
+                api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
+            }
+        }
     }
 }

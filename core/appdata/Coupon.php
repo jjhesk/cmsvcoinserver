@@ -25,7 +25,7 @@ class Coupon extends SingleBase
         $title = get_the_title($this->post_id);
         // foreach($addresses as $asd){}
         $expiration_date = get_post_meta($this->post_id, "inn_exp_date", true);
-        $video_url = get_post_meta($this->post_id, "gift_video_url", true);
+        $video_url = get_post_meta($this->post_id, "coupon_video_url", true);
         $product_url = get_post_meta($this->post_id, "inn_product_url", true);
         $product_description = get_post_meta($this->post_id, "inn_gift_description", true);
         $n_day = (int)get_post_meta($this->post_id, "rdays", true);

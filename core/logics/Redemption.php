@@ -215,6 +215,8 @@ if (!class_exists('Redemption')) {
             }
         }
 
+        private $submission_use_lang;
+
         /**
          * redemption for rewards
          * @param $Q
@@ -240,6 +242,7 @@ if (!class_exists('Redemption')) {
                 $this->user_id = $Q->user_id;
                 $reference = "";
                 $extension_id = $Q->extension_id;
+                $this->submission_use_lang = $Q->lang;
                 /**
                  * check for out of stock and product values in vcoin
                  */
@@ -291,6 +294,57 @@ if (!class_exists('Redemption')) {
             }
         }
 
+        private function check_wpml_existence()
+        {
+            return defined('ICL_LANGUAGE_CODE');
+        }
+
+        private function support_email_languages()
+        {
+            return array("zh-hant", "en");
+        }
+
+        private function get_posts_in_other_lang()
+        {
+
+            $languages = icl_get_languages('skip_missing=1');
+            $posts_in_other_lang = array();
+            $i = 0;
+            foreach ($languages as $language) {
+
+                $id = icl_object_id($this->stock_operation->getStockId(), VPRODUCT, true, $language['language_code']);
+
+                if (in_array($language["language_code"], $this->support_email_languages())) {
+                    //$posts_in_other_lang[] = $id;
+                    $posts_in_other_lang[$i]["post_id"] = $id;
+                    $posts_in_other_lang[$i++]["lang"] = $language["language_code"];
+                }
+            }
+            return $posts_in_other_lang;
+        }
+
+
+        private function get_icl_post_title()
+        {
+
+
+            if ($this->check_wpml_existence()) {
+                // $post_ids = $this->get_posts_in_other_lang();
+                foreach ($this->get_posts_in_other_lang() as $post) {
+                    if (in_array($post["lang"], $this->support_email_languages())) {
+                        if ($post["lang"] == "zh-hant") {
+                            $zh = get_the_title($post["post_id"]);
+                        }
+                        if ($post["lang"] == "en") {
+                            $en = get_the_title($post["post_id"]);
+                        }
+                    }
+                }
+            }
+
+            return array($zh, $en);
+        }
+
         private function declare_reward_queue($submission_list)
         {
             /**
@@ -304,7 +358,11 @@ if (!class_exists('Redemption')) {
              */
             inno_log_db::log_admin_stock_management(-1, 839285, print_r($list, true));
             $this->db->insert($this->transaction_table_product, $list);
-
+            $address = new AddressData($this->stock_operation->get_stock_extension_spec());
+            if ("CENTRAL" == $submission_list["distribution"]) {
+                $address->set_method_centralize($submission_list["stock_id"]);
+            }
+            list($zh_title, $en_title) = $this->get_icl_post_title();
             /**
              * return the organized transaction records
              */
@@ -316,7 +374,14 @@ if (!class_exists('Redemption')) {
                 "trace_id" => $submission_list["trace_id"],
                 "handle" => (int)$submission_list["handle_requirement"],
                 "ext" => (int)$this->stock_operation->get_stock_extension_spec(),
-                "title" => get_the_title($this->stock_operation->getStockId())
+                "title" => get_the_title($this->stock_operation->getStockId()),
+                "ext_label" => $this->stock_operation->get_stock_extension_label(),
+                "address_en" => $address->get_en_address(),
+                "address_zh" => $address->get_zh_address(),
+                "phone" => $address->phone(),
+                "product_name_zh" => $zh_title,
+                "product_name_en" => $en_title,
+                "expirydate" => $submission_list["offer_expiry_date"]
             );
             inno_log_db::log_admin_stock_management(-1, 839285, print_r($this->transaction_result_success, true));
         }
@@ -335,12 +400,14 @@ if (!class_exists('Redemption')) {
         public function change_status($transaction_vcoin_id, $reference, $status)
         {
             try {
-                $this->transaction_reference = $reference;
+                $ref = rawurldecode($reference);
+                $this->transaction_reference = $ref;
+
                 $this->transaction_vcoin_id = $transaction_vcoin_id;
-                if ($reference == "redemption_submission") {
+                if ($ref == "redemption submission") {
                     $this->find_transaction_on_rewards_update($transaction_vcoin_id, $status);
                     $this->check_vcoin_status($status);
-                } elseif ($reference == "redemption_coupon") {
+                } elseif ($ref == "redemption coupon") {
                     $this->find_transaction_on_coupons_update($transaction_vcoin_id, $status);
                     $this->check_vcoin_status(3);
                 } else {
@@ -353,8 +420,8 @@ if (!class_exists('Redemption')) {
 
         private function find_transaction_on_coupons_update($transaction_vcoin_id, $status)
         {
-            $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_coupon WHERE trace_id=%s", $transaction_vcoin_id);
-            $results = $this->db->get_row($get_first_row);
+            $L = $this->db->prepare("SELECT * FROM $this->transaction_table_coupon WHERE trace_id=%s", $transaction_vcoin_id);
+            $results = $this->db->get_row($L);
             if (!$results) throw new Exception("no such transaction recorded from the redemption coupons.", 1091);
             $this->user_id = $results->user;
             $this->db->update($this->transaction_table_coupon, array("vstatus" => $status), array("ID" => $results->ID));
@@ -363,8 +430,8 @@ if (!class_exists('Redemption')) {
 
         private function find_transaction_on_rewards_update($transaction_vcoin_id, $status)
         {
-            $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE trace_id=%s", $transaction_vcoin_id);
-            $results = $this->db->get_row($get_first_row);
+            $L = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE trace_id=%s", $transaction_vcoin_id);
+            $results = $this->db->get_row($L);
             if (!$results) throw new Exception("no such transaction recorded from the redemption rewards.", 1092);
             $this->user_id = $results->redeem_agent;
             $this->db->update($this->transaction_table_product, array("vstatus" => $status), array("ID" => $results->ID));
@@ -569,18 +636,6 @@ if (!class_exists('Redemption')) {
 
         }
 
-        protected function getImage($id)
-        {
-            //inno_video_cover_image
-            $list = (int)get_post_meta($id, "inno_image_thumb", true);
-            // inno_log_db::log_admin_vendor_management(-1, 29112, print_r($list));
-            // $arr = array();
-            $image_attributes = wp_get_attachment_image_src((int)$list, 'large');
-            if ($image_attributes) {
-                $image = $image_attributes[0];
-            } else $image = "";
-            return $image;
-        }
 
         /**
          * this scan will need to scan once from the vendor's device with additional
@@ -606,17 +661,15 @@ if (!class_exists('Redemption')) {
                 $this->stock_operation = new StockOperation();
 
                 if (!isset($Q->qr)) throw new Exception("QR code is missing.", 1062);
-                $get_first_row = "SELECT * FROM $this->transaction_table_product WHERE qr_a='" . $Q->qr . "' OR qr_b='" . $Q->qr . "' ";
-                $redeem_record = $this->db->get_row($get_first_row);
+                $L = "SELECT * FROM $this->transaction_table_product WHERE qr_a='" . $Q->qr . "' OR qr_b='" . $Q->qr . "' ";
+                $redeem_record = $this->db->get_row($L);
 
 
                 $route_stock = $this->stock_operation->get_count_row_by_id($redeem_record->stock_ext_id);
                 $redeem_record->product_name = get_the_title((int)$redeem_record->stock_id);
-                $redeem_record->product_image = $this->getImage($redeem_record->stock_id);
+                $redeem_record->product_image = $this->stock_operation->getImage($redeem_record->stock_id);
                 $redeem_record->extension = isset($route_stock->label) ? $route_stock->label : "";
                 $redeem_record->address = parent::get_address_auto($redeem_record->address);
-
-
 
 
                 if (!$redeem_record) throw new Exception("This redemption product is not available to you, please try to check out our redemption products first.", 1063);
@@ -624,8 +677,8 @@ if (!class_exists('Redemption')) {
                 $this->transaction_result_success = $redeem_record;
             } else if ($step_process == 2) {
                 if (!isset($Q->trace_id)) throw new Exception("the trace ID is missing.", 1064);
-                $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE trace_id=%s", $Q->trace_id);
-                $redeem_record = $this->db->get_row($get_first_row);
+                $L = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE trace_id=%s", $Q->trace_id);
+                $redeem_record = $this->db->get_row($L);
                 if (!$redeem_record) throw new Exception("redemption data is not verified or found", 1068);
                 if (intval($redeem_record->obtained) == 1) throw new Exception("This redemption has been claimed", 1066);
                 if (Date_Difference::western_time_past_event($redeem_record->offer_expiry_date) == 2) throw new Exception("The offer is expired", 1067);
@@ -650,15 +703,15 @@ if (!class_exists('Redemption')) {
                     array("ID" => (int)$redeem_record->ID));
 
                 if (!$done) throw new Exception("failure to update the claim record, technical issue:$redeem_record->ID", 1668);
-                $get_first_row = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE ID=%d", (int)$redeem_record->ID);
-                $redeem_record = $this->db->get_row($get_first_row);
+                $L = $this->db->prepare("SELECT * FROM $this->transaction_table_product WHERE ID=%d", (int)$redeem_record->ID);
+                $redeem_record = $this->db->get_row($L);
                 $this->transaction_result_success = $redeem_record;
                 //  unset($step_process);
             } else {
                 throw new Exception("step val is invalid.", 1667);
             }
             $step_process = NULL;
-            $get_first_row = NULL;
+            $L = NULL;
             $redeem_record = NULL;
         }
 

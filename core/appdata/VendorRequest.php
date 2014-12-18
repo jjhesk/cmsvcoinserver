@@ -10,7 +10,6 @@ if (!class_exists('VendorRequest')) {
     {
         private $vendor_choice_list = array();
         private $vendor_list = array();
-
         /**
          * cms_gifts option list
          * @return array
@@ -59,21 +58,10 @@ if (!class_exists('VendorRequest')) {
          */
         public static function get_addresses_list_by_post_id($post_id)
         {
-            global $wpdb;
-            //  $vendor = VendorRequest::get_vendor_by_product_id($post_id);
+
             $addresses_config = get_post_meta($post_id, "assign_location_ids", true);
             $arr = json_decode($addresses_config, true);
-            $address = array();
-            //print_r($addresses_config[0]);
-            /* foreach ($arr as $k => $v) {
-                 $prep = $wpdb->prepare("SELECT * FROM cms_stock_address WHERE ID=%d", $k);
-                 $row = $wpdb->get_row($prep);
-                 if (intval($v) > -1) {
-                     $address[$v] = $row->zh;
-                 }
-                 $address[$v] = $row->zh;
 
-             }*/
             return $arr;
         }
 
@@ -390,6 +378,61 @@ if (!class_exists('VendorRequest')) {
                     '%s',
                     '%s',
                     '%s'
+                )
+            );
+        }
+
+        public static function edit_vendor_address($Q)
+        {
+            global $wpdb;
+
+            if (!isset($Q->zh_short)) throw new Exception ("Missing Chinese Traditional short name", 100120);
+            if (!isset($Q->ja_short)) throw new Exception ("Missing Japanese short name", 100121);
+            if (!isset($Q->en_short)) throw new Exception ("Missing English short name", 100122);
+            if (!isset($Q->zh)) throw new Exception ("Missing Chinese Traditional full name", 100123);
+            if (!isset($Q->ja)) throw new Exception ("Missing Japanese full name", 100124);
+            if (!isset($Q->en)) throw new Exception ("Missing English full name", 100125);
+            if (!isset($Q->sms_no)) throw new Exception ("Missing Terminal Number (phone number for sms)", 100126);
+            if (!isset($Q->contact_no)) throw new Exception ("Missing Contact Number", 100127);
+            if (!isset($Q->email)) throw new Exception ("Missing Email", 100128);
+            if (!isset($Q->business_hr)) throw new Exception ("Missing Office Hours For Redemption Operations", 100129);
+            if (!isset($Q->country)) throw new Exception ("Missing Country", 100130);
+            if (!isset($Q->id)) throw new Exception ("Missing address id", 100131);
+
+            $table = $wpdb->prefix . "stock_address";
+            return $wpdb->update(
+                $table,
+                array(
+                    'short_zh' => $Q->zh_short,
+                    'short_ja' => $Q->ja_short,
+                    'short_en' => $Q->en_short,
+                    'zh' => $Q->zh,
+                    'ja' => $Q->ja,
+                    'en' => $Q->en,
+                    'terminal' => (int)$Q->sms_no,
+                    'contact_number' => (int)$Q->contact_no,
+                    'email' => $Q->email,
+                    'business_hour' => $Q->business_hr,
+                    'country' => $Q->country
+                ),
+                array(
+                    "ID" => (int)$Q->id
+                ),
+                array(
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s'
+                ),
+                array(
+                    '%d'
                 )
             );
         }

@@ -219,7 +219,9 @@ if (!class_exists('JSON_API_Cms_Controller')) {
                 if (!isset($json_api->query->id)) throw new Exception("Missing id", 101112);
                 $stock = new StockOperation();
                 $result = $stock->getQRbyRow($json_api->query->id);
-                api_handler::outSuccessData($result->qr);
+                $result->product_name = get_the_title((int)$result->stock_id);
+                $result->thumb = $stock->getImage((int)$result->stock_id);
+                api_handler::outSuccessData($result);
             } catch (Exception $e) {
                 api_handler::outFailWeSoft($e->getCode(), $e->getMessage());
             }

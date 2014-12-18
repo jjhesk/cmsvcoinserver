@@ -71,7 +71,12 @@ if (!class_exists('vcoin_coupon')) {
             add_action('before_delete_post', array(__CLASS__, "remove_post_adjustment"), 10, 1);
             add_filter('manage_edit-' . $this->post_type . '_columns', array(__CLASS__, "add_new_columns"), 10, 1);
             add_action('manage_' . $this->post_type . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
+            add_action('save_post', array(__CLASS__, "save_cat"), 11, 1);
+        }
 
+        public static function get_coupon_cate_ids()
+        {
+            return array(1905, 1922, 1923);
         }
 
         public static function add_reward_support()
@@ -79,6 +84,20 @@ if (!class_exists('vcoin_coupon')) {
 
         }
 
+        /**
+         * this is the global method callback
+         * there are alot of conditions need to be filtered.
+         * @param $post_id
+         */
+        public static function save_cat($post_id)
+        {
+            global $post_type;
+            if (wp_is_post_revision($post_id)) return;
+            if ($post_type != VCOUPON) return;
+
+            $update_cat = new PostUpdate($post_id, VCOUPON);
+            $update_cat->synchronize_all_cat("country");
+        }
 
         public static function savebox($post_id)
         {

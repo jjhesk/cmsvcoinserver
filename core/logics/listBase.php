@@ -43,6 +43,8 @@ abstract class listBase
     {
 
         $custom = new WP_Query($input_config);
+
+        inno_log_db::log_admin_stock_management(-1, 77777, print_r($custom, true));
         if (isset($_REQUEST["unittestdev"])) {
             inno_log_db::log_admin_coupon_management(-1, 13921, print_r($input_config, true));
         }
@@ -53,7 +55,7 @@ abstract class listBase
                     $h = $this->inDaLoop($custom->post->ID);
                     $this->list_result[] = $h;
                 } catch (Exception $e) {
-
+                    inno_log_db::log_admin_coupon_management(-1, 13919, "empty result in loop @:" . $custom->post->ID);
                 }
             endwhile;
             wp_reset_postdata();
@@ -118,7 +120,7 @@ abstract class listBase
     {
         foreach ($array_terms as $cat) :
             $this->list_result[] = $this->catloop($cat, isset($query_tax_preset["with_image"]) == true,
-            strtolower($taxonomy_id) == "category" || strtolower($taxonomy_id) == "appandroid" || strtolower($taxonomy_id) == "appcate"
+                strtolower($taxonomy_id) == "category" || strtolower($taxonomy_id) == "appandroid" || strtolower($taxonomy_id) == "appcate"
                 , $taxonomy_id);
         endforeach;
         if (isset($_REQUEST["lang"]))

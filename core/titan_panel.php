@@ -321,19 +321,19 @@ if (!class_exists('TitanFramework')) {
         'name' => 'template in zh',
         'id' => 'rtnc_zh',
         'type' => 'textarea',
-        'desc' => 'Please use the template accordingly.',
+        'desc' => 'Please use the template accordingly. {{additional}} - T&C text block of the individual reward in terms and conditions',
     ));
     $tab->createOption(array(
         'name' => 'template en',
         'id' => 'rtnc_en',
         'type' => 'textarea',
-        'desc' => 'Please use the template accordingly.',
+        'desc' => 'Please use the template accordingly. {{additional}} - T&C text block of the individual reward in terms and conditions',
     ));
     $tab->createOption(array(
         'name' => 'template ja',
         'id' => 'rtnc_ja',
         'type' => 'textarea',
-        'desc' => 'Please use the template accordingly.',
+        'desc' => 'Please use the template accordingly. {{additional}} - T&C text block of the individual reward in terms and conditions',
     ));
 
     $tab->createOption(array(
