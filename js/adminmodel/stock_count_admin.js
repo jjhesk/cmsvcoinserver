@@ -12,6 +12,7 @@ jQuery(function ($) {
         this.stock_id = stock_id;
         this.domain = window.location.origin + "/api/";
         this.$extension_obj = $("#ext_v2").val();
+        console.log(1231);
         this.TableInit();
         this.$search = $("#stock_count_admin_filter input");
     };

@@ -125,6 +125,13 @@ if (!class_exists('TitanFramework')) {
     ));
 
     $tab->createOption(array(
+        'name' => 'IMUSIC_UUID set uuid',
+        'type' => 'text',
+        'id' => 'imusic_uuid',
+        'desc' => 'imusic uuid tutorial'
+    ));
+
+    $tab->createOption(array(
         'type' => 'save'
     ));
 

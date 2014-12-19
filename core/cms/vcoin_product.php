@@ -205,7 +205,7 @@ if (!class_exists('vcoin_product')) {
                 }
             } catch (Exception $e) {
                 global $current_user;
-                inno_log_db::log_admin_stock_management($current_user->ID, $e->getCode(), $e->getMessage());
+                inno_log_db::log_admin_stock_management($current_user->ID, $e->getCode(), "Error: new post for reward " . $e->getMessage());
             }
         }
 

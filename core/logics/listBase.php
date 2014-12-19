@@ -44,7 +44,6 @@ abstract class listBase
 
         $custom = new WP_Query($input_config);
 
-        inno_log_db::log_admin_stock_management(-1, 77777, print_r($custom, true));
         if (isset($_REQUEST["unittestdev"])) {
             inno_log_db::log_admin_coupon_management(-1, 13921, print_r($input_config, true));
         }
