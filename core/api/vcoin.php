@@ -21,7 +21,7 @@ if (!class_exists('JSON_API_Vcoin_Controller')) {
                 $t = new Redemption();
                 $t->change_status($Q->transactionid, $Q->reference, $Q->status);
                 $d = $t->get_result();
-                
+
                 inno_log_db::log_developer_app_management(-1, 15000, "call back transaction vcoin adjustment" . $Q->transactionid . " - " . $Q->reference . " detail:" . print_r($d, true));
 
 

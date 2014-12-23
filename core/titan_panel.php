@@ -90,6 +90,13 @@ if (!class_exists('TitanFramework')) {
         'default' => false,
     ));
 
+    $tab->createOption(array(
+        'name' => 'Debug on Redemption Rewards',
+        'id' => 'debug_redemption_reward',
+        'type' => 'checkbox',
+        'desc' => 'Check to Turn ON the Debug Mode',
+        'default' => false,
+    ));
 
     $tab->createOption(array(
         'type' => 'save'

@@ -119,7 +119,13 @@ if (!class_exists('StockOperation')) {
          */
         public function get_stock_extension_label()
         {
-            return $this->current_stock_r->lbbel;
+            return $this->current_stock_r->label;
+        }
+
+        public function get_vendor_name($stock_id)
+        {
+            $vendor_id = intval(get_post_meta($stock_id, "innvendorid", true));
+            return get_the_title($vendor_id);
         }
 
         /**
