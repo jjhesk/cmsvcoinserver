@@ -41,8 +41,8 @@ if (!class_exists('dashboard')):
                 remove_menu_page('users.php');                  //Users
                 remove_menu_page('tools.php');                  //Tools
                 remove_menu_page('options-general.php');        //Settings
+                remove_menu_page('post-new.php?post_type=pdt'); //New Reward
             }
-
         }
 
         public function wps_hide_update_notice()

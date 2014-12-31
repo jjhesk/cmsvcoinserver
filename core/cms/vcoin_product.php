@@ -24,6 +24,7 @@ if (!class_exists('vcoin_product')) {
             $this->vcoin_panel_support = $this->sub_tab_comment = NULL;
         }
 
+
         public function store_keeper_listing($query)
         {
             global $current_user;
@@ -78,6 +79,7 @@ if (!class_exists('vcoin_product')) {
             add_action('save_post', array(__CLASS__, "save_cat"), 10, 1);
             add_action('before_delete_post', array(__CLASS__, "remove_post_adjustment"), 10, 1);
             add_action('pre_get_posts', array($this, "store_keeper_listing"), 10, 1);
+           // add_action('add_meta_boxes', array($this, "customize_admin_backend_cpt"), 0);
             /**
              * add submenu "comment"
              */
@@ -117,6 +119,11 @@ if (!class_exists('vcoin_product')) {
             add_action('manage_' . $this->post_type . '_posts_custom_column', array(__CLASS__, "manage_column"), 10, 2);
 
             //add_action('icl_make_duplicate', array(&$this, "duplicate_post_after"), 12, 4);
+        }
+
+        function customize_admin_backend_cpt()
+        {
+         //   remove_meta_box('slugdiv', 'your_cpt_goes_here', 'normal');
         }
 
         /*public function duplicate_post_after($master_post_id, $lang, $postarr, $post_id)
