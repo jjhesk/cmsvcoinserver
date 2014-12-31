@@ -60,7 +60,7 @@ if (!class_exists('hkm_cross_reference')) {
         }
 
         //To list up a list of titles from the post and have them to display on the option list
-        public function meta_box_enhance_list_post($posttype) {
+        public static function meta_box_enhance_list_post($posttype) {
             $optionpost = null;
             $optionpost[-1] = "[ empty field here ]";
             $items = get_posts(array('post_type' => $posttype, 'posts_per_page' => -1, 'post_status' => 'publish'));

@@ -58,7 +58,7 @@ if (!class_exists('user_profile_editor')):
             $this->current_role = $current_user->roles[0];
             $this->editor_right = array_merge($this->editor_right, $editor_roles);
             $found = array_intersect($this->editor_right, $roles);
-           // inno_log_db::log_vcoin_third_party_app_transaction(-1, 20020, print_r($found, true));
+            // inno_log_db::log_vcoin_third_party_app_transaction(-1, 20020, print_r($found, true));
             $this->can_view = count($found) > 0 || $current_user->roles[0] == "administrator";
             $this->box_title = $extra_field_title;
             $this->field_ids = $editing_field_ids;
@@ -230,7 +230,25 @@ if (!class_exists('user_profile_editor')):
                     return $ineditable;
                 }
             }
+        }
 
+        /**
+         * @return string
+         */
+        public function input_selection($field_val, $key, $list)
+        {
+            global $current_user;
+            //$selected = get_user_meta($current_user->ID, $key, true);
+            //inno_log_db::log_admin_stock_management(-1, 7765334, print_r($selected, true));
+            $html = "<select name='$key'>";
+            foreach ($list as $id => $val) {
+                if ($id != -1) {
+                    $h = $id == $field_val ? "selected" : "";
+                    $html .= "<option value='$id' $h>$val</option>";
+                }
+            }
+            $html .= "</select>";
+            return $html;
         }
 
         /**
@@ -440,7 +458,7 @@ if (!class_exists('user_profile_editor')):
                 $field_val = $_POST[$name_field];
                 $result = update_user_meta($user_id, $name_field, $field_val, get_user_meta($user_id, $name_field, true));
                 if (!$result) {
-                 //   inno_log_db::log_vcoin_third_party_app_transaction($user_id, 10122, $field_val . " add field and val");
+                    inno_log_db::log_admin_stock_management($user_id, 10122, $field_val . " add field and val");
                     add_user_meta($user_id, $name_field, $field_val);
                 }
             }
