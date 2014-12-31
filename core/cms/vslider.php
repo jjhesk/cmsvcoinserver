@@ -12,6 +12,7 @@ if (!class_exists('vslider')) {
     {
         public function __construct()
         {
+            if (userBase::has_role("store_staff")) return;
             parent::__construct();
             register_post_type(VSLIDER, array(
                 'labels' => $this->add_tab(),

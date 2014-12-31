@@ -46,7 +46,7 @@ abstract class cmsBase
         /**
          * VCoin account UUID
          */
-
+       
         try {
 
             if (!isset($_POST['innvendorid'])) throw new Exception("vendor id is not presented", 50211);

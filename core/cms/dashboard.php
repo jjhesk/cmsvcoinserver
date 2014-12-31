@@ -20,11 +20,28 @@ if (!class_exists('dashboard')):
             add_action('admin_init', array($this, 'remove_dashboard'));
             add_filter('admin_footer_text', array($this, 'remove_footer_admin'));
             add_action('admin_menu', array($this, 'wps_hide_update_notice'));
-
+            add_action('admin_menu', array($this, 'remove_menus_store_staff'));
         }
 
         function __destruct()
         {
+
+        }
+
+        function remove_menus_store_staff()
+        {
+            if (userBase::has_role("store_staff")) {
+                remove_menu_page('index.php');                  //Dashboard
+                remove_menu_page('edit.php');                   //Posts
+                remove_menu_page('upload.php');                 //Media
+                remove_menu_page('edit.php?post_type=page');    //Pages
+                remove_menu_page('edit-comments.php');          //Comments
+                remove_menu_page('themes.php');                 //Appearance
+                remove_menu_page('plugins.php');                //Plugins
+                remove_menu_page('users.php');                  //Users
+                remove_menu_page('tools.php');                  //Tools
+                remove_menu_page('options-general.php');        //Settings
+            }
 
         }
 

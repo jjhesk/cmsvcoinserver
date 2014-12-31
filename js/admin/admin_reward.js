@@ -113,6 +113,7 @@ var product_extension = {
  * }
  */
 var json_vendor_list = new Object();
+var setting_ob = setting_ob || {};
 jQuery(function ($) {
     (function (d, M, duration) {
         var checker = new CheckCompletion();
@@ -127,9 +128,9 @@ jQuery(function ($) {
             $icl_content = $("table tbody tr td:nth-child(2)", $icl_table);
 
         /*$icl_header.addClass("hidden");
-        $.each($icl_content, function () {
-            $(this).addClass("hidden");
-        });*/
+         $.each($icl_content, function () {
+         $(this).addClass("hidden");
+         });*/
 
         $extension.addClass("hidden");
 
@@ -144,14 +145,19 @@ jQuery(function ($) {
             M.InputControlSingle($(".rwmb-text"), true);
             M.InputControlSingle($("#gift_video_url"), false);
 
+            if (setting_ob.role == "store_staff") {
+                $("#show-settings-link").hide();
+                $("#screen-options-link-wrap").hide();
+                screen_option.ALL(false);
+                screen_option.ON("stock_count");
+                $("#submitdiv").hide();
+            }
+
             //screen_option.OFF("post_sc_meta");
             screen_option.OFF("icl_div_config");
 
             if ($extension_obj != "na") new StockTagging($extension, $extension_obj, false);
             else $extension.parent().parent().addClass("hidden");
-
-
-
 
         } else if (stock_config_status == 0) {
             $extension.val("na");

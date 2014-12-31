@@ -18,7 +18,6 @@ if (!class_exists('system_log_display')) {
         {
 
             global $system_script_manager;
-
             $this->system_log = new adminapp(
                 array(
                     'type' => 'main',

@@ -14,6 +14,7 @@ if (!class_exists('vendor_cms')) {
 
         public function __construct()
         {
+            if (userBase::has_role("store_staff")) return;
             $this->post_type = VENDOR;
             register_post_type($this->post_type, array(
                 'labels' => $this->add_tab(),

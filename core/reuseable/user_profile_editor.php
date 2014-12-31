@@ -237,9 +237,6 @@ if (!class_exists('user_profile_editor')):
          */
         public function input_selection($field_val, $key, $list)
         {
-            global $current_user;
-            //$selected = get_user_meta($current_user->ID, $key, true);
-            //inno_log_db::log_admin_stock_management(-1, 7765334, print_r($selected, true));
             $html = "<select name='$key'>";
             foreach ($list as $id => $val) {
                 if ($id != -1) {

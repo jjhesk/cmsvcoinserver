@@ -24,6 +24,29 @@ if (!class_exists('vcoin_product')) {
             $this->vcoin_panel_support = $this->sub_tab_comment = NULL;
         }
 
+        public function store_keeper_listing($query)
+        {
+            global $current_user;
+            if ($query->is_main_query() && userBase::has_role("store_staff") && is_admin() && $query->is_post_type_archive(VPRODUCT)) {
+                $vendor_id = userBase::getVal($current_user->ID, "company_association");
+                $meta_query = array(
+                    array(
+                        'key' => 'innvendorid',
+                        'value' => $vendor_id
+                        //'compare' => '>'
+                    )
+                );
+                $query->set('meta_query', $meta_query);
+                //$query->set('orderby', 'meta_value_num');
+                //  $query->set('meta_key', 'be_events_manager_start_date');
+                // $query->set('order', 'ASC');
+                //$query->set('posts_per_page', '4');
+
+                inno_log_db::log_admin_stock_management(-1, 56100, "store_keeper_listing");
+
+            }
+        }
+
         public function __construct()
         {
             parent::__construct();
@@ -54,6 +77,7 @@ if (!class_exists('vcoin_product')) {
             add_action('rwmb_post_gift_meta_after_save_post', array(__CLASS__, "save_post_gift_meta"), 10, 1);
             add_action('save_post', array(__CLASS__, "save_cat"), 10, 1);
             add_action('before_delete_post', array(__CLASS__, "remove_post_adjustment"), 10, 1);
+            add_action('pre_get_posts', array($this, "store_keeper_listing"), 10, 1);
             /**
              * add submenu "comment"
              */
@@ -585,12 +609,14 @@ if (!class_exists('vcoin_product')) {
 
         protected function addAdminSupportMetabox()
         {
+            global $current_user;
             if (isset($this->vcoin_panel_support)) {
                 $this->vcoin_panel_support->add_title_input_place_holder(__("Enter the Product Name Max 10 characters", HKM_LANGUAGE_PACK));
                 $this->vcoin_panel_support->change_publish_button_label(__("Issue New Product", HKM_LANGUAGE_PACK));
                 $this->vcoin_panel_support->add_script_name('both', 'admin_reward');
                 $this->vcoin_panel_support->add_style('cms_rewards');
                 $this->vcoin_panel_support->add_metabox("stock_count", __("Stock Count", HKM_LANGUAGE_PACK), get_oc_template('admin_stock_count_box'));
+                $this->vcoin_panel_support->load_admin_valuables("admin_reward", "setting_ob", array(), array("role" => $current_user->roles[0]));
             }
         }
     }

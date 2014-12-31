@@ -62,6 +62,7 @@ if (!class_exists("app_host")) {
 
         public function __construct()
         {
+            if (userBase::has_role("store_staff")) return;
             register_post_type(APPDISPLAY, array(
                 "labels" => $this->add_tab(),
                 "description" => __("Manage the ablums in the backend."),
