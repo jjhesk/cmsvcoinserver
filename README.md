@@ -13,3 +13,8 @@ Features are listed as below:
  - App hosting and listiing system
  - Automated email and template system
 
+##setup instruction
+1. Download the package first
+2. Install Dependency packages: Advanced Taxonomy Terms Order,  BlackBox, Categories Images, Debug Bar Console,  Debug Bar, Gravity Forms, JSON API, Members, Meta Box, Titan Framework, Vcoin Term Display, WordPress Importer, WP Condition, WP Last Login, WPML Multilingual CMS, WPML String Translation, WPML Translation Management
+3. Install the theme zip and upload into the theme folder.
+4. Active the theme
