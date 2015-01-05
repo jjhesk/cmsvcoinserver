@@ -25,16 +25,17 @@ version: 1.32
 ##Table of Contents
 1. Domain
 2. VCoin or SDK APP Login
-	2.1 Step 1 get nonce
-	2.2 Step 2 generate token and the hash generation concept
-	2.3 Step 3 token and app key usage
-	2.4 renew token
+  2.1. Step 1 get nonce
+  2.2. Step 2 generate token and the hash generation concept
+  2.3. Step 3 token and app key usage
+  2.4. renew token
+	
 3. User Registration
 5. Access API from the SDK after successful login. 
-5.1 Sample API
-5.2 Display User Data
-5.3 Change User Detail
-	5.3.1 Change of Password
+ - Sample API
+ - Display User Data
+ - Change User Detail
+ -- Change of Password
 5.3.2 Country list
 5.4 Move Coins
 5.5 Watch Video move coin
