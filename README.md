@@ -23,10 +23,10 @@ Features are listed as below:
  * [JSON API Auth](https://github.com/jjhesk/json-api-auth-Wordpress)
  * [Advanced Taxonomy Terms Order](http://www.nsp-code.com/premium-plugins/wordpress-plugins/advanced-taxonomy-terms-order/)
  * [Categories Images](https://github.com/jjhesk/CateImages-Wordpress)
- * [BlackBox]
- * [Debug Bar Console]
+ * [BlackBox](https://github.com/daigo75/blackbox-debug-bar)
+ * [Debug Bar Console](https://github.com/brandwaffle/wp-debug-bar)
  * [Debug Bar]
- * [Members]
+ * [Members](https://github.com/justintadlock/members)
  * [Vcoin Term Display]
  * [WP Condition]
  * [WP Last Login]
