@@ -27,7 +27,7 @@ Features are listed as below:
  * [Debug Bar Console](https://github.com/brandwaffle/wp-debug-bar)
  * [Debug Bar]
  * [Members](https://github.com/justintadlock/members)
- * [Vcoin Term Display]
+ * [Vcoin Term Display](https://github.com/jjhesk/CategoryHide-Wordpress)
  * [WP Condition]
  * [WP Last Login](https://github.com/crowdfavorite-mirrors/wp-wp-last-login)
  * [Gravity Forms](http://www.gravityforms.com/) full package
