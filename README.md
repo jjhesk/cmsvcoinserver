@@ -29,7 +29,7 @@ Features are listed as below:
  * [Paid Membership Pro Mod](https://github.com/jjhesk/PaidMembershipsProMod)
  * [Members](https://github.com/justintadlock/members)
  * [Vcoin Term Display](https://github.com/jjhesk/CategoryHide-Wordpress)
- * [WP Condition]
+ * [WP Condition](https://github.com/jjhesk/hkm-wp-condition)
  * [WP Last Login](https://github.com/crowdfavorite-mirrors/wp-wp-last-login)
  * [Gravity Forms](http://www.gravityforms.com/) full package
  * [WPML](http://wpml.org/zh-hans/) full package
