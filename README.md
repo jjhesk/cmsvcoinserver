@@ -15,7 +15,23 @@ Features are listed as below:
 
 ##setup instruction
 1. Download the package first
-2. Install Dependency packages: Advanced Taxonomy Terms Order,  BlackBox, Categories Images, Debug Bar Console,  Debug Bar, Gravity Forms, JSON API, Members, Meta Box, Titan Framework, Vcoin Term Display, WordPress Importer, WP Condition, WP Last Login, WPML Multilingual CMS, WPML String Translation, WPML Translation Management
+2. Install Dependency packages:
+ * [Titan Framework](https://github.com/gambitph/Titan-Framework)
+ * [WordPress Importer](https://github.com/wp-plugins/wordpress-importer)
+ * [Meta Box](https://github.com/rilwis/meta-box)
+ * [JSON API](https://github.com/dphiffer/wp-json-api)
+ * [JSON API Auth](https://github.com/jjhesk/json-api-auth-Wordpress)
+ * [Advanced Taxonomy Terms Order](http://www.nsp-code.com/premium-plugins/wordpress-plugins/advanced-taxonomy-terms-order/)
+ * [Categories Images](https://github.com/jjhesk/CateImages-Wordpress)
+ * [BlackBox]
+ * [Debug Bar Console]
+ * [Debug Bar]
+ * [Members]
+ * [Vcoin Term Display]
+ * [WP Condition]
+ * [WP Last Login]
+ * [Gravity Forms](http://www.gravityforms.com/) full package
+ * [WPML](http://wpml.org/zh-hans/) full package
 3. Install the theme zip and upload into the theme folder.
 4. Active the theme
 
