@@ -1,4 +1,4 @@
-Content Control System Core
+Content Control System Core [![Build Status](https://travis-ci.org/jjhesk/v-server-content-bank.svg)](https://travis-ci.org/jjhesk/v-server-content-bank)
 ==============
 This part of the server will handle massive complex transactions from the customer to inventory management system. 
 Features are listed as below:
