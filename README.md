@@ -99,6 +99,3 @@ version: 1.32
 17. Production Information
 
 
-##API instructions
-https://docs.google.com/a/it.imusictech.com/document/d/1y2pw11TblzluGQA_4TOBKFBYjbIKvaFyo3_V82_-y5c/edit
-https://docs.google.com/document/d/1y2pw11TblzluGQA_4TOBKFBYjbIKvaFyo3_V82_-y5c/pub
