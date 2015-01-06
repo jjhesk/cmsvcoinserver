@@ -26,6 +26,7 @@ Features are listed as below:
  * [BlackBox](https://github.com/daigo75/blackbox-debug-bar)
  * [Debug Bar Console](https://github.com/brandwaffle/wp-debug-bar)
  * [Debug Bar]
+ * [Paid Membership Pro Mod](https://github.com/jjhesk/PaidMembershipsProMod)
  * [Members](https://github.com/justintadlock/members)
  * [Vcoin Term Display](https://github.com/jjhesk/CategoryHide-Wordpress)
  * [WP Condition]
