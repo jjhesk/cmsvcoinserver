@@ -29,7 +29,7 @@ Features are listed as below:
  * [Members](https://github.com/justintadlock/members)
  * [Vcoin Term Display]
  * [WP Condition]
- * [WP Last Login]
+ * [WP Last Login](https://github.com/crowdfavorite-mirrors/wp-wp-last-login)
  * [Gravity Forms](http://www.gravityforms.com/) full package
  * [WPML](http://wpml.org/zh-hans/) full package
 3. Install the theme zip and upload into the theme folder.
