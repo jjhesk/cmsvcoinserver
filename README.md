@@ -1,4 +1,4 @@
-Content Control System Core [![Build Status](https://travis-ci.org/jjhesk/v-server-content-bank.svg)](https://travis-ci.org/jjhesk/v-server-content-bank)
+Content Control System Core [![Build Status](https://travis-ci.org/jjhesk/v-server-content-bank.svg)](https://travis-ci.org/jjhesk/v-server-content-bank) [![Code Climate](https://codeclimate.com/github/jjhesk/v-server-content-bank/badges/gpa.svg)](https://codeclimate.com/github/jjhesk/v-server-content-bank)
 ==============
 This part of the server will handle massive complex transactions from the customer to inventory management system. 
 Features are listed as below:
