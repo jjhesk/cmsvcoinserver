@@ -35,7 +35,8 @@ jQuery(function ($) {
                     { data: "distribution" },
                     { data: "action_taken_by" },
                     { data: "user" },
-                    { data: "stock_id" }
+                    { data: "stock_id" },
+                    { data: "time" }
                 ],
                 initComplete: function (settings, json) {
                     $listtable.css({

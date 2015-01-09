@@ -151,6 +151,8 @@ jQuery(function ($) {
                 screen_option.ALL(false);
                 screen_option.ON("stock_count");
                 $("#submitdiv").hide();
+                $("#edit-slug-box").hide();
+                $(".add-new-h2").hide();
             }
 
             //screen_option.OFF("post_sc_meta");
